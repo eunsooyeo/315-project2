@@ -98,11 +98,11 @@ def order(openHour, closeHour):
     numberOfDrinks = generateNumberOfDrinks()
     drinkNumbers = []
     for i in range(numberOfDrinks):
-        drinkNumbers.append(random.randint(0, 18))
+        drinkNumbers.append(random.randint(1, 19))
 
     cost = 0.0
     for i in drinkNumbers:
-        cost += float(drinkAndPrice[i][1])
+        cost += float(drinkAndPrice[i-1][1])
 
     orderList.append(cost)
     orderList.append(drinkNumbers)
