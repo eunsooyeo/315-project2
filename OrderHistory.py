@@ -63,7 +63,27 @@ def incrementDate():
         else:
             date = arr[0] + " " + str(int(arr[1]) + 1) + " " + arr[2]
 
-    
+# Generate a random number of drinks for the order with 1 drink having the highes probability and decreasing
+def generateNumberOfDrinks() -> int: 
+    num = random.randint(1, 100)
+    # 1 drink: 1 - 70
+    # 2 drinks: 71 - 90
+    # 3 drinks: 91 - 95
+    # 4 drinks: 95 - 97
+    # 5 drinks: 98 - 99
+    # 6 drinks: 100
+    if(num <= 70):
+        return 1
+    if(num <= 90):
+        return 2
+    if(num <= 95):
+        return 3
+    if(num <= 97):
+        return 4
+    if(num <= 99):
+        return 5
+    return 6
+
 # Function for one order
 def order(openHour, closeHour):
     global orderID
@@ -75,21 +95,17 @@ def order(openHour, closeHour):
     orderList.append(str(hour)+":"+str(min)+":"+str(sec))
 
     ##need to generate number of drinks and drink number 1-19
-    numberOfDrinks = random.randint(1, 3)
+    numberOfDrinks = generateNumberOfDrinks()
     drinkNumbers = []
     for i in range(numberOfDrinks):
         drinkNumbers.append(random.randint(0, 18))
 
     cost = 0.0
-    namesOfDrinks = ""
     for i in drinkNumbers:
         cost += float(drinkAndPrice[i][1])
-        namesOfDrinks += drinkAndPrice[i][0] + ", "
-    ##remove extra comma and space
-    namesOfDrinks = namesOfDrinks[0:-2]
 
     orderList.append(cost)
-    orderList.append(namesOfDrinks)
+    orderList.append(drinkNumbers)
 
     orderID += 1
 
@@ -149,7 +165,7 @@ def writeToCSV():
         ## drink names will be separated by comma for easier parsing later down the road
         ## time is separated by colon, in format hh:mm:ss
         ## date is separated by space, in format MM DD YYYY
-        fields = ["Order ID", "Date", "Time", "Cost", "Drink Name(s)"]
+        fields = ["Order ID", "Date", "Time", "Cost", "Drink ID(s)"]
         
         # writing the fields
         csvwriter.writerow(fields)
