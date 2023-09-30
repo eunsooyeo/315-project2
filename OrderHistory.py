@@ -30,9 +30,6 @@ filename = "OrderHistory.csv"
 listOfOrders = []
 tmpListOfOrders = []
 
-# auto incremented
-orderID = 1
-
 monthsWith31Days = {"January", "March", "May", "July", "August", "October", "December"}
 months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
@@ -86,29 +83,43 @@ def generateNumberOfDrinks() -> int:
 
 # Function for one order
 def order(openHour, closeHour):
-    global orderID
-    orderList = [orderID, date]
-
-    hour = random.randint(openHour, closeHour)
-    min = random.randint(0, 59)
-    sec = random.randint(0, 59)
-    orderList.append(str(hour)+":"+str(min)+":"+str(sec))
+    orderList = []
 
     ##need to generate number of drinks and drink number 1-19
     numberOfDrinks = generateNumberOfDrinks()
     drinkNumbers = []
+    drinkNumbersStr = "{"
     for i in range(numberOfDrinks):
-        drinkNumbers.append(random.randint(1, 19))
+        num = random.randint(1, 19)
+        drinkNumbers.append(num)
+        drinkNumbersStr = drinkNumbersStr + str(num) + ", "
+    drinkNumbersStr = drinkNumbersStr[0: -2]
+    drinkNumbersStr += "}"
+    orderList.append(drinkNumbersStr)
+    
+    orderList.append(date)
+
+    hour = random.randint(openHour, closeHour)
+    min = random.randint(0, 59)
+    sec = random.randint(0, 59)
+    time = str(hour) + ":"
+
+    if(min < 10):
+        time += "0" + str(min) + ":"
+    else:
+        time += str(min) + ":"
+    if(sec < 10):
+        time += "0" + str(sec)
+    else:
+        time += str(sec)
+    orderList.append(time)
 
     cost = 0.0
     for i in drinkNumbers:
         cost += float(drinkAndPrice[i-1][1])
 
     orderList.append(cost)
-    orderList.append(drinkNumbers)
-
-    orderID += 1
-
+    
     global tmpListOfOrders
     tmpListOfOrders.append(orderList)
 
@@ -165,7 +176,8 @@ def writeToCSV():
         ## drink names will be separated by comma for easier parsing later down the road
         ## time is separated by colon, in format hh:mm:ss
         ## date is separated by space, in format MM DD YYYY
-        fields = ["Order ID", "Date", "Time", "Cost", "Drink ID(s)"]
+        # fields = ["Order ID", "Date", "Time", "Cost", "Drink ID(s)"]
+        fields = ["Drink ID(s)", "Date", "Time", "Cost"]
         
         # writing the fields
         csvwriter.writerow(fields)
