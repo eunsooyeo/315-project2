@@ -3,29 +3,22 @@ import csv
 import random
 
 
-## [TO-DO!!] this is just a placeholder, we'll need a function that populates this list based on the complete CSV file
-## List of list
-drinkAndPrice = [
-    ["Classic milk tea", 4.75],
-    ["Mango green tea", 5.75],
-    ["Wintermelon tea", 4.25],
-    ["Wintermelon with fresh milk", 4.75],
-    ["Milk tea ice blended with pearls", 6.75],
-    ["Lime mojito", 6.00],
-    ["Coffee creama", 6.00],
-    ["Classic milk tea", 4.75],
-    ["Mango green tea", 5.75],
-    ["Wintermelon tea", 4.25],
-    ["Wintermelon with fresh milk", 4.75],
-    ["Milk tea ice blended with pearls", 6.75],
-    ["Lime mojito", 6.00],
-    ["Coffee creama", 6.00],
-    ["Classic milk tea", 4.75],
-    ["Mango green tea", 5.75],
-    ["Wintermelon tea", 4.25],
-    ["Wintermelon with fresh milk", 4.75],
-    ["Milk tea ice blended with pearls", 6.75]
-]
+## drinkAndPrice csv filler
+def drinkAndPriceList():
+    filename = "drinkandprice.csv"
+
+    #initializing
+    global drinkAndPrice
+
+    #reading file
+    with open(filename) as csvfile:
+        csvreader = csv.reader(csvfile)
+
+        #extracting data
+        drinkAndPrice = [row for row in csvreader]
+
+#call function
+drinkAndPriceList()
 
 # Incremented in the orderDay function
 date = "January 1 2023"
@@ -43,12 +36,11 @@ orderID = 1
 monthsWith31Days = {"January", "March", "May", "July", "August", "October", "December"}
 months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
-## [TO-DO] need to be modified, can it be made up or do we have to populate as many entries as in the real scenario
 # Busy days are set to be Monday and Friday currently, the two peak days 
-minOrderForNormalDays = 5
-maxOrderForNormalDays = 8
-minOrderForBusyDays = 7
-maxOrderForBusyDays = 10
+minOrderForNormalDays = 200
+maxOrderForNormalDays = 400
+minOrderForBusyDays = 300
+maxOrderForBusyDays = 500
 
 # Increments date, switch to new month when necessary
 # Uses the set 'monthsWith31Days' and list 'months' for conveniency
@@ -91,7 +83,7 @@ def order(openHour, closeHour):
     cost = 0.0
     namesOfDrinks = ""
     for i in drinkNumbers:
-        cost += drinkAndPrice[i][1]
+        cost += float(drinkAndPrice[i][1])
         namesOfDrinks += drinkAndPrice[i][0] + ", "
     ##remove extra comma and space
     namesOfDrinks = namesOfDrinks[0:-2]
@@ -150,7 +142,7 @@ def orderYear():
 # Function to write to csv
 def writeToCSV():
     
-    with open(filename, 'w') as csvfile:
+    with open(filename, 'w', newline = '') as csvfile:
         # creating a csv writer object
         csvwriter = csv.writer(csvfile)
 
