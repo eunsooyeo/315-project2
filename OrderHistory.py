@@ -21,7 +21,7 @@ def drinkAndPriceList():
 drinkAndPriceList()
 
 # Incremented in the orderDay function
-date = "January 1 2023"
+date = "2023/01/01"
 
 filename = "OrderHistory.csv"
 
@@ -30,8 +30,8 @@ filename = "OrderHistory.csv"
 listOfOrders = []
 tmpListOfOrders = []
 
-monthsWith31Days = {"January", "March", "May", "July", "August", "October", "December"}
-months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+monthsWith31Days = {"01", "03", "05", "07", "08", "10", "12"}
+months = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
 
 # Busy days are set to be Monday and Friday currently, the two peak days 
 minOrderForNormalDays = 200
@@ -43,22 +43,28 @@ maxOrderForBusyDays = 500
 # Uses the set 'monthsWith31Days' and list 'months' for conveniency
 def incrementDate():
     global date
-    arr = date.split(" ")
-    if(arr[0] in monthsWith31Days):
-        if(int(arr[1]) == 31):
-            if(months.index(arr[0]) == 11):
-                date = "January 1 2024"
+    arr = date.split("/")
+    if(arr[1] in monthsWith31Days):
+        if(int(arr[2]) == 31):
+            if(months.index(arr[1]) == 11):
+                date = "2024/01/01"
             else:
-                date = months[months.index(arr[0]) + 1] + " 1 " + arr[2]
+                date =arr[0] + "/" + months[months.index(arr[1]) + 1] + "/01"
         else:
-            date = arr[0] + " " + str(int(arr[1]) + 1) + " " + arr[2]
+            if ((int(arr[2]) + 1) < 10):
+                date = arr[0] + "/" + arr[1] + "/0" +  str(int(arr[2]) + 1)
+            else:
+                date = arr[0] + "/" + arr[1] + "/" +  str(int(arr[2]) + 1)
     else:
-        if(arr[0] == "February" and arr[1] == 28):
-            date = "March 1 2023"
-        elif(int(arr[1]) == 30):
-            date = months[months.index(arr[0]) + 1] + " 1 " + arr[2]
+        if(arr[1] == "02" and arr[2] == 28):
+            date = "2023/03/01"
+        elif(int(arr[2]) == 30):
+            date = arr[0] + "/" + months[months.index(arr[1]) + 1] + "/01"
         else:
-            date = arr[0] + " " + str(int(arr[1]) + 1) + " " + arr[2]
+            if ((int(arr[2]) + 1) < 10):
+                date = arr[0] + "/" + arr[1] + "/0" + str(int(arr[2]) + 1)
+            else:
+                date = arr[0] + "/" + arr[1] + "/" + str(int(arr[2]) + 1)
 
 # Generate a random number of drinks for the order with 1 drink having the highes probability and decreasing
 def generateNumberOfDrinks() -> int: 
