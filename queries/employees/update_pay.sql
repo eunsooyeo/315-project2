@@ -1,3 +1,3 @@
 UPDATE employee
-SET pay = new_pay;
-WHERE name = 'name';
+SET pay = 15.00
+WHERE name = 'Tom Hank';

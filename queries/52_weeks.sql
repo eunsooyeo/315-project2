@@ -1,6 +1,6 @@
 SELECT 
-    EXTRACT(YEAR FROM date) AS year, 
-    EXTRACT(WEEK FROM date) AS week, 
+    EXTRACT(YEAR FROM orders.date) AS year, 
+    EXTRACT(WEEK FROM orders.date) AS week, 
     COUNT(*) AS order_count 
 
 FROM orders 

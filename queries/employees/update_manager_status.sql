@@ -1,3 +1,3 @@
 UPDATE employee
 SET manager = true
-WHERE name = 'name';
+WHERE name = 'Tom Hank';

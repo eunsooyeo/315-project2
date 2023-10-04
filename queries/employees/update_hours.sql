@@ -1,3 +1,3 @@
 UPDATE employee
-SET hours  = hours 
-WHERE name = 'name';
+SET hours  = 15.00
+WHERE name = 'Tom Hank';
