@@ -56,7 +56,7 @@ def incrementDate():
             else:
                 date = arr[0] + "/" + arr[1] + "/" +  str(int(arr[2]) + 1)
     else:
-        if(arr[1] == "02" and arr[2] == 28):
+        if(arr[1] == "02" and int(arr[2]) == 28):
             date = "2023/03/01"
         elif(int(arr[2]) == 30):
             date = arr[0] + "/" + months[months.index(arr[1]) + 1] + "/01"
@@ -122,9 +122,9 @@ def order(openHour, closeHour):
 
     cost = 0.0
     for i in drinkNumbers:
-        cost += float(drinkAndPrice[i-1][1])
+        cost += round(float(drinkAndPrice[i-1][1]),2)
 
-    orderList.append(cost)
+    orderList.append(round(cost,2))
     
     global tmpListOfOrders
     tmpListOfOrders.append(orderList)
@@ -136,6 +136,13 @@ def sortFn(list):
 # Function for day of orders
 def orderDay(openHour, closeHour, minOrder, maxOrder):
     numberOfOrders = random.randint(minOrder, maxOrder)
+
+    ## create two peak days: friday of start of semesters: 2023/08/25 & 2023/01/20
+    if(date == "2023/08/25"):
+        numberOfOrders = 800
+    if(date == "2023/01/20"):
+        numberOfOrders = 800
+
     for i in range(numberOfOrders):
         order(openHour, closeHour)
     incrementDate()
