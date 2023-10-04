@@ -1,2 +1,3 @@
-DELETE FROM recipes
-WHERE drinkname = 'drinkname';
+UPDATE recipes
+SET price = 'updated price'
+WHERE drinkname = 'drink name';
