@@ -1,42 +1,42 @@
 name,amount,capacity,unit,alert
-Aiyu Jelly,0,1000,g,0
-Aloe Vera,0,1000,mL,0
-Black Tea,0,1000,mL,0
-Brown Sugar,0,10000,g,0
-Cocoa,0,2000,g,0
-Coffee,0,1000,g,0
-Creama,0,5000,cc,0
-Creamer,0,2000,mL,0
-Crystal Boba,0,5000,g,0
-Cups,0,500,units,0
-Fructose,0,2000,g,0
-Grapefruit,0,1000,oz,0
-Green Tea,0,1000,mL,0
-Herb Jelly,0,1000,g,0
-Honey,0,5000,mL,0
-Ice,0,20000,cc,0
-Ice Cream,0,5000,g,0
-Lime,0,2000,g,0
-Lychee Jelly,0,1000,g,0
-Mango,0,1000,oz,0
-Matcha,0,1000,g,0
-Milk,0,10000,mL,0
-Mint,0,100,g,0
-Napkins,0,500,units,0
-Okinawa,0,1000,g,0
-Oolong Tea,0,1000,mL,0
-Orange,0,1000,oz,0
-Passionfruit,0,1000,oz,0
-Peach,0,1000,oz,0
-Pearls,0,5000,g,0
-Perals Mini,0,2000,g,0
-Pineapple,0,1000,oz,0
-Plastic Cover,0,500,units,0
-Pudding,0,2000,g,0
-Red Bean,0,2000,g,0
-Strawberry,0,1000,oz,0
-Straws,0,500,units,0
-Taro,0,1000,g,0
-Water,0,20000,mL,0
-White Sugar,0,5000,g,0
-Wintermelon,0,1000,oz,0
+Aiyu Jelly,1000,1000,g,0
+Aloe Vera,1000,1000,mL,0
+Black Tea,1000,1000,mL,0
+Brown Sugar,10000,10000,g,0
+Cocoa,2000,2000,g,0
+Coffee,1000,1000,g,0
+Creama,5000,5000,cc,0
+Creamer,2000,2000,mL,0
+Crystal Boba,5000,5000,g,0
+Cups,500,500,units,0
+Fructose,2000,2000,g,0
+Grapefruit,1000,1000,oz,0
+Green Tea,1000,1000,mL,0
+Herb Jelly,1000,1000,g,0
+Honey,5000,5000,mL,0
+Ice,20000,20000,cc,0
+Ice Cream,5000,5000,g,0
+Lime,2000,2000,g,0
+Lychee Jelly,1000,1000,g,0
+Mango,1000,1000,oz,0
+Matcha,1000,1000,g,0
+Milk,10000,10000,mL,0
+Mint,100,100,g,0
+Napkins,500,500,units,0
+Okinawa,1000,1000,g,0
+Oolong Tea,1000,1000,mL,0
+Orange,1000,1000,oz,0
+Passionfruit,1000,1000,oz,0
+Peach,1000,1000,oz,0
+Pearls,5000,5000,g,0
+Perals Mini,2000,2000,g,0
+Pineapple,1000,1000,oz,0
+Plastic Cover,500,500,units,0
+Pudding,2000,2000,g,0
+Red Bean,2000,2000,g,0
+Strawberry,1000,1000,oz,0
+Straws,500,500,units,0
+Taro,1000,1000,g,0
+Water,20000,20000,mL,0
+White Sugar,5000,5000,g,0
+Wintermelon,1000,1000,oz,0
