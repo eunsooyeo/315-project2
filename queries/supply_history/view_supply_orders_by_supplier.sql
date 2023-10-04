@@ -1,3 +1,3 @@
 SELECT * FROM supply_history
-WHERE supplier = "Amazon";
+WHERE supplier = 'Costco'
 ORDER BY order_date;

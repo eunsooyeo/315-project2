@@ -1,4 +1,4 @@
-DELETE FROM order
+DELETE FROM orders
 
 WHERE order_id = (
 	SELECT MAX(order_id)

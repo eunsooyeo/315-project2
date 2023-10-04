@@ -2,12 +2,12 @@ SELECT
     o.order_id, 
     o.date,
     o.time,
-    array_agg(r.drinkName) AS recipe_name
+    array_agg(r.drinkName) AS recipe_name,
     SUM(unnested_costs) AS total_cost
 FROM 
     orders o
 JOIN 
-    recipe r ON r.recipeid = ANY(o.drink_id)
+    recipes r ON r.recipeid = ANY(o.drink_id)
 CROSS JOIN LATERAL
     unnest(o.cost) AS unnested_costs
 WHERE 

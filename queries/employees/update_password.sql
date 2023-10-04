@@ -1,3 +1,3 @@
 UPDATE employee
 SET password  = 'password'
-WHERE name = 'name';
+WHERE name = 'Tom Hank';

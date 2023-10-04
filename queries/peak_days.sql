@@ -1,6 +1,6 @@
 SELECT 
     date, 
-    SUM(order_total) AS total_sales 
+    SUM(cost) AS total_sales 
     
 FROM orders 
 

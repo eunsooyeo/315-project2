@@ -1,2 +1,2 @@
 DELETE FROM employee
-WHERE name = 'name';
+WHERE name = 'Tom Hank';
