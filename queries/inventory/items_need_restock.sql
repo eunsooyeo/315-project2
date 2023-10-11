@@ -1,0 +1,1 @@
+SELECT name, amount, capacity FROM inventory WHERE alert = TRUE;

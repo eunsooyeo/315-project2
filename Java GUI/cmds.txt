@@ -1,0 +1,5 @@
+javac *.java  
+java LoginApp.java
+
+manager | password
+cashier | password

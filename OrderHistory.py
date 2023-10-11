@@ -122,9 +122,9 @@ def order(openHour, closeHour):
 
     cost = 0.0
     for i in drinkNumbers:
-        cost += float(drinkAndPrice[i-1][1])
+        cost += round(float(drinkAndPrice[i-1][1]),2)
 
-    orderList.append(cost)
+    orderList.append(round(cost,2))
     
     global tmpListOfOrders
     tmpListOfOrders.append(orderList)
@@ -136,6 +136,13 @@ def sortFn(list):
 # Function for day of orders
 def orderDay(openHour, closeHour, minOrder, maxOrder):
     numberOfOrders = random.randint(minOrder, maxOrder)
+
+    ## create two peak days: friday of start of semesters: 2023/08/25 & 2023/01/20
+    if(date == "2023/08/25"):
+        numberOfOrders = 800
+    if(date == "2023/01/20"):
+        numberOfOrders = 800
+
     for i in range(numberOfOrders):
         order(openHour, closeHour)
     incrementDate()
