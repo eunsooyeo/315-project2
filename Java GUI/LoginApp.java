@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+//package jdbc_demo.dbSetup;
+
 
 public class LoginApp extends JFrame {
     private JTextField usernameField;
@@ -86,6 +88,7 @@ public class LoginApp extends JFrame {
     }
 
     public static void main(String[] args) {
+        //databaseConnect();
         SwingUtilities.invokeLater(() -> {
             LoginApp loginApp = new LoginApp();
             loginApp.setVisible(true);
