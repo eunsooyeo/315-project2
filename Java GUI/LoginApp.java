@@ -109,20 +109,6 @@ public class LoginApp extends JFrame {
     // @return : void
     // @tnrows: none
     public static void main(String[] args) {
-        dbSetup my = new dbSetup();
-        //Building the connection
-        Connection conn = null;
-        try {
-            Class.forName("org.postgresql.Driver");
-            conn = DriverManager.getConnection("jdbc:postgresql://csce-315-db.engr.tamu.edu/csce315331_10r_db",
-            my.user, my.pswd);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println(e.getClass().getName()+": "+e.getMessage());
-            System.exit(0);
-        }//end try catch
-        JOptionPane.showMessageDialog(null,"Opened database successfully");
-
         SwingUtilities.invokeLater(() -> {
             LoginApp loginApp = new LoginApp();
             loginApp.setVisible(true);

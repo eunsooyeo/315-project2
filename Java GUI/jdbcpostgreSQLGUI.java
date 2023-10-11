@@ -6,6 +6,13 @@ CSCE 315
 9-25-2019
  */
 public class jdbcpostgreSQLGUI {
+  private Connection conn;
+
+  public static void updateOrders(Vector<String> drinkName){
+
+  }
+
+
   public static void main(String args[]) {
     dbSetup my = new dbSetup();
     //Building the connection

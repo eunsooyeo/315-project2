@@ -61,40 +61,6 @@ public class CashierApp extends JFrame {
         displayPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 
         JButton chargeButton = new JButton("Charge");
-        chargeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //update database
-                dbSetup my = new dbSetup();
-                //Building the connection
-                Connection conn = null;
-                try {
-                    Class.forName("org.postgresql.Driver");
-                    conn = DriverManager.getConnection("jdbc:postgresql://csce-315-db.engr.tamu.edu/csce315331_10r_db",
-                    my.user, my.pswd);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    System.err.println(ex.getClass().getName()+": "+ex.getMessage());
-                    System.exit(0);
-                }
-                JOptionPane.showMessageDialog(null,"Opened database successfully");
-            
-                Statement stmt = conn.createStatement();
-                //create an SQL statement
-                String sqlStatement = "INSERT INTO orders (drink_id, date, time, cost) VALUES (0,'2023-09-30','12:07:11', 5.99);";
-                //send statement to DBMS
-                ResultSet result = stmt.executeQuery(sqlStatement);
-
-                //close connection
-                try {
-                    conn.close();
-                    JOptionPane.showMessageDialog(null,"Connection Closed.");
-                } catch(Exception ex) {
-                    JOptionPane.showMessageDialog(null,"Connection NOT Closed.");
-                }//end try catch
-            }
-        });
-
         JButton ticketsButton = new JButton("Tickets");
 
         rightPanel.add(displayPanel);
