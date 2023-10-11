@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;  // Import WindowAdapter
+import java.awt.event.WindowEvent;    // Import WindowEvent
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,8 +137,25 @@ public class CashierApp extends JFrame {
         drinkButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Add the selected drink to the right-hand display
-                addSelectedDrink(drinkName);
+                // Create a CustomizeDrinkPopup for the selected drink
+                CustomizeDrinkPopup popup = new CustomizeDrinkPopup(CashierApp.this, drinkName);
+                if (popup != null) {
+                    // Wait for the pop-up to be closed and get the customized drink details
+                    popup.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                            if (popup.getSelectedIce() != null || popup.getSelectedSweetness() != null ||
+                                    popup.getSelectedToppings() != null) {
+                                // Create a customized drink based on the selections and add it to the right-hand display
+                                String customizedDrink = drinkName + " - " +
+                                        (popup.getSelectedIce() != null ? popup.getSelectedIce() + " " : "") +
+                                        (popup.getSelectedSweetness() != null ? popup.getSelectedSweetness() + " " : "") +
+                                        (popup.getSelectedToppings() != null ? String.join(", ", popup.getSelectedToppings()) : "");
+                                addSelectedDrink(customizedDrink);
+                            }
+                        }
+                    });
+                }
             }
         });
         middlePanel.add(drinkButton);
@@ -153,26 +173,104 @@ public class CashierApp extends JFrame {
 
     private void updateDisplayPanel() {
         displayPanel.removeAll();
+
         for (String drink : selectedDrinks) {
+            // Split the drink string to separate the name and options
+            String[] drinkParts = drink.split(" - ");
+            
             JPanel drinkPanel = new JPanel();
-            drinkPanel.setLayout(new BorderLayout());
-
-            JLabel drinkLabel = new JLabel("Selected Drink: " + drink);
-            drinkPanel.add(drinkLabel, BorderLayout.WEST);
-
+            drinkPanel.setLayout(new BoxLayout(drinkPanel, BoxLayout.Y_AXIS)); // Vertical layout
+            
+            // Create a label for the name
+            JLabel nameLabel = new JLabel(drinkParts[0]);
+            drinkPanel.add(nameLabel);
+            
+            if (drinkParts.length > 1) {
+                String options = drinkParts[1];
+                String[] optionsArray = options.split(", ");
+                
+                for (String option : optionsArray) {
+                    // Handle null toppings
+                    if (!option.equals("null")) {
+                        JLabel optionLabel = new JLabel(option);
+                        drinkPanel.add(optionLabel);
+                    }
+                }
+                
+                // Handle the case where all toppings are null
+                if (optionsArray.length == 1 && optionsArray[0].equals("null")) {
+                    JLabel noToppingsLabel = new JLabel("No Toppings");
+                    drinkPanel.add(noToppingsLabel);
+                }
+            } else {
+                JLabel noToppingsLabel = new JLabel("No Toppings");
+                drinkPanel.add(noToppingsLabel);
+            }
+            
+            // Create remove and edit buttons
             JButton removeButton = new JButton("Remove");
+            JButton editButton = new JButton("Edit");
+            
+            // Add action listeners for remove and edit buttons
             removeButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     removeSelectedDrink(drink);
                 }
             });
-            drinkPanel.add(removeButton, BorderLayout.EAST);
-
+            
+            editButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Reopen the CustomizeDrinkPopup with the selected drink's name
+                    CustomizeDrinkPopup popup = new CustomizeDrinkPopup(CashierApp.this, drinkParts[0]);
+                    if (popup != null) {
+                        popup.addWindowListener(new WindowAdapter() {
+                            @Override
+                            public void windowClosed(WindowEvent e) {
+                                if (popup.getSelectedIce() != null || popup.getSelectedSweetness() != null ||
+                                        popup.getSelectedToppings() != null) {
+                                    // Create a customized drink based on the selections and update the right-hand display
+                                    String customizedDrink = drinkParts[0] + " - ";
+                                    if (popup.getSelectedIce() != null) {
+                                        customizedDrink += popup.getSelectedIce() + "\n";
+                                    }
+                                    if (popup.getSelectedSweetness() != null) {
+                                        customizedDrink += popup.getSelectedSweetness() + "\n";
+                                    }
+                                    if (popup.getSelectedToppings() != null) {
+                                        if (popup.getSelectedToppings() != null && popup.getSelectedToppings().length > 0) {
+                                            customizedDrink += String.join(", ", popup.getSelectedToppings());
+                                        } else {
+                                            customizedDrink += "No Toppings";
+                                        }
+                                    }
+                                    updateSelectedDrink(drink, customizedDrink);
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+                        
+            // Add components to the drink panel
+            drinkPanel.add(removeButton);
+            drinkPanel.add(editButton);
+            
             displayPanel.add(drinkPanel);
         }
+        
         displayPanel.revalidate();
         displayPanel.repaint();
+    }
+
+    private void updateSelectedDrink(String oldDrink, String newDrink) {
+        // Replace the old drink with the new drink in the selected drinks list
+        int index = selectedDrinks.indexOf(oldDrink);
+        if (index >= 0) {
+            selectedDrinks.set(index, newDrink);
+            updateDisplayPanel();
+        }
     }
 
     public static void main(String[] args) {

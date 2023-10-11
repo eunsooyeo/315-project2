@@ -1,5 +1,48 @@
+-----------------------------------------------------------------------------------------------------------
+JAVA SWING HELP:
+-----------------------------------------------------------------------------------------------------------
+dispose(); causes the JFrame window to be destroyed and cleaned up by the operating system
+invokeLater(); a static method of the SwingUtilities class and it can be used to perform a task asynchronously in the AWT Event dispatcher thread
+
+Here, Kevin will try to explain Asynchronous Code:
+- Asynchronous code does not run linearly or sequentially with regular code. 
+- Usually, code runs from top to bottom, but asynchronous code will run in the background 
+- as a separate process from the main thread, sort of like a branch in GitHub.
+
+- Asynchronous code will eventually return back to the main thread and do whatever it is programmed to do.
+- Asynchronous code exists because sometimes we need to delay something
+- or we need to retrieve something (like from a database), which takes some time.
+- If we try to display something right away, nothing will show (error)!
+- Therefore, asynchronous code allows the code to wait for the data to return before displaying it.
+
+- Kevin has no idea if we need to use asynchronous code since our database will be relatively small.
+- The only reason invokeLater() is used to ensure that everything loads (graphics wise Kevin thinks) before we call the class.
+- Kevin is not too sure on this, and it may be unneccessary.
+
+-----------------------------------------------------------------------------------------------------------
+USEFUL COMMANDS:
+-----------------------------------------------------------------------------------------------------------
 javac *.java  
 java LoginApp.java
 
+-----------------------------------------------------------------------------------------------------------
+TEMPORARY LOGIN CREDENTIALS:
+-----------------------------------------------------------------------------------------------------------
 manager | password
 cashier | password
+
+- This should be changed later to match the employees database
+- Therefore, this section will be deleted once that is implemented.
+
+-----------------------------------------------------------------------------------------------------------
+CONTROL FLOW:
+-----------------------------------------------------------------------------------------------------------
+Login -> cashier -> Logout -> Login
+                 -> TODO
+
+Login -> manager -> Logout -> Login
+                 -> employee
+                 -> inventory
+                 -> supply history
+                 -> TODO menus
+                 -> TODO order history
