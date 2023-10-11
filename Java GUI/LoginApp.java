@@ -2,12 +2,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
+//package jdbc_demo.dbSetup;
+
 
 //@Kevin Tang
 public class LoginApp extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JLabel statusLabel;
+    public Connection conn;
 
     // @param: none
     // @return : void
@@ -105,6 +109,20 @@ public class LoginApp extends JFrame {
     // @return : void
     // @tnrows: none
     public static void main(String[] args) {
+        dbSetup my = new dbSetup();
+        //Building the connection
+        Connection conn = null;
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn = DriverManager.getConnection("jdbc:postgresql://csce-315-db.engr.tamu.edu/csce315331_10r_db",
+            my.user, my.pswd);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }//end try catch
+        JOptionPane.showMessageDialog(null,"Opened database successfully");
+
         SwingUtilities.invokeLater(() -> {
             LoginApp loginApp = new LoginApp();
             loginApp.setVisible(true);
