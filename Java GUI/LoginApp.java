@@ -5,11 +5,15 @@ import java.awt.event.ActionListener;
 //package jdbc_demo.dbSetup;
 
 
+//@Kevin Tang
 public class LoginApp extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JLabel statusLabel;
 
+    // @param: none
+    // @return : void
+    // @tnrows: none
     public LoginApp() {
         setTitle("Login Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -18,6 +22,9 @@ public class LoginApp extends JFrame {
         initComponents();
     }
 
+    // @param: none
+    // @return : void
+    // @tnrows: none
     private void initComponents() {
         JPanel centerPanel = new JPanel(new GridLayout(3, 2, 5, 10));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -43,10 +50,13 @@ public class LoginApp extends JFrame {
                 String username = usernameField.getText();
                 char[] password = passwordField.getPassword();
 
-                /* TODO ****************************************************************************************************************************/
+                /*
+                 * TODO
+                 ****************************************************************************************************************************/
                 // Here, you can add code to validate the username and password.
-                // For simplicity, let's use "manager" and "cashier" as the valid usernames and "password" as the password.
-                
+                // For simplicity, let's use "manager" and "cashier" as the valid usernames and
+                // "password" as the password.
+
                 if (username.equals("manager") && new String(password).equals("password")) {
                     statusLabel.setText("Login Successful");
                     openManagerApp();
@@ -74,19 +84,28 @@ public class LoginApp extends JFrame {
         statusLabel.setFont(new Font("Arial", Font.BOLD, 14));
         add(statusLabel, BorderLayout.SOUTH);
     }
-    
+
+    // @param: none
+    // @return : void
+    // @tnrows: none
     private void openManagerApp() {
         ManagerApp managerApp = new ManagerApp();
         managerApp.setVisible(true);
         dispose();
     }
 
+    // @param: none
+    // @return : void
+    // @tnrows: none
     private void openCashierApp() {
         CashierApp cashierApp = new CashierApp();
         cashierApp.setVisible(true);
         dispose();
     }
 
+    // @param: none
+    // @return : void
+    // @tnrows: none
     public static void main(String[] args) {
         //databaseConnect();
         SwingUtilities.invokeLater(() -> {
@@ -95,4 +114,3 @@ public class LoginApp extends JFrame {
         });
     }
 }
-

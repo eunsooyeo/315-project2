@@ -56,7 +56,7 @@ def incrementDate():
             else:
                 date = arr[0] + "/" + arr[1] + "/" +  str(int(arr[2]) + 1)
     else:
-        if(arr[1] == "02" and int(arr[2]) == 28):
+        if(arr[1] == "02" and arr[2] == "28"):
             date = "2023/03/01"
         elif(int(arr[2]) == 30):
             date = arr[0] + "/" + months[months.index(arr[1]) + 1] + "/01"
