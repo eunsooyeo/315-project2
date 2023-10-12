@@ -220,6 +220,7 @@ public class CashierApp extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     //////////////////////////TODO: REMOVE DRINK FROM DATABASE //////////////////////////
+                    order.restoreInventory(drink);
                     removeSelectedDrink(drink);
                 }
             });
@@ -250,6 +251,7 @@ public class CashierApp extends JFrame {
                                             customizedDrink += "No Toppings";
                                         }
                                     }
+                                    order.editInventory(drink, customizedDrink);
                                     updateSelectedDrink(drink, customizedDrink);
                                 }
                             }
