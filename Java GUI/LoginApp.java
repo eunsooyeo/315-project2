@@ -102,10 +102,5 @@ public class LoginApp extends JFrame {
     // @param: none
     // @return : void
     // @tnrows: none
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            LoginApp loginApp = new LoginApp();
-            loginApp.setVisible(true);
-        });
-    }
+    
 }
