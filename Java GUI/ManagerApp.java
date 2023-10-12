@@ -67,6 +67,10 @@ public class ManagerApp extends JFrame {
         JPanel supplyHistoryPage = new SupplyHistoryApp();
         cardPanel.add(supplyHistoryPage, "Supply History");
 
+        //Create the Menus page
+        JPanel menusPage = new MenusApp();
+        cardPanel.add(menusPage, "Menus");
+
         // Initially show the Employees page
         cardLayout.show(cardPanel, "Employees");
 
@@ -95,6 +99,13 @@ public class ManagerApp extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(cardPanel, "Supply History");
+            }
+        });
+
+        menusButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(cardPanel, "Menus");
             }
         });
     }
