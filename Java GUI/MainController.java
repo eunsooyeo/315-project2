@@ -46,9 +46,12 @@ public class MainController {
         //create order class
         Order order = new Order(conn);
 
+        //create managerFunctions class
+        ManagerFunctions managerFunctions = new ManagerFunctions(conn);
+
         //open GUI
         SwingUtilities.invokeLater(() -> {
-            LoginApp loginApp = new LoginApp(order);
+            LoginApp loginApp = new LoginApp(order,managerFunctions);
             loginApp.setVisible(true);
         });
 
