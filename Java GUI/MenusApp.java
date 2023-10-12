@@ -17,8 +17,9 @@ public class MenusApp extends JPanel {
     private String[] drinkIngredients;
     private int selectedDrink;
     private JPanel centerPanel;
+    private ManagerFunctions managerFunctions;
 
-    public MenusApp() {
+    public MenusApp(ManagerFunctions m) {
         setLayout(new BorderLayout());
 
         int numDrinks = 20; // Specify the number of initial drinks
@@ -133,6 +134,8 @@ public class MenusApp extends JPanel {
                 removeDrink();
             }
         });
+
+        managerFunctions = m;
     }
 
     private void addDrink(String name, String price, String ingredients) {
@@ -245,14 +248,14 @@ public class MenusApp extends JPanel {
         }
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Menus Page");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(800, 400);
-
-            frame.add(new MenusApp());
+            MenusApp ma = new MenusApp(managerFunctions);
+            frame.add(ma);
             frame.setVisible(true);
         });
-    }
+    }*/
 }

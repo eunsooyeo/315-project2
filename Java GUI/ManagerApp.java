@@ -6,11 +6,14 @@ import java.awt.event.ActionListener;
 public class ManagerApp extends JFrame {
     private JPanel cardPanel;
     private CardLayout cardLayout;
+    private ManagerFunctions managerFunctions;
 
-    public ManagerApp() {
+    public ManagerApp(ManagerFunctions m) {
         setTitle("Manager Interface");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 400);
+
+        managerFunctions = m;
 
         // Create the main panel to hold the UI components
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -68,7 +71,7 @@ public class ManagerApp extends JFrame {
         cardPanel.add(supplyHistoryPage, "Supply History");
 
         //Create the Menus page
-        JPanel menusPage = new MenusApp();
+        JPanel menusPage = new MenusApp(m);
         cardPanel.add(menusPage, "Menus");
 
         // Initially show the Employees page
@@ -105,15 +108,31 @@ public class ManagerApp extends JFrame {
         menusButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                openMenusApp();
                 cardLayout.show(cardPanel, "Menus");
             }
         });
+
     }
 
-    public static void main(String[] args) {
+    private void openMenusApp() {
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Menus Page");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(800, 400);
+            MenusApp ma = new MenusApp(managerFunctions);
+            frame.add(ma);
+            frame.setVisible(true);
+        });
+        MenusApp menusApp = new MenusApp(managerFunctions);
+        menusApp.setVisible(true);
+        dispose();
+    }
+
+    /*public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             ManagerApp managerApp = new ManagerApp();
             managerApp.setVisible(true);
         });
-    }
+    }*/
 }
