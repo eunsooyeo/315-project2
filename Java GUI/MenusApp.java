@@ -2,12 +2,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;  // Import WindowAdapter
+import java.awt.event.WindowEvent;    // Import WindowEvent
+import java.util.*;
+import java.sql.*;
+
 
 public class MenusApp extends JPanel {
     private JTextArea drinkDetailsTextArea;
     private JTextField nameField;
     private JTextField priceField;
     private JTextField ingredientsField;
+    private JTextField ingredientsValueField;
     private JButton editDrinkButton;
     private JButton addDrinkButton;
     private JButton removeDrinkButton;
@@ -15,6 +21,7 @@ public class MenusApp extends JPanel {
     private String[] drinkNames;
     private String[] drinkPrices;
     private String[] drinkIngredients;
+    private String[] drinkIngredientsAmounts;
     private int selectedDrink;
     private JPanel centerPanel;
     private ManagerFunctions managerFunctions;
@@ -28,10 +35,12 @@ public class MenusApp extends JPanel {
         drinkNames = new String[numDrinks];
         drinkPrices = new String[numDrinks];
         drinkIngredients = new String[numDrinks];
+        drinkIngredientsAmounts = new String[numDrinks];
         for (int i = 0; i < numDrinks; i++) {
             drinkNames[i] = "Drink " + (i + 1); // Initialize drink names
             drinkPrices[i] = "0.00"; // Initialize drink prices
             drinkIngredients[i] = "Unknown Ingredients"; // Initialize drink ingredients
+            drinkIngredientsAmounts[i] = "Unknown Amounts";
         }
 
         // Create the center panel for drink buttons
@@ -60,6 +69,7 @@ public class MenusApp extends JPanel {
                     nameField.setText(drinkNames[selectedDrink]); // Update the name field
                     priceField.setText(drinkPrices[selectedDrink]); // Update the price field
                     ingredientsField.setText(drinkIngredients[selectedDrink]); // Update the ingredients field
+                    ingredientsValueField.setText(drinkIngredientsAmounts[selectedDrink]); //update ingredients amount field
                     updateDisplay();
                 }
             });
@@ -80,6 +90,7 @@ public class MenusApp extends JPanel {
         nameField = new JTextField(20);
         priceField = new JTextField(20);
         ingredientsField = new JTextField(20);
+        ingredientsValueField = new JTextField(20);
         editDrinkButton = new JButton("Edit Drink");
         addDrinkButton = new JButton("Add Drink");
         removeDrinkButton = new JButton("Remove Drink");
@@ -90,6 +101,8 @@ public class MenusApp extends JPanel {
         editPanel.add(priceField);
         editPanel.add(new JLabel("Ingredients:"));
         editPanel.add(ingredientsField);
+        editPanel.add(new JLabel("Ingredient amounts:"));
+        editPanel.add(ingredientsValueField);
         editPanel.add(editDrinkButton);
         editPanel.add(addDrinkButton);
         editPanel.add(removeDrinkButton);
@@ -111,9 +124,14 @@ public class MenusApp extends JPanel {
                 drinkNames[selectedDrink] = nameField.getText();
                 drinkPrices[selectedDrink] = priceField.getText();
                 drinkIngredients[selectedDrink] = ingredientsField.getText();
+                drinkIngredientsAmounts[selectedDrink] = ingredientsValueField.getText();
 
                 drinkButtons[selectedDrink].setText(drinkNames[selectedDrink]); // Update the drink button text
                 updateDisplay();
+
+                //update recipe database
+                managerFunctions.updateRecipeIngredient(drinkIngredients[selectedDrink],drinkIngredientsAmounts[selectedDrink],drinkNames[selectedDrink]);
+                managerFunctions.updateRecipePrice(drinkNames[selectedDrink], drinkPrices[selectedDrink]);
             }
         });
 
@@ -122,7 +140,10 @@ public class MenusApp extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Add a new drink
-                addDrink("New Drink", "0.00", "Unknown Ingredients");
+                addDrink("New Drink", "0.00", "Unknown Ingredients", "Unknown Amounts");
+
+                //update database
+                //createNewRecipe();
             }
         });
 
@@ -132,35 +153,42 @@ public class MenusApp extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 // Handle removing the selected drink and update the UI
                 removeDrink();
+
+                //update database
+                managerFunctions.removeRecipe(drinkNames[selectedDrink]);
             }
         });
 
         managerFunctions = m;
     }
 
-    private void addDrink(String name, String price, String ingredients) {
+    private void addDrink(String name, String price, String ingredients, String ingredientAmounts) {
         // Add a new drink to the arrays
         int numDrinks = drinkButtons.length + 1;
         String[] newNames = new String[numDrinks];
         String[] newPrices = new String[numDrinks];
         String[] newIngredients = new String[numDrinks];
+        String[] newIngredientAmounts = new String[numDrinks];
 
         // Copy existing data to the new arrays
         for (int i = 0; i < drinkButtons.length; i++) {
             newNames[i] = drinkNames[i];
             newPrices[i] = drinkPrices[i];
             newIngredients[i] = drinkIngredients[i];
+            newIngredientAmounts[i] = drinkIngredientsAmounts[i];
         }
 
         // Add the new drink data
         newNames[numDrinks - 1] = name;
         newPrices[numDrinks - 1] = price;
         newIngredients[numDrinks - 1] = ingredients;
+        newIngredientAmounts[numDrinks -1] = ingredientAmounts;
 
         // Update arrays with new data
         drinkNames = newNames;
         drinkPrices = newPrices;
         drinkIngredients = newIngredients;
+        drinkIngredientsAmounts = newIngredientAmounts;
 
         // Update drink buttons and display
         updateDrinkButtons();
@@ -181,6 +209,7 @@ public class MenusApp extends JPanel {
         String[] newNames = new String[numDrinks];
         String[] newPrices = new String[numDrinks];
         String[] newIngredients = new String[numDrinks];
+        String[] newIngredientAmounts = new String[numDrinks];
 
         // Copy data to the new arrays, excluding the removed drink
         for (int i = 0, j = 0; i < drinkButtons.length; i++) {
@@ -188,6 +217,7 @@ public class MenusApp extends JPanel {
                 newNames[j] = drinkNames[i];
                 newPrices[j] = drinkPrices[i];
                 newIngredients[j] = drinkIngredients[i];
+                newIngredientAmounts[j] = drinkIngredientsAmounts[i];
                 j++;
             }
         }
@@ -196,6 +226,7 @@ public class MenusApp extends JPanel {
         drinkNames = newNames;
         drinkPrices = newPrices;
         drinkIngredients = newIngredients;
+        drinkIngredientsAmounts = newIngredientAmounts;
 
         // Update drink buttons and display
         updateDrinkButtons();
@@ -225,6 +256,7 @@ public class MenusApp extends JPanel {
                     nameField.setText(drinkNames[selectedDrink]); // Update the name field
                     priceField.setText(drinkPrices[selectedDrink]); // Update the price field
                     ingredientsField.setText(drinkIngredients[selectedDrink]); // Update the ingredients field
+                    ingredientsValueField.setText(drinkIngredientsAmounts[selectedDrink]);
                     updateDisplay();
                 }
             });
@@ -241,7 +273,8 @@ public class MenusApp extends JPanel {
             String name = drinkNames[selectedDrink];
             String price = drinkPrices[selectedDrink];
             String ingredients = drinkIngredients[selectedDrink];
-            String drinkInfo = "Drink Info:\nName: " + name + "\nPrice: $" + price + "\nIngredients: " + ingredients;
+            String ingredientAmounts = drinkIngredientsAmounts[selectedDrink];
+            String drinkInfo = "Drink Info:\nName: " + name + "\nPrice: $" + price + "\nIngredients: " + ingredients + "\nIngredient amounts: " + ingredientAmounts;
             drinkDetailsTextArea.setText(drinkInfo);
         } else {
             drinkDetailsTextArea.setText("Select a drink");

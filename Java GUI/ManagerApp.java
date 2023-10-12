@@ -59,7 +59,7 @@ public class ManagerApp extends JFrame {
         cardPanel.setLayout(cardLayout);
 
         // Create the Employees page
-        JPanel employeesPage = new EmployeeApp();
+        JPanel employeesPage = new EmployeeApp(managerFunctions);
         cardPanel.add(employeesPage, "Employees");
 
         // Create the Inventory page
@@ -87,6 +87,7 @@ public class ManagerApp extends JFrame {
         employeesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                openEmployeeApp();
                 cardLayout.show(cardPanel, "Employees");
             }
         });
@@ -116,17 +117,14 @@ public class ManagerApp extends JFrame {
     }
 
     private void openMenusApp() {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Menus Page");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(800, 400);
-            MenusApp ma = new MenusApp(managerFunctions);
-            frame.add(ma);
-            frame.setVisible(true);
-        });
         MenusApp menusApp = new MenusApp(managerFunctions);
         menusApp.setVisible(true);
-        dispose();
+        //dispose();
+    }
+
+    private void openEmployeeApp(){
+        EmployeeApp employeeApp = new EmployeeApp(managerFunctions);
+        employeeApp.setVisible(true);
     }
 
     /*public static void main(String[] args) {
