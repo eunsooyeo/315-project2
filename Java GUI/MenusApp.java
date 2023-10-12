@@ -171,7 +171,7 @@ public class MenusApp extends JPanel {
 
         int numDrinks = drinkButtons.length - 1;
         if (selectedDrink >= numDrinks) {
-            selectedDrink = 0;
+            selectedDrink = numDrinks;
         }
 
         // Create new arrays without the removed drink

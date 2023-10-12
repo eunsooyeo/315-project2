@@ -171,24 +171,21 @@ public class EmployeeApp extends JPanel {
     }
 
 
-    private void addEmployee(String name, String position) {
+    private void addEmployee(String name, String hours) {
         if (name.isEmpty()) {
             return; // Don't add if the name is empty
         }
-
-        String newEmployee = "Employee " + (employeeListModel.getSize() + 1) + "\nName: " + name + "\nPosition: " + position;
-        employeeListModel.addElement(newEmployee);
-        detailsTextArea.setText(newEmployee);
+        employeeListModel.addElement(name);
+        detailsTextArea.setText("Name: " + name + "\nHours/Week: " + hours);
     }
 
-    private void addManager(String name, String position) {
+    private void addManager(String name, String hours) {
         if (name.isEmpty()) {
             return; // Don't add if the name is empty
         }
 
-        String newManager = "Manager " + (managerListModel.getSize() + 1) + "\nName: " + name + "\nPosition: " + position;
-        managerListModel.addElement(newManager);
-        detailsTextArea.setText(newManager);
+        managerListModel.addElement(name);
+        detailsTextArea.setText("Name: " + name + "\nHours/Week: " + hours);
     }
 
     private void removeEmployee(int index) {
