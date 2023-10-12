@@ -17,16 +17,38 @@ public class ManagerApp extends JFrame {
 
         // Create the side bar on the left with options
         JPanel sideBar = new JPanel();
-        sideBar.setLayout(new GridLayout(4, 1));
+        sideBar.setLayout(new GridLayout(5, 1));
         JButton employeesButton = new JButton("Employees");
         JButton inventoryButton = new JButton("Inventory");
         JButton supplyHistoryButton = new JButton("Supply History");
         JButton orderHistoryButton = new JButton("Order History");
+        JButton menusButton = new JButton("Menus");
+
+        employeesButton.setFocusPainted(false);
+        employeesButton.setBorderPainted(false);
+        employeesButton.setBackground(new Color(223, 227, 238)); // Light gray
+
+        inventoryButton.setFocusPainted(false);
+        inventoryButton.setBorderPainted(false);
+        inventoryButton.setBackground(new Color(223, 227, 238)); // Light gray
+
+        menusButton.setFocusPainted(false);
+        menusButton.setBorderPainted(false);
+        menusButton.setBackground(new Color(223, 227, 238)); // Light gray
+
+        supplyHistoryButton.setFocusPainted(false);
+        supplyHistoryButton.setBorderPainted(false);
+        supplyHistoryButton.setBackground(new Color(223, 227, 238)); // Light gray
+
+        orderHistoryButton.setFocusPainted(false);
+        orderHistoryButton.setBorderPainted(false);
+        orderHistoryButton.setBackground(new Color(223, 227, 238)); // Light gray
 
         sideBar.add(employeesButton);
         sideBar.add(inventoryButton);
         sideBar.add(supplyHistoryButton);
         sideBar.add(orderHistoryButton);
+        sideBar.add(menusButton);
 
         // Create a panel with CardLayout to switch between pages
         cardPanel = new JPanel();
