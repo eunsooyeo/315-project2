@@ -1,9 +1,16 @@
-public class Order {
-    private:
-        ArrayList<String> drinks;
-        double totalPrice;
+import java.math.BigDecimal;
+import java.sql.*;
+import javax.naming.spi.DirStateFactory.Result;
+import java.util.*;
 
-    public:
+public class Order {
+    private ArrayList<String> drinkNames;
+    private double totalPrice;
+    private Connection conn;
+
+    public Order(Connection db_connection) {
+        db_connection = conn;
+    }
         /*
      * @Return : boolean
      * * false if the order fails to be created
@@ -22,12 +29,10 @@ public class Order {
      * * updates orders
      * * returns true if everything functions properly, false otherwise
      */
-    public static boolean Order(ArrayList<String> drinkNames, ArrayList<Integer> sugarLevel,
-        ArrayList<Integer> iceLevel,
-        ArrayList<String> toppings) {
+    public boolean makeOrder() {
         // find recipe of drinkName from recipe database
         int[] drinkIDs = new int[drinkNames.size()];
-        float totalPrice = 0.0f;
+    
         for (int index = 0; index < drinkNames.size(); index++) {
             String drinkName = drinkNames.get(index);
             try {
@@ -37,42 +42,42 @@ public class Order {
                 result.next();
                 int recipeID = result.getInt("recipeid");
 
-                Array ingredientsArr = result.getArray("ingredient_names");
-                String[] ingredients = (String[]) ingredientsArr.getArray();
-                Array ingredientAmountArr = result.getArray("ingredient_values");
-                BigDecimal[] ingredientAmount = (BigDecimal[]) ingredientAmountArr.getArray();
-                float price = result.getFloat("price");
+                // Array ingredientsArr = result.getArray("ingredient_names");
+                // String[] ingredients = (String[]) ingredientsArr.getArray();
+                // Array ingredientAmountArr = result.getArray("ingredient_values");
+                // BigDecimal[] ingredientAmount = (BigDecimal[]) ingredientAmountArr.getArray();
+                // float price = result.getFloat("price");
 
                 // make subtractions from inventory database
-                for (int i = 0; i < ingredients.length; i++) {
-                    String ingredient = ingredients[i].toLowerCase();
-                    String getIngredientAmount = "SELECT * FROM inventory WHERE lower(name) = '" + ingredient + "';";
-                    ResultSet result2 = conn.createStatement().executeQuery(getIngredientAmount);
-                    result2.next();
-                    float amount = result2.getFloat("amount");
-                    if (ingredient.equals("brown sugar") || ingredient.equals("fructose")
-                            || ingredient.equals("honey") || ingredient.equals("white sugar")) {
-                        amount -= (ingredientAmount[i]).intValue() * sugarLevel.get(index) / 100;
-                    }
-                    amount -= (ingredientAmount[i]).intValue();
-                    if (amount < 0) {
-                        return false;
-                    }
-                    String updateIngredientAmount = "UPDATE inventory SET amount = " + amount + " WHERE lower(name) = '"
-                            + ingredient + "';";
-                    conn.createStatement().executeUpdate(updateIngredientAmount);
-                }
+                // for (int i = 0; i < ingredients.length; i++) {
+                //     String ingredient = ingredients[i].toLowerCase();
+                //     String getIngredientAmount = "SELECT * FROM inventory WHERE lower(name) = '" + ingredient + "';";
+                //     ResultSet result2 = conn.createStatement().executeQuery(getIngredientAmount);
+                //     result2.next();
+                //     float amount = result2.getFloat("amount");
+                //     if (ingredient.equals("brown sugar") || ingredient.equals("fructose")
+                //             || ingredient.equals("honey") || ingredient.equals("white sugar")) {
+                //         amount -= (ingredientAmount[i]).intValue() * sugarLevel.get(index) / 100;
+                //     }
+                //     amount -= (ingredientAmount[i]).intValue();
+                //     if (amount < 0) {
+                //         return false;
+                //     }
+                //     String updateIngredientAmount = "UPDATE inventory SET amount = " + amount + " WHERE lower(name) = '"
+                //             + ingredient + "';";
+                //     conn.createStatement().executeUpdate(updateIngredientAmount);
+                // }
                 // update ice
-                String getIceAmount = "SELECT amount FROM inventory WHERE name = 'Ice';";
-                result = conn.createStatement().executeQuery(getIceAmount);
-                result.next();
-                String updateIceAmount = "UPDATE inventory SET amount = "
-                        + (result.getInt("amount") - iceLevel.get(index) / 10)
-                        + " WHERE name = 'Ice';";
-                conn.createStatement().executeUpdate(updateIceAmount);
+                // String getIceAmount = "SELECT amount FROM inventory WHERE name = 'Ice';";
+                // result = conn.createStatement().executeQuery(getIceAmount);
+                // result.next();
+                // String updateIceAmount = "UPDATE inventory SET amount = "
+                //         + (result.getInt("amount") - iceLevel.get(index) / 10)
+                //         + " WHERE name = 'Ice';";
+                // conn.createStatement().executeUpdate(updateIceAmount);
 
                 drinkIDs[index] = recipeID;
-                totalPrice += price;
+                // totalPrice += price;
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -82,23 +87,23 @@ public class Order {
         }
 
         // update topping, each topping is -10 in inventory
-        for (int index = 0; index < toppings.size(); index++) {
-            String topping = toppings.get(index).toLowerCase();
-            String getToppingAmount = "SELECT amount FROM inventory WHERE lower(name) = '" + topping + "';";
-            try {
-                ResultSet result = conn.createStatement().executeQuery(getToppingAmount);
-                result.next();
-                String updateToppingAmount = "UPDATE inventory SET amount = "
-                        + (result.getInt("amount") - 10)
-                        + " WHERE lower(name) = '" + topping + "';";
-                conn.createStatement().executeUpdate(updateToppingAmount);
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.err.println(e.getClass().getName() + ": " + e.getMessage());
-                return false;
-            }
+        // for (int index = 0; index < toppings.size(); index++) {
+        //     String topping = toppings.get(index).toLowerCase();
+        //     String getToppingAmount = "SELECT amount FROM inventory WHERE lower(name) = '" + topping + "';";
+        //     try {
+        //         ResultSet result = conn.createStatement().executeQuery(getToppingAmount);
+        //         result.next();
+        //         String updateToppingAmount = "UPDATE inventory SET amount = "
+        //                 + (result.getInt("amount") - 10)
+        //                 + " WHERE lower(name) = '" + topping + "';";
+        //         conn.createStatement().executeUpdate(updateToppingAmount);
+        //     } catch (Exception e) {
+        //         e.printStackTrace();
+        //         System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        //         return false;
+        //     }
 
-        }
+        // }
         java.time.LocalTime time = java.time.LocalTime.now();
         String updateOrdersString = "INSERT INTO orders(drink_id, date, time, cost) VALUES (ARRAY"
                 + Arrays.toString(drinkIDs)
