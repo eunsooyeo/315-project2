@@ -91,7 +91,7 @@ public class LoginApp extends JFrame {
     // @return : void
     // @tnrows: none
     private void openManagerApp() {
-        ManagerApp managerApp = new ManagerApp(managerFunctions);
+        ManagerApp managerApp = new ManagerApp(managerFunctions, order);
         managerApp.setVisible(true);
         dispose();
     }
@@ -100,7 +100,7 @@ public class LoginApp extends JFrame {
     // @return : void
     // @tnrows: none
     private void openCashierApp() {
-        CashierApp cashierApp = new CashierApp(order);
+        CashierApp cashierApp = new CashierApp(managerFunctions, order);
         cashierApp.setVisible(true);
         dispose();
     }
