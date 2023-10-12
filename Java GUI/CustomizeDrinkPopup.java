@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.*;
 
 public class CustomizeDrinkPopup extends JDialog {
     private JLabel titleLabel;
@@ -11,8 +12,8 @@ public class CustomizeDrinkPopup extends JDialog {
     private JComboBox<String> sweetnessComboBox;
     private JCheckBox[] toppingsCheckboxes;
 
-    private String selectedIce;
-    private String selectedSweetness;
+    private Integer selectedIce;
+    private Integer selectedSweetness;
     private String[] selectedToppings;
 
     public CustomizeDrinkPopup(JFrame parent, String drinkName) {
@@ -74,15 +75,26 @@ public class CustomizeDrinkPopup extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Get the selected options for Ice, Sweetness, and Toppings
-                selectedIce = iceComboBox.getSelectedItem().toString();
-                selectedSweetness = sweetnessComboBox.getSelectedItem().toString();
-                selectedToppings = new String[toppingOptions.length];
+                selectedIce = (Integer)iceComboBox.getSelectedItem();
+                selectedSweetness =(Integer) sweetnessComboBox.getSelectedItem();
+                ArrayList<String> selectedToppings = new ArrayList<String>(); //[toppingOptions.length]
                 for (int i = 0; i < toppingOptions.length; i++) {
-                    selectedToppings[i] = toppingsCheckboxes[i].isSelected() ? toppingOptions[i] : null;
+                    if (toppingsCheckboxes[i].isSelected()){
+                        selectedToppings.add(toppingOptions[i]);
+                    }
                 }
 
                 // Close the pop-up
                 dispose();
+
+                //make update to database
+                /*boolean updatedInventory = updateInventory(drinkName, selectedIce, selectedSweetness, selectedToppings);
+                if(!updatedInventory){
+                    ////////
+                    //TODO: Add message on GUI that order cannot be made because inventory item is low
+
+                    ////////
+                }*/
             }
         });
 
@@ -97,11 +109,11 @@ public class CustomizeDrinkPopup extends JDialog {
         setVisible(true);
     }
 
-    public String getSelectedIce() {
+    public Integer getSelectedIce() {
         return selectedIce;
     }
 
-    public String getSelectedSweetness() {
+    public Integer getSelectedSweetness() {
         return selectedSweetness;
     }
 
