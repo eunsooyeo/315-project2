@@ -12,12 +12,17 @@ public class CustomizeDrinkPopup extends JDialog {
     private JComboBox<String> sweetnessComboBox;
     private JCheckBox[] toppingsCheckboxes;
 
-    private Integer selectedIce;
-    private Integer selectedSweetness;
+    private String selectedIce;
+    private String selectedSweetness;
     private String[] selectedToppings;
 
-    public CustomizeDrinkPopup(JFrame parent, String drinkName) {
+    private Order order;
+
+    public CustomizeDrinkPopup(JFrame parent, String drinkName, Order o) {
+        
         super(parent, "Customize Drink", true);
+        
+        order = o;
         setLayout(new BorderLayout());
 
         // Create the header section with title, cancel, and add buttons
@@ -75,8 +80,8 @@ public class CustomizeDrinkPopup extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Get the selected options for Ice, Sweetness, and Toppings
-                selectedIce = (Integer)iceComboBox.getSelectedItem();
-                selectedSweetness =(Integer) sweetnessComboBox.getSelectedItem();
+                selectedIce = iceComboBox.getSelectedItem().toString();
+                selectedSweetness =sweetnessComboBox.getSelectedItem().toString();
                 ArrayList<String> selectedToppings = new ArrayList<String>(); //[toppingOptions.length]
                 for (int i = 0; i < toppingOptions.length; i++) {
                     if (toppingsCheckboxes[i].isSelected()){
@@ -109,11 +114,11 @@ public class CustomizeDrinkPopup extends JDialog {
         setVisible(true);
     }
 
-    public Integer getSelectedIce() {
+    public String getSelectedIce() {
         return selectedIce;
     }
 
-    public Integer getSelectedSweetness() {
+    public String getSelectedSweetness() {
         return selectedSweetness;
     }
 
