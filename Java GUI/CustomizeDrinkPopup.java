@@ -15,7 +15,11 @@ public class CustomizeDrinkPopup extends JDialog {
     private String selectedSweetness;
     private String[] selectedToppings;
 
-    public CustomizeDrinkPopup(JFrame parent, String drinkName) {
+    private Order order;
+
+    public CustomizeDrinkPopup(JFrame parent, String drinkName, Order o) {
+        order = o;
+        
         super(parent, "Customize Drink", true);
         setLayout(new BorderLayout());
 

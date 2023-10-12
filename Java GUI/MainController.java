@@ -43,9 +43,12 @@ public class MainController {
         //     System.out.println("Connection NOT Closed.");
         // }
 
+        //create order class
+        Order order = new Order(conn);
+
         //open GUI
         SwingUtilities.invokeLater(() -> {
-            LoginApp loginApp = new LoginApp();
+            LoginApp loginApp = new LoginApp(order);
             loginApp.setVisible(true);
         });
 

@@ -15,8 +15,9 @@ public class CashierApp extends JFrame {
     private List<JButton> drinkButtons;
     private JPanel displayPanel;
     private List<String> selectedDrinks;
+    private Order order;
 
-    public CashierApp() {
+    public CashierApp(Order o) {
         setTitle("Cashier Interface");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 400);
@@ -83,6 +84,8 @@ public class CashierApp extends JFrame {
         mainPanel.add(rightPanel, BorderLayout.EAST);
 
         add(mainPanel);
+
+        order = o;
     }
 
     private void updateMiddlePanel(String category) {
@@ -138,7 +141,7 @@ public class CashierApp extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Create a CustomizeDrinkPopup for the selected drink
-                CustomizeDrinkPopup popup = new CustomizeDrinkPopup(CashierApp.this, drinkName);
+                CustomizeDrinkPopup popup = new CustomizeDrinkPopup(CashierApp.this, drinkName, order);
                 if (popup != null) {
                     // Wait for the pop-up to be closed and get the customized drink details
                     popup.addWindowListener(new WindowAdapter() {
