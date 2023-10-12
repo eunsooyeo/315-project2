@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.*;
 
 public class CustomizeDrinkPopup extends JDialog {
     private JLabel titleLabel;
@@ -15,8 +16,13 @@ public class CustomizeDrinkPopup extends JDialog {
     private String selectedSweetness;
     private String[] selectedToppings;
 
-    public CustomizeDrinkPopup(JFrame parent, String drinkName) {
+    private Order order;
+
+    public CustomizeDrinkPopup(JFrame parent, String drinkName, Order o) {
+        
         super(parent, "Customize Drink", true);
+        
+        order = o;
         setLayout(new BorderLayout());
 
         // Create the header section with title, cancel, and add buttons
@@ -75,14 +81,25 @@ public class CustomizeDrinkPopup extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 // Get the selected options for Ice, Sweetness, and Toppings
                 selectedIce = iceComboBox.getSelectedItem().toString();
-                selectedSweetness = sweetnessComboBox.getSelectedItem().toString();
-                selectedToppings = new String[toppingOptions.length];
+                selectedSweetness =sweetnessComboBox.getSelectedItem().toString();
+                ArrayList<String> selectedToppings = new ArrayList<String>(); //[toppingOptions.length]
                 for (int i = 0; i < toppingOptions.length; i++) {
-                    selectedToppings[i] = toppingsCheckboxes[i].isSelected() ? toppingOptions[i] : null;
+                    if (toppingsCheckboxes[i].isSelected()){
+                        selectedToppings.add(toppingOptions[i]);
+                    }
                 }
 
                 // Close the pop-up
                 dispose();
+
+                //make update to database
+                boolean updatedInventory = order.updateInventory(drinkName, selectedIce, selectedSweetness, selectedToppings);
+                if(!updatedInventory){
+                    ////////
+                    //TODO: Add message on GUI that order cannot be made because inventory item is low
+
+                    ////////
+                }
             }
         });
 
