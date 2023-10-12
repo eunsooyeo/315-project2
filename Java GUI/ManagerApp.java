@@ -7,13 +7,15 @@ public class ManagerApp extends JFrame {
     private JPanel cardPanel;
     private CardLayout cardLayout;
     private ManagerFunctions managerFunctions;
+    private Order order;
 
-    public ManagerApp(ManagerFunctions m) {
+    public ManagerApp(ManagerFunctions m, Order o) {
         setTitle("Manager Interface");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 400);
 
         managerFunctions = m;
+        order = o;
 
         // Create the main panel to hold the UI components
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -57,7 +59,7 @@ public class ManagerApp extends JFrame {
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new LogoutPopup(ManagerApp.this, order);
+                new LogoutPopup(ManagerApp.this, order, managerFunctions);
             }
         });
         logoutButton.setFocusPainted(false);
