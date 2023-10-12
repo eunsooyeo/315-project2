@@ -14,7 +14,7 @@ public class CustomizeDrinkPopup extends JDialog {
 
     private String selectedIce;
     private String selectedSweetness;
-    private String[] selectedToppings;
+    private ArrayList<String> selectedToppings;
 
     private Order order;
 
@@ -44,7 +44,7 @@ public class CustomizeDrinkPopup extends JDialog {
         // Sweetness options
         JPanel sweetnessPanel = new JPanel();
         sweetnessPanel.add(new JLabel("Sweetness: "));
-        String[] sweetnessOptions = {"0% sugar", "30% sugar", "50% sugar", "80% sugar", "100% sugar"};
+        String[] sweetnessOptions = {"100% sugar", "80% sugar", "50% sugar", "30% sugar", "0% sugar"};
         sweetnessComboBox = new JComboBox<>(sweetnessOptions);
         sweetnessPanel.add(sweetnessComboBox);
 
@@ -81,10 +81,11 @@ public class CustomizeDrinkPopup extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 // Get the selected options for Ice, Sweetness, and Toppings
                 selectedIce = iceComboBox.getSelectedItem().toString();
-                selectedSweetness =sweetnessComboBox.getSelectedItem().toString();
-                ArrayList<String> selectedToppings = new ArrayList<String>(); //[toppingOptions.length]
+                selectedSweetness = sweetnessComboBox.getSelectedItem().toString();
+                selectedToppings = new ArrayList<String>();
+                
                 for (int i = 0; i < toppingOptions.length; i++) {
-                    if (toppingsCheckboxes[i].isSelected()){
+                    if (toppingsCheckboxes[i].isSelected()) {
                         selectedToppings.add(toppingOptions[i]);
                     }
                 }
@@ -122,7 +123,7 @@ public class CustomizeDrinkPopup extends JDialog {
         return selectedSweetness;
     }
 
-    public String[] getSelectedToppings() {
+    public ArrayList<String> getSelectedToppings() {
         return selectedToppings;
     }
 }
