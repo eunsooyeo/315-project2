@@ -93,13 +93,13 @@ public class CustomizeDrinkPopup extends JDialog {
                 dispose();
 
                 //make update to database
-                /*boolean updatedInventory = updateInventory(drinkName, selectedIce, selectedSweetness, selectedToppings);
+                boolean updatedInventory = order.updateInventory(drinkName, selectedIce, selectedSweetness, selectedToppings);
                 if(!updatedInventory){
                     ////////
                     //TODO: Add message on GUI that order cannot be made because inventory item is low
 
                     ////////
-                }*/
+                }
             }
         });
 
