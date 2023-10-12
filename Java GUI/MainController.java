@@ -119,6 +119,81 @@ public class MainController {
         return true;
     }
 
+
+    public static void updateRecipePrice(String drinkName, double price){
+        try{
+            //create a statement object
+            Statement stmt = conn.createStatement();
+            //create an SQL statement
+            String sqlStatement = "UPDATE recipes SET price = " + price + " WHERE drinkname = " + drinkName + ";";
+            //send statement to DBMS
+            ResultSet result = stmt.executeQuery(sqlStatement);
+        } 
+        catch (Exception e){
+            System.out.println("Error accessing Database.");
+        }
+    }
+    public static void updateRecipeIngredient(String ingredientName, double ingredientValue, String drinkName){
+        try{
+            //create a statement object
+            Statement stmt = conn.createStatement();
+            //create an SQL statement
+            String sqlStatement = "UPDATE recipes SET ingredient_names = ARRAY_APPEND(ingredient_names," + ingredientName + "), ingredient_values = ARRAY_APPEND(ingredient_values," + ingredientValue + ") WHERE drinkname =" + drinkName + ";";
+                //also update inventory if not exist
+                sqlStatement += "INSERT INTO inventory (name, amount, capacity, unit, alert) VALUES (" + ingredientName + ", 0, 1000, 'unit', TRUE) ON CONFLICT (name) DO NOTHING;";
+            //send statement to DBMS
+            ResultSet result = stmt.executeQuery(sqlStatement);
+        } 
+        catch (Exception e){
+            System.out.println("Error accessing Database.");
+        }
+    }
+
+    public static void createNewRecipe(int drinkId, String drinkName, String[] ingredient_names, double[] ingredient_values, double price){
+        try{
+            //create a statement object
+            Statement stmt = conn.createStatement();
+            //create an SQL statement
+            String sqlStatement = "INSERT INTO recipes (recipeid, drinkname, ingredient_names, ingredient_values, price) VALUES (" + drinkId + ", " + drinkName + "," + ingredient_names + ","  + ingredient_values + "," +  price + ");";
+
+            //determine which ingredients need to be created in inventory using Conflict 
+            for (int i = 0; i < ingredient_names.length; i++){
+            sqlStatement += "INSERT INTO inventory (name, amount, capacity, unit, alert) VALUES (" + ingredient_names[i] + ", 0, 1000, 'unit', TRUE) ON CONFLICT (name) DO NOTHING;";
+            }
+            //send statement to DBMS
+            ResultSet result = stmt.executeQuery(sqlStatement);
+        } 
+        catch (Exception e){
+            System.out.println("Error accessing Database.");
+        }
+    }
+    public static void createNewEmployee(String employeeName, String password, double pay, double hours, boolean manager){
+        try{
+            //create a statement object
+            Statement stmt = conn.createStatement();
+            //create an SQL statement
+            String sqlStatement = "INSERT INTO employee (name, password, pay, hours, manager) VALUES (" + employeeName + "," + password + "," + pay + "," + hours + "," + manager + ");";
+            //send statement to DBMS
+            ResultSet result = stmt.executeQuery(sqlStatement);
+        } 
+        catch (Exception e){
+            System.out.println("Error accessing Database.");
+        }
+    }
+    public static void removeEmployee(String employeeName){
+        try{
+            //create a statement object
+            Statement stmt = conn.createStatement();
+            //create an SQL statement
+            String sqlStatement = "DELETE FROM employee WHERE name =" + employeeName + ";";
+            //send statement to DBMS
+            ResultSet result = stmt.executeQuery(sqlStatement);
+        } 
+        catch (Exception e){
+            System.out.println("Error accessing Database.");
+        }
+    }
+
     public static void main(String args[]) {
 
         String teamName = "10r";
