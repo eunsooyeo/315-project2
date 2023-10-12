@@ -256,6 +256,8 @@ public class CashierApp extends JFrame {
             removeButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    //////////////////////////TODO: REMOVE DRINK FROM DATABASE //////////////////////////
+                    order.restoreInventory(drink);
                     removeSelectedDrink(drink);
                 }
             });
@@ -285,6 +287,7 @@ public class CashierApp extends JFrame {
                                     } else {
                                         customizedDrink += "No Toppings";
                                     }
+                                    order.editInventory(drink, customizedDrink);
                                     updateSelectedDrink(drink, customizedDrink);
                                 }
                             }
