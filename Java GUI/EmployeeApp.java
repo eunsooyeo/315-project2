@@ -16,8 +16,9 @@ public class EmployeeApp extends JPanel {
             managerButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+
+                    /* TODO ****************************************************************************************************************************/
                     // Display manager details in the right sidebar
-                    // You can implement this logic
                 }
             });
             managersSection.add(managerButton);
