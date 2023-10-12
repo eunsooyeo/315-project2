@@ -27,6 +27,7 @@ public class InventoryApp extends JPanel {
 
                     /* TODO ****************************************************************************************************************************/
                     // Display item details in the right sidebar
+                    // Make its contents editable after retrieveing from Database
                 }
             });
             centerPanel.add(itemButton);
