@@ -149,12 +149,20 @@ public class CashierApp extends JFrame {
                         @Override
                         public void windowClosed(WindowEvent e) {
                             if (popup.getSelectedIce() != null || popup.getSelectedSweetness() != null ||
-                                    popup.getSelectedToppings() != null) {
-                                // Create a customized drink based on the selections and add it to the right-hand display
-                                String customizedDrink = drinkName + " - " +
-                                        (popup.getSelectedIce() != null ? popup.getSelectedIce() + " " : "") +
-                                        (popup.getSelectedSweetness() != null ? popup.getSelectedSweetness() + " " : "") +
-                                        (popup.getSelectedToppings() != null ? String.join(", ", popup.getSelectedToppings()) : "");
+                                (!popup.getSelectedToppings().isEmpty())) {
+                                // Create a customized drink string based on the selections
+                                String customizedDrink = drinkName + "\n";
+                                if (popup.getSelectedIce() != null) {
+                                    customizedDrink += popup.getSelectedIce() + "\n";
+                                }
+                                if (popup.getSelectedSweetness() != null) {
+                                    customizedDrink += popup.getSelectedSweetness() + "\n";
+                                }
+                                if (!popup.getSelectedToppings().isEmpty()) {
+                                    customizedDrink += String.join(", ", popup.getSelectedToppings());
+                                } else {
+                                    customizedDrink += "No Toppings";
+                                }
                                 addSelectedDrink(customizedDrink);
                             }
                         }
@@ -179,42 +187,20 @@ public class CashierApp extends JFrame {
         displayPanel.removeAll();
 
         for (String drink : selectedDrinks) {
-            // Split the drink string to separate the name and options
-            String[] drinkParts = drink.split(" - ");
-            
+            String[] drinkLines = drink.split("\n");
+
             JPanel drinkPanel = new JPanel();
             drinkPanel.setLayout(new BoxLayout(drinkPanel, BoxLayout.Y_AXIS)); // Vertical layout
-            
-            // Create a label for the name
-            JLabel nameLabel = new JLabel(drinkParts[0]);
-            drinkPanel.add(nameLabel);
-            
-            if (drinkParts.length > 1) {
-                String options = drinkParts[1];
-                String[] optionsArray = options.split(", ");
-                
-                for (String option : optionsArray) {
-                    // Handle null toppings
-                    if (!option.equals("null")) {
-                        JLabel optionLabel = new JLabel(option);
-                        drinkPanel.add(optionLabel);
-                    }
-                }
-                
-                // Handle the case where all toppings are null
-                if (optionsArray.length == 1 && optionsArray[0].equals("null")) {
-                    JLabel noToppingsLabel = new JLabel("No Toppings");
-                    drinkPanel.add(noToppingsLabel);
-                }
-            } else {
-                JLabel noToppingsLabel = new JLabel("No Toppings");
-                drinkPanel.add(noToppingsLabel);
+
+            for (String line : drinkLines) {
+                JLabel lineLabel = new JLabel(line);
+                drinkPanel.add(lineLabel);
             }
-            
+
             // Create remove and edit buttons
             JButton removeButton = new JButton("Remove");
             JButton editButton = new JButton("Edit");
-            
+
             // Add action listeners for remove and edit buttons
             removeButton.addActionListener(new ActionListener() {
                 @Override
@@ -222,32 +208,31 @@ public class CashierApp extends JFrame {
                     removeSelectedDrink(drink);
                 }
             });
-            
+
             editButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     // Reopen the CustomizeDrinkPopup with the selected drink's name
-                    CustomizeDrinkPopup popup = new CustomizeDrinkPopup(CashierApp.this, drinkParts[0], order);
+                    String drinkName = drinkLines[0]; // Get the original drink name
+                    CustomizeDrinkPopup popup = new CustomizeDrinkPopup(CashierApp.this, drinkName, order);
                     if (popup != null) {
                         popup.addWindowListener(new WindowAdapter() {
                             @Override
                             public void windowClosed(WindowEvent e) {
                                 if (popup.getSelectedIce() != null || popup.getSelectedSweetness() != null ||
-                                        popup.getSelectedToppings() != null) {
-                                    // Create a customized drink based on the selections and update the right-hand display
-                                    String customizedDrink = drinkParts[0] + " - ";
+                                    (popup.getSelectedToppings() != null && !popup.getSelectedToppings().isEmpty())) {
+                                    // Create a customized drink string based on the selections
+                                    String customizedDrink = drinkName + "\n";
                                     if (popup.getSelectedIce() != null) {
                                         customizedDrink += popup.getSelectedIce() + "\n";
                                     }
                                     if (popup.getSelectedSweetness() != null) {
                                         customizedDrink += popup.getSelectedSweetness() + "\n";
                                     }
-                                    if (popup.getSelectedToppings() != null) {
-                                        if (popup.getSelectedToppings() != null && popup.getSelectedToppings().length > 0) {
-                                            customizedDrink += String.join(", ", popup.getSelectedToppings());
-                                        } else {
-                                            customizedDrink += "No Toppings";
-                                        }
+                                    if (popup.getSelectedToppings() != null && !popup.getSelectedToppings().isEmpty()) {
+                                        customizedDrink += String.join(", ", popup.getSelectedToppings());
+                                    } else {
+                                        customizedDrink += "No Toppings";
                                     }
                                     updateSelectedDrink(drink, customizedDrink);
                                 }
@@ -256,14 +241,14 @@ public class CashierApp extends JFrame {
                     }
                 }
             });
-                        
+
             // Add components to the drink panel
             drinkPanel.add(removeButton);
             drinkPanel.add(editButton);
-            
+
             displayPanel.add(drinkPanel);
         }
-        
+
         displayPanel.revalidate();
         displayPanel.repaint();
     }
