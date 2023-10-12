@@ -17,11 +17,24 @@ public class CashierApp extends JFrame {
     private JPanel displayPanel;
     private List<String> selectedDrinks;
     private Order order;
+    private ManagerFunctions managerFunctions;
 
-    public CashierApp(Order o) {
+    private double totalPrice;
+    private double taxAmount;
+
+    // Components for displaying price, tax, and total price
+    private JLabel totalPriceLabel;
+    private JLabel taxLabel;
+    private JLabel totalAmountLabel;
+
+    private JButton chargeButton;
+
+    public CashierApp(ManagerFunctions m, Order o) {
         setTitle("Cashier Interface");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 400);
+
+        totalPrice = 0.0;
 
         // Create the main panel to hold the UI components
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -53,12 +66,13 @@ public class CashierApp extends JFrame {
         }
 
         order = o;
+        managerFunctions = m;
 
         JButton logoutButton = new JButton("Logout");
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new LogoutPopup(CashierApp.this, order);
+                new LogoutPopup(CashierApp.this, order, managerFunctions);
             }
         });
         logoutButton.setFocusPainted(false);
@@ -79,16 +93,23 @@ public class CashierApp extends JFrame {
         JScrollPane displayScrollPane = new JScrollPane(displayPanel);
         displayScrollPane.setPreferredSize(new Dimension(400, 200));
 
-        JButton chargeButton = new JButton("Charge");
-        JButton ticketsButton = new JButton("Tickets");
+        chargeButton = new JButton("Charge $0.00");
+        JButton ticketsButton = new JButton("Print Ticket");
 
         // Make the buttons span the full width
         chargeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         ticketsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        totalPriceLabel = new JLabel("Total Price: $0.00");
+        taxLabel = new JLabel("Tax: $0.00");
+        totalAmountLabel = new JLabel("Total Amount: $0.00");
+
+        // Add components to the rightPanel
         rightPanel.add(displayScrollPane, new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 10, 0), 0, 0));
         rightPanel.add(chargeButton, new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 5, 0), 0, 0));
-        rightPanel.add(ticketsButton, new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+        rightPanel.add(totalPriceLabel, new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 5, 0), 0, 0));
+        rightPanel.add(taxLabel, new GridBagConstraints(0, 3, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 5, 0), 0, 0));
+        rightPanel.add(totalAmountLabel, new GridBagConstraints(0, 4, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 
         // Initialize the list of selected drinks
         selectedDrinks = new ArrayList<>();
@@ -187,15 +208,33 @@ public class CashierApp extends JFrame {
 
     private void addSelectedDrink(String drinkName) {
         selectedDrinks.add(drinkName);
+        updateTotalPrice();
         updateDisplayPanel();
     }
 
     private void removeSelectedDrink(String drinkName) {
         selectedDrinks.remove(drinkName);
+        updateTotalPrice();
+        updateDisplayPanel();
+    }
+
+    private void updateTotalPrice() {
+        // TODO **************************************************************** connect to DB and match prices
+        // Calculate the total price based on the number of selected drinks
+        double drinkPrice = 5.0; // Set the base price per drink - DELETE THIS LATER
+
+        totalPrice = selectedDrinks.size() * drinkPrice;
+        taxAmount = totalPrice * 0.0825;
         updateDisplayPanel();
     }
 
     private void updateDisplayPanel() {
+        totalPriceLabel.setText(String.format("Total Price: $%.2f", totalPrice));
+        taxLabel.setText(String.format("Tax: $%.2f", taxAmount));
+        double totalAmount = totalPrice + taxAmount;
+        totalAmountLabel.setText(String.format("Total Amount: $%.2f", totalAmount));
+        chargeButton.setText(String.format("Charge: $%.2f", totalAmount));
+
         displayPanel.removeAll();
 
         for (String drink : selectedDrinks) {

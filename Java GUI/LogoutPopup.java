@@ -4,9 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LogoutPopup extends JDialog {
+    private ManagerFunctions managerFunctions;
+    private Order order;
 
-    public LogoutPopup(JFrame parent, Order order) {
+    public LogoutPopup(JFrame parent, Order o, ManagerFunctions m) {
         super(parent, "Logout Confirmation", true);
+
+        managerFunctions = m;
+        order = o;
 
         setLayout(new BorderLayout());
 
@@ -27,7 +32,7 @@ public class LogoutPopup extends JDialog {
                 parent.dispose(); // Close the CashierApp frame
                 
                 // Open a new LoginApp frame with the Order object
-                LoginApp loginApp = new LoginApp(order);
+                LoginApp loginApp = new LoginApp(order, managerFunctions);
                 loginApp.setVisible(true);
                 
                 dispose(); // Close the LogoutPopup
