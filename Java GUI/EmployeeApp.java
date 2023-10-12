@@ -11,9 +11,12 @@ public class EmployeeApp extends JPanel {
     private DefaultListModel<String> managerListModel;
     private DefaultListModel<String> employeeListModel;
     private JTextArea informationTextArea;
+    private ManagerFunctions managerFunctions;
 
-    public EmployeeApp() {
+    public EmployeeApp(ManagerFunctions m) {
         setLayout(new BorderLayout());
+
+        managerFunctions = m;
 
         // Create the center panel with sections for managers and employees
         JPanel centerPanel = new JPanel(new GridLayout(2, 1));
@@ -160,6 +163,9 @@ public class EmployeeApp extends JPanel {
         String updatedDetails = "Name: " + newName + "\nHours/Week: " + newPosition;
         managerListModel.set(index, newName);
         detailsTextArea.setText(updatedDetails);
+
+        //update database
+        managerFunctions.updateEmployeeSQL(newName,newPosition);
     }
 
     private void updateEmployeeInformation(int index) {
@@ -168,28 +174,41 @@ public class EmployeeApp extends JPanel {
         String updatedDetails = "Name: " + newName + "\nHours/Week: " + newPosition;
         employeeListModel.set(index, newName);
         detailsTextArea.setText(updatedDetails);
+
+        //update database
+        managerFunctions.updateEmployeeSQL(newName,newPosition);
     }
 
 
-    private void addEmployee(String name, String hours) {
+    private void addEmployee(String name, String position) {
         if (name.isEmpty()) {
             return; // Don't add if the name is empty
         }
-        employeeListModel.addElement(name);
-        detailsTextArea.setText("Name: " + name + "\nHours/Week: " + hours);
+        //update database
+        managerFunctions.createNewEmployee(name,"password", "0.0", "0.0", position);
+
+        String newEmployee = "Employee " + (employeeListModel.getSize() + 1) + "\nName: " + name + "\nPosition: " + position;
+        employeeListModel.addElement(newEmployee);
+        detailsTextArea.setText(newEmployee);
     }
 
-    private void addManager(String name, String hours) {
+    private void addManager(String name, String position) {
         if (name.isEmpty()) {
             return; // Don't add if the name is empty
         }
+        //update database
+        managerFunctions.createNewEmployee(name,"password", "0.0", "0.0", position);
 
-        managerListModel.addElement(name);
-        detailsTextArea.setText("Name: " + name + "\nHours/Week: " + hours);
+        String newManager = "Manager " + (managerListModel.getSize() + 1) + "\nName: " + name + "\nPosition: " + position;
+        managerListModel.addElement(newManager);
+        detailsTextArea.setText(newManager);
     }
 
     private void removeEmployee(int index) {
         if (index >= 0 && index < employeeListModel.getSize()) {
+            //update database
+            managerFunctions.removeEmployeeSQL(employeeListModel.get(index));
+
             employeeListModel.remove(index);
             detailsTextArea.setText("Employee removed.");
         }
@@ -197,12 +216,15 @@ public class EmployeeApp extends JPanel {
 
     private void removeManager(int index) {
         if (index >= 0 && index < managerListModel.getSize()) {
+            //update database
+            managerFunctions.removeEmployeeSQL(managerListModel.get(index));
+
             managerListModel.remove(index);
             detailsTextArea.setText("Manager removed.");
         }
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Employee Page");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -210,5 +232,5 @@ public class EmployeeApp extends JPanel {
             frame.add(new EmployeeApp());
             frame.setVisible(true);
         });
-    }
+    }*/
 }

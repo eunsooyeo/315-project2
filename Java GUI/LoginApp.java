@@ -11,17 +11,19 @@ public class LoginApp extends JFrame {
     private JPasswordField passwordField;
     private JLabel statusLabel;
     private Order order; 
+    private ManagerFunctions managerFunctions;
 
     // @param: none
     // @return : void
     // @tnrows: none
-    public LoginApp(Order o) {
+    public LoginApp(Order o, ManagerFunctions m) {
         setTitle("Login Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(350, 200);
         setLayout(new BorderLayout());
         initComponents();
         order = o;
+        managerFunctions = m;
     }
 
     // @param: none
@@ -89,7 +91,7 @@ public class LoginApp extends JFrame {
     // @return : void
     // @tnrows: none
     private void openManagerApp() {
-        ManagerApp managerApp = new ManagerApp(order);
+        ManagerApp managerApp = new ManagerApp(managerFunctions);
         managerApp.setVisible(true);
         dispose();
     }
