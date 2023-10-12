@@ -89,7 +89,7 @@ public class LoginApp extends JFrame {
     // @return : void
     // @tnrows: none
     private void openManagerApp() {
-        ManagerApp managerApp = new ManagerApp();
+        ManagerApp managerApp = new ManagerApp(order);
         managerApp.setVisible(true);
         dispose();
     }

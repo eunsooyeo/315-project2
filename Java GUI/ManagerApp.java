@@ -6,8 +6,11 @@ import java.awt.event.ActionListener;
 public class ManagerApp extends JFrame {
     private JPanel cardPanel;
     private CardLayout cardLayout;
+    private Order order;
 
-    public ManagerApp() {
+    public ManagerApp(Order o) {
+        order = o;
+
         setTitle("Manager Interface");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 400);
@@ -17,7 +20,7 @@ public class ManagerApp extends JFrame {
 
         // Create the side bar on the left with options
         JPanel sideBar = new JPanel();
-        sideBar.setLayout(new GridLayout(5, 1));
+        sideBar.setLayout(new GridLayout(6, 1));
         JButton employeesButton = new JButton("Employees");
         JButton inventoryButton = new JButton("Inventory");
         JButton supplyHistoryButton = new JButton("Supply History");
@@ -46,9 +49,21 @@ public class ManagerApp extends JFrame {
 
         sideBar.add(employeesButton);
         sideBar.add(inventoryButton);
+        sideBar.add(menusButton);
         sideBar.add(supplyHistoryButton);
         sideBar.add(orderHistoryButton);
-        sideBar.add(menusButton);
+
+        JButton logoutButton = new JButton("Logout");
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new LogoutPopup(ManagerApp.this, order);
+            }
+        });
+        logoutButton.setFocusPainted(false);
+        logoutButton.setBorderPainted(false);
+        logoutButton.setBackground(new Color(181, 184, 192)); // Dark gray
+        sideBar.add(logoutButton);
 
         // Create a panel with CardLayout to switch between pages
         cardPanel = new JPanel();
@@ -110,10 +125,10 @@ public class ManagerApp extends JFrame {
         });
     }
 
-    public static void main(String[] args) {
+/*     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            ManagerApp managerApp = new ManagerApp();
+            ManagerApp managerApp = new ManagerApp(order);
             managerApp.setVisible(true);
         });
-    }
+    } */
 }
