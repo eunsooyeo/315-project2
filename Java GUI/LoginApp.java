@@ -2,22 +2,26 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+//package jdbc_demo.dbSetup;
+
 
 //@Kevin Tang
 public class LoginApp extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JLabel statusLabel;
+    private Order order; 
 
     // @param: none
     // @return : void
     // @tnrows: none
-    public LoginApp() {
+    public LoginApp(Order o) {
         setTitle("Login Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(350, 200);
         setLayout(new BorderLayout());
         initComponents();
+        order = o;
     }
 
     // @param: none
@@ -94,7 +98,7 @@ public class LoginApp extends JFrame {
     // @return : void
     // @tnrows: none
     private void openCashierApp() {
-        CashierApp cashierApp = new CashierApp();
+        CashierApp cashierApp = new CashierApp(order);
         cashierApp.setVisible(true);
         dispose();
     }
@@ -102,10 +106,5 @@ public class LoginApp extends JFrame {
     // @param: none
     // @return : void
     // @tnrows: none
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            LoginApp loginApp = new LoginApp();
-            loginApp.setVisible(true);
-        });
-    }
+    
 }
