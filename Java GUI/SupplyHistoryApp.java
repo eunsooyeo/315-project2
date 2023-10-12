@@ -45,6 +45,8 @@ public class SupplyHistoryApp extends JPanel {
     }
 
     private void showSupplyDetails(String supplyOrder) {
+        /* TODO ****************************************************************************************************************************/
+        // details are simply what was ordered and the amount
         // Implement the logic to display supply order details in a dropdown menu
         JOptionPane.showMessageDialog(this, "Supply Order Details: " + supplyOrder, "Supply Order Details", JOptionPane.INFORMATION_MESSAGE);
     }
