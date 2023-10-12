@@ -28,7 +28,7 @@ public class CashierApp extends JFrame {
 
         // Create the sidebar on the left with drink categories
         leftPanel = new JPanel();
-        leftPanel.setLayout(new GridLayout(7, 1));
+        leftPanel.setLayout(new GridLayout(8, 1));
 
         String[] categories = {
             "Milk Tea", "Tea", "Fruit Tea", "Fresh Milk", "Ice Blended", "Tea Mojito", "Creama"
@@ -51,6 +51,20 @@ public class CashierApp extends JFrame {
             leftPanel.add(categoryButton);
             drinkButtons.add(categoryButton);
         }
+
+        order = o;
+
+        JButton logoutButton = new JButton("Logout");
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new LogoutPopup(CashierApp.this, order);
+            }
+        });
+        logoutButton.setFocusPainted(false);
+        logoutButton.setBorderPainted(false);
+        logoutButton.setBackground(new Color(181, 184, 192)); // Dark gray
+        leftPanel.add(logoutButton);
 
         // Create the middle panel to display specific drinks
         middlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -85,8 +99,6 @@ public class CashierApp extends JFrame {
         mainPanel.add(rightPanel, BorderLayout.EAST);
 
         add(mainPanel);
-
-        order = o;
     }
 
     private void updateMiddlePanel(String category) {
@@ -222,7 +234,7 @@ public class CashierApp extends JFrame {
                                 if (popup.getSelectedIce() != null || popup.getSelectedSweetness() != null ||
                                     (popup.getSelectedToppings() != null && !popup.getSelectedToppings().isEmpty())) {
                                     // Create a customized drink string based on the selections
-                                    String customizedDrink = drinkName + "\n";
+                                    String customizedDrink = drinkName + "\n"; // TODO *****************************************88 ADD PRICE NEXT TO NAME
                                     if (popup.getSelectedIce() != null) {
                                         customizedDrink += popup.getSelectedIce() + "\n";
                                     }
