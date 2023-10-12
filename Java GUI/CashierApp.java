@@ -151,9 +151,9 @@ public class CashierApp extends JFrame {
                             if (popup.getSelectedIce() != null || popup.getSelectedSweetness() != null ||
                                     popup.getSelectedToppings() != null) {
                                 // Create a customized drink based on the selections and add it to the right-hand display
-                                String customizedDrink = drinkName + " - " +
-                                        (popup.getSelectedIce() != null ? popup.getSelectedIce() + " " : "") +
-                                        (popup.getSelectedSweetness() != null ? popup.getSelectedSweetness() + " " : "") +
+                                String customizedDrink = drinkName + 
+                                        "| " + (popup.getSelectedIce() != null ? popup.getSelectedIce() + " | " : "") +
+                                        (popup.getSelectedSweetness() != null ? popup.getSelectedSweetness() + " | " : "") +
                                         (popup.getSelectedToppings() != null ? String.join(", ", popup.getSelectedToppings()) : "");
                                 addSelectedDrink(customizedDrink);
                             }
@@ -219,6 +219,7 @@ public class CashierApp extends JFrame {
             removeButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    //////////////////////////TODO: REMOVE DRINK FROM DATABASE //////////////////////////
                     removeSelectedDrink(drink);
                 }
             });

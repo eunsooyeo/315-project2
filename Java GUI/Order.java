@@ -6,10 +6,10 @@ import java.util.*;
 public class Order {
     private ArrayList<String> drinkNames;
     private double totalPrice;
-    private Connection conn;
+    public static Connection conn;
 
     public Order(Connection db_connection) {
-        db_connection = conn;
+        conn = db_connection;
     }
         /*
      * @Return : boolean
@@ -135,6 +135,7 @@ public class Order {
                     + "';";
             ResultSet result = conn.createStatement().executeQuery(queryString);
             result.next();
+
             int recipeID = result.getInt("recipeid");
 
             Array ingredientsArr = result.getArray("ingredient_names");
