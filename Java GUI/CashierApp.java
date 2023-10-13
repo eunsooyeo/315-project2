@@ -2,8 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;  // Import WindowAdapter
-import java.awt.event.WindowEvent;    // Import WindowEvent
+import java.awt.event.WindowAdapter; // Import WindowAdapter
+import java.awt.event.WindowEvent; // Import WindowEvent
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class CashierApp extends JFrame {
         leftPanel.setLayout(new GridLayout(8, 1));
 
         String[] categories = {
-            "Milk Tea", "Tea", "Fruit Tea", "Fresh Milk", "Ice Blended", "Tea Mojito", "Creama"
+                "Milk Tea", "Tea", "Fruit Tea", "Fresh Milk", "Ice Blended", "Tea Mojito", "Creama"
         };
 
         drinkButtons = new ArrayList<>();
@@ -105,11 +105,16 @@ public class CashierApp extends JFrame {
         totalAmountLabel = new JLabel("Total Amount: $0.00");
 
         // Add components to the rightPanel
-        rightPanel.add(displayScrollPane, new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 10, 0), 0, 0));
-        rightPanel.add(chargeButton, new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 5, 0), 0, 0));
-        rightPanel.add(totalPriceLabel, new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 5, 0), 0, 0));
-        rightPanel.add(taxLabel, new GridBagConstraints(0, 3, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 5, 0), 0, 0));
-        rightPanel.add(totalAmountLabel, new GridBagConstraints(0, 4, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+        rightPanel.add(displayScrollPane, new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0, GridBagConstraints.CENTER,
+                GridBagConstraints.BOTH, new Insets(0, 0, 10, 0), 0, 0));
+        rightPanel.add(chargeButton, new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
+                GridBagConstraints.HORIZONTAL, new Insets(0, 0, 5, 0), 0, 0));
+        rightPanel.add(totalPriceLabel, new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
+                GridBagConstraints.HORIZONTAL, new Insets(0, 0, 5, 0), 0, 0));
+        rightPanel.add(taxLabel, new GridBagConstraints(0, 3, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
+                GridBagConstraints.HORIZONTAL, new Insets(0, 0, 5, 0), 0, 0));
+        rightPanel.add(totalAmountLabel, new GridBagConstraints(0, 4, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
+                GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 
         // Initialize the list of selected drinks
         selectedDrinks = new ArrayList<>();
@@ -182,7 +187,7 @@ public class CashierApp extends JFrame {
                         @Override
                         public void windowClosed(WindowEvent e) {
                             if (popup.getSelectedIce() != null || popup.getSelectedSweetness() != null ||
-                                (!popup.getSelectedToppings().isEmpty())) {
+                                    (!popup.getSelectedToppings().isEmpty())) {
                                 // Create a customized drink string based on the selections
                                 String customizedDrink = drinkName + "\n";
                                 if (popup.getSelectedIce() != null) {
@@ -219,7 +224,8 @@ public class CashierApp extends JFrame {
     }
 
     private void updateTotalPrice() {
-        // TODO **************************************************************** connect to DB and match prices
+        // TODO **************************************************************** connect
+        // to DB and match prices
         // Calculate the total price based on the number of selected drinks
         double drinkPrice = 5.0; // Set the base price per drink - DELETE THIS LATER
 
@@ -256,6 +262,8 @@ public class CashierApp extends JFrame {
             removeButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    //////////////////////////TODO: REMOVE DRINK FROM DATABASE //////////////////////////
+                    order.restoreInventory(drink);
                     removeSelectedDrink(drink);
                 }
             });
@@ -271,9 +279,12 @@ public class CashierApp extends JFrame {
                             @Override
                             public void windowClosed(WindowEvent e) {
                                 if (popup.getSelectedIce() != null || popup.getSelectedSweetness() != null ||
-                                    (popup.getSelectedToppings() != null && !popup.getSelectedToppings().isEmpty())) {
+                                        (popup.getSelectedToppings() != null
+                                                && !popup.getSelectedToppings().isEmpty())) {
                                     // Create a customized drink string based on the selections
-                                    String customizedDrink = drinkName + "\n"; // TODO *****************************************88 ADD PRICE NEXT TO NAME
+                                    String customizedDrink = drinkName + "\n"; // TODO
+                                                                               // *****************************************88
+                                                                               // ADD PRICE NEXT TO NAME
                                     if (popup.getSelectedIce() != null) {
                                         customizedDrink += popup.getSelectedIce() + "\n";
                                     }
@@ -285,6 +296,7 @@ public class CashierApp extends JFrame {
                                     } else {
                                         customizedDrink += "No Toppings";
                                     }
+                                    order.editInventory(drink, customizedDrink);
                                     updateSelectedDrink(drink, customizedDrink);
                                 }
                             }
@@ -313,11 +325,13 @@ public class CashierApp extends JFrame {
         }
     }
 
-    /*public static void main(String[] args) {
-        
-        SwingUtilities.invokeLater(() -> {
-            CashierApp cashierApp = new CashierApp(order);
-            cashierApp.setVisible(true);
-        });
-    }*/
+    /*
+     * public static void main(String[] args) {
+     * 
+     * SwingUtilities.invokeLater(() -> {
+     * CashierApp cashierApp = new CashierApp(order);
+     * cashierApp.setVisible(true);
+     * });
+     * }
+     */
 }

@@ -17,7 +17,7 @@ public class MainController {
         String dbConnectionString = "jdbc:postgresql://csce-315-db.engr.tamu.edu/" + dbName;
         dbSetup myCredentials = new dbSetup();
 
-        //connect to database
+        // connect to database
         try {
             conn = DriverManager.getConnection(dbConnectionString, dbSetup.user, dbSetup.pswd);
         } catch (Exception e) {
@@ -37,21 +37,32 @@ public class MainController {
         }
 
         // try {
-        //     conn.close();
-        //     System.out.println("Connection Closed.");
+        // conn.close();
+        // System.out.println("Connection Closed.");
         // } catch (Exception e) {
-        //     System.out.println("Connection NOT Closed.");
+        // System.out.println("Connection NOT Closed.");
         // }
 
-        //create order class
+        // create order class
         Order order = new Order(conn);
 
-        //create managerFunctions class
+        // create managerFunctions class
         ManagerFunctions managerFunctions = new ManagerFunctions(conn);
 
-        //open GUI
+        // TEST
+        // ==================================================================================
+        // System.out.println("number of employees: " +
+        // managerFunctions.getNumOfEmployees());
+        // System.out.println("number of managers: " +
+        // managerFunctions.getNumOfManagers());
+        // System.out.println(
+        // "Information about employee Tom Hank: " +
+        // managerFunctions.getEmployeeInfo("Tom Hank").toString());
+        // ================================================================================================
+
+        // open GUI
         SwingUtilities.invokeLater(() -> {
-            LoginApp loginApp = new LoginApp(order,managerFunctions);
+            LoginApp loginApp = new LoginApp(order, managerFunctions);
             loginApp.setVisible(true);
         });
 
@@ -71,6 +82,6 @@ public class MainController {
         // ================
 
         // closing the connection
-       
+
     }
 }
