@@ -13,14 +13,21 @@ public class InventoryApp extends JPanel {
 
         // Create the center panel with a grid of 41 ingredients/items
         JPanel centerPanel = new JPanel(new GridLayout(6, 7));
-        String[] items = {
-                "Aiyu Jelly", "Aloe Vera", "Black Tea", "Brown Sugar", "Cocoa", "Coffee", "Creama",
-                "Creamer", "Crystal Boba", "Cups", "Fructose", "Grapefruit", "Green Tea", "Herb Jelly",
-                "Honey", "Ice", "Ice Cream", "Lime", "Lychee Jelly", "Mango", "Matcha", "Milk", "Mint",
-                "Napkins", "Okinawa", "Oolong Tea", "Orange", "Passionfruit", "Peach", "Pearls", "Mini Pearls",
-                "Pineapple", "Plastic Cover", "Pudding", "Red Bean", "Strawberry", "Straws", "Taro", "Water",
-                "White Sugar", "Wintermelon"
-        };
+
+        ArrayList<String> items = getAllInventoryNames();
+        // String[] items = {
+        // "Aiyu Jelly", "Aloe Vera", "Black Tea", "Brown Sugar", "Cocoa", "Coffee",
+        // "Creama",
+        // "Creamer", "Crystal Boba", "Cups", "Fructose", "Grapefruit", "Green Tea",
+        // "Herb Jelly",
+        // "Honey", "Ice", "Ice Cream", "Lime", "Lychee Jelly", "Mango", "Matcha",
+        // "Milk", "Mint",
+        // "Napkins", "Okinawa", "Oolong Tea", "Orange", "Passionfruit", "Peach",
+        // "Pearls", "Mini Pearls",
+        // "Pineapple", "Plastic Cover", "Pudding", "Red Bean", "Strawberry", "Straws",
+        // "Taro", "Water",
+        // "White Sugar", "Wintermelon"
+        // };
 
         // Create the right sidebar for displaying item details
         JPanel rightSidebar = new JPanel();
@@ -57,6 +64,29 @@ public class InventoryApp extends JPanel {
 
         add(centerPanel, BorderLayout.CENTER);
         add(rightSidebar, BorderLayout.EAST);
+    }
+
+    public ArrayList<String> getAllInventoryNames() {
+        ArrayList<String> drinks = new ArrayList<>();
+        try {
+            String teamName = "10r";
+            String dbName = "csce315331_" + teamName + "_db";
+            String dbConnectionString = "jdbc:postgresql://csce-315-db.engr.tamu.edu/" + dbName;
+            dbSetup myCredentials = new dbSetup();
+
+            Connection conn = DriverManager.getConnection(dbConnectionString, dbSetup.user, dbSetup.pswd);
+
+            Statement stmt = conn.createStatement();
+            String sqlString = "SELECT name FROM inventory;";
+            ResultSet result = stmt.executeQuery(sqlString);
+            while (result.next()) {
+                drinks.add(result.getString(1));
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error getting all inventory names. getAllInventoryNames");
+        }
+        return drinks;
     }
 
     private ArrayList<String> getInfoForIngredient(String name) {
