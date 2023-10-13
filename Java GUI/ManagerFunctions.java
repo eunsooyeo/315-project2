@@ -161,22 +161,23 @@ public class ManagerFunctions {
         return managers;
     }
 
-    public ArrayList<String> getEmployeeNames() {
-        ArrayList<String> names = new ArrayList<>();
+    public TreeMap<String, Boolean> getEmployeeNames() {
+        TreeMap<String, Boolean> map = new TreeMap<>();
         try {
-            String sqlStatement = "SELECT name FROM employee;";
+            String sqlStatement = "SELECT name, manager FROM employee;";
             Statement stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery(sqlStatement);
 
             while (result.next()) {
                 String name = result.getString(1);
-                names.add(name);
+                boolean isManager = result.getBoolean(2);
+                map.put(name, isManager);
             }
         } catch (Exception e) {
             System.out.println(e.toString());
 
         }
-        return names;
+        return map;
     }
 
     // returns an arraylist consist of the id, name, password, pay, hours, and
