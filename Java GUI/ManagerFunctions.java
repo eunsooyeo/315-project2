@@ -49,23 +49,25 @@ public class ManagerFunctions {
         try {
             ArrayList<String> ingredient_names = new ArrayList<String>(Arrays.asList(ingredientNames));
             ArrayList<String> ingredient_values = new ArrayList<String>(Arrays.asList(ingredientValues));
-            /*String ingredient_names_string = ingredient_names.toString();
+            String ingredient_names_string = ingredient_names.toString();
             ingredient_names_string = ingredient_names_string.substring(1,ingredient_names_string.length()-1);
             String ingredient_values_string = ingredient_values.toString();
             ingredient_values_string = ingredient_values_string.substring(1,ingredient_values_string.length()-1);
-            */
+            
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
 
             String sqlStatement = "INSERT INTO recipes (recipeid, drinkname, ingredient_names, ingredient_values, price) VALUES ("
-                    + drinkId + ", '" + drinkName + "','" + ingredient_names + "','"
-                    + ingredient_values + "'," + price + ")";
+                    + drinkId + ", '" + drinkName + "','" + ingredient_names_string + "','"
+                    + ingredient_values_string + "'," + price + ")";
+            System.out.println("names: " + ingredient_names);;
+            System.out.println("names_string: " + ingredient_values_string);
             stmt.executeUpdate(sqlStatement);
             // determine which ingredients need to be created in inventory using Conflict
             for (int i = 0; i < ingredient_names.size(); i++) {
                 stmt.executeUpdate("INSERT INTO inventory (name, amount, capacity, unit, alert) VALUES ("
-                        + ingredient_names.get(i) + ", 0, 1000, unit, TRUE) ON CONFLICT (name) DO NOTHING");
+                        + ingredientNames[i] + ", 0, 1000, unit, TRUE) ON CONFLICT (name) DO NOTHING");
             }
         } catch (Exception e) {
             System.out.println("Error accessing Database.createNewRecipe");
@@ -97,9 +99,10 @@ public class ManagerFunctions {
             if (manager.charAt(0) == 'T' || manager.charAt(0) == 't'){
                 m = "TRUE";
             }
-            //conn.createStatement().executeUpdate("SELECT setval(pg_get_serial_sequence('employee','id'), coalesce(max(id)+1, 1), false) FROM employee");
             // create a statement object
             Statement stmt = conn.createStatement();
+
+            stmt.executeQuery("SELECT setval(pg_get_serial_sequence('employee','id'), coalesce(max(id)+1, 1), false) FROM employee");
             // create an SQL statement
             String sqlStatement = "INSERT INTO employee (name, password, pay, hours, manager) VALUES ('" + employeeName
                     + "','" + password + "'," + pay + "," + hours + "," + m + ")";
