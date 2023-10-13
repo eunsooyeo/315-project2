@@ -10,11 +10,8 @@ import java.util.*;
 public class InventoryApp extends JPanel {
     private JButton prevItembutton = null;
     private ManagerFunctions managerFunctions;
-<<<<<<< Updated upstream
-=======
     private JTextArea detailsTextArea;
 
->>>>>>> Stashed changes
     public InventoryApp(ManagerFunctions m) {
         setLayout(new BorderLayout());
         managerFunctions = m;
@@ -26,11 +23,7 @@ public class InventoryApp extends JPanel {
         // Create the right sidebar for displaying item details
         JPanel rightSidebar = new JPanel();
         rightSidebar.setLayout(new BorderLayout());
-<<<<<<< Updated upstream
-        JTextArea detailsTextArea = new JTextArea("Details will be displayed here.");
-=======
         detailsTextArea = new JTextArea("Details will be displayed here.");
->>>>>>> Stashed changes
         rightSidebar.add(detailsTextArea, BorderLayout.CENTER);
 
         JPanel editPanel = new JPanel();
@@ -87,10 +80,7 @@ public class InventoryApp extends JPanel {
                 // Implement the logic to delete an item from the inventory
                 // You can ask for confirmation or selection before deleting
                 managerFunctions.deleteInventory(nameField.getText());
-<<<<<<< Updated upstream
-=======
                 updateDisplay();
->>>>>>> Stashed changes
             }
         });
 
