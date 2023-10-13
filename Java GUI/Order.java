@@ -86,7 +86,7 @@ public class Order {
             } catch (Exception e) {
                 e.printStackTrace();
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
-                return false;
+                // return false;
             }
         }
 
@@ -102,7 +102,7 @@ public class Order {
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            return false;
+            // return false;
         }
 
         return true;
@@ -204,7 +204,7 @@ public class Order {
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.err.println(e.getClass().getName() + ": " + e.getMessage());
-                    return false;
+                    // return false;
                 }
             }
 
@@ -230,7 +230,7 @@ public class Order {
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.err.println(e.getClass().getName() + ": " + e.getMessage());
-                    return false;
+                    // return false;
                 }
             }
 
@@ -239,7 +239,7 @@ public class Order {
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            return false;
+            // return false;
         }
         return true;
     }

@@ -290,9 +290,6 @@ public class CashierApp extends JFrame {
                     name = name.substring(0, name.length() - 1);
                 }
 
-                System.out.println(drink);
-                System.out.println(name);
-
                 double price;
                 String queryString = "SELECT price FROM recipes WHERE lower(drinkname) = '" + name.toLowerCase()
                         + "';";
@@ -300,7 +297,6 @@ public class CashierApp extends JFrame {
                 ResultSet result = stmt.executeQuery(queryString);
                 result.next();
                 price = result.getDouble(1);
-                // System.out.println("price of " + drink + " is: " + price);
                 drinksPrice += price;
 
                 String updatedDrink = name + " $" + price + "\n" + drink.substring(drink.indexOf('\n') + 1);
@@ -379,7 +375,6 @@ public class CashierApp extends JFrame {
                                     } else {
                                         customizedDrink += "No Toppings";
                                     }
-                                    // order.editInventory(drink, customizedDrink);
                                     updateSelectedDrink(drink, customizedDrink);
                                 }
                             }
