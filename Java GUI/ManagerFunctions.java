@@ -90,12 +90,12 @@ public class ManagerFunctions {
         }
     }
 
-    public void createNewEmployee(String employeeName, String password, String pay, String hours, String manager) {
+    public void createNewEmployee(String id, String employeeName, String password, String pay, String hours, String manager) {
         try {
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            String sqlStatement = "INSERT INTO employee (name, password, pay, hours, manager) VALUES (" + employeeName
+            String sqlStatement = "INSERT INTO employee (id, name, password, pay, hours, manager) VALUES (" + Integer.parseInt(id) + "," + employeeName
                     + "," + password + "," + Double.parseDouble(pay) + "," + Double.parseDouble(hours) + "," + manager
                     + ");";
             // send statement to DBMS
