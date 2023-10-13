@@ -10,6 +10,7 @@ import java.sql.*;
 
 public class MenusApp extends JPanel {
     private JTextArea drinkDetailsTextArea;
+    private JTextField idField;
     private JTextField nameField;
     private JTextField priceField;
     private JTextField ingredientsField;
@@ -22,43 +23,58 @@ public class MenusApp extends JPanel {
     private String[] drinkPrices;
     private String[] drinkIngredients;
     private String[] drinkIngredientsAmounts;
+    private String[] drinkIDs;
     private int selectedDrink;
     private JPanel centerPanel;
     private ManagerFunctions managerFunctions;
 
     public MenusApp(ManagerFunctions m) {
         setLayout(new BorderLayout());
-
-        int numDrinks = 20; // Specify the number of initial drinks
+        managerFunctions = m;
+        int numDrinks = managerFunctions.getNumberOfDrinks(); // Specify the number of initial drinks
 
         // Initialize arrays to store drink data
+        drinkIDs = new String[numDrinks];
         drinkNames = new String[numDrinks];
         drinkPrices = new String[numDrinks];
         drinkIngredients = new String[numDrinks];
         drinkIngredientsAmounts = new String[numDrinks];
+
+        ArrayList<String> allDrinks = managerFunctions.getAllDrinkNames();
+
         for (int i = 0; i < numDrinks; i++) {
-            drinkNames[i] = "Drink " + (i + 1); // Initialize drink names
-            drinkPrices[i] = "0.00"; // Initialize drink prices
-            drinkIngredients[i] = "Unknown Ingredients"; // Initialize drink ingredients
-            drinkIngredientsAmounts[i] = "Unknown Amounts";
+            ArrayList<String> drinkInformation = new ArrayList<>();
+            drinkInformation = managerFunctions.getDrinkInfo(allDrinks.get(i));
+            
+            drinkIDs[i] = drinkInformation.get(0);
+            drinkNames[i] = allDrinks.get(i); // Initialize drink names
+            drinkPrices[i] = drinkInformation.get(4); // Initialize drink prices
+            drinkIngredients[i] = drinkInformation.get(2); // Initialize drink ingredients
+            drinkIngredientsAmounts[i] = drinkInformation.get(3);
+
         }
 
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         // Create the center panel for drink buttons
         centerPanel = new JPanel();
 
         // Create a scroll pane for the drink buttons panel
         JScrollPane scrollPane = new JScrollPane(centerPanel);
-
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         // Create a grid layout for the drink buttons with 5 columns
         int maxColumns = 5;
         centerPanel.setLayout(new GridLayout(0, maxColumns)); // 0 rows, maxColumns columns
+        
 
         drinkButtons = new JButton[numDrinks];
         for (int i = 0; i < numDrinks; i++) {
             drinkButtons[i] = new JButton(drinkNames[i]);
             
+
+            Dimension buttonSize = new Dimension(150, 50); // Set your preferred button size here
+            drinkButtons[i].setPreferredSize(buttonSize);
             // Increase the font size for the buttons
-            Font buttonFont = new Font(drinkButtons[i].getFont().getName(), Font.PLAIN, 36);
+            Font buttonFont = new Font(drinkButtons[i].getFont().getName(), Font.PLAIN, 18);
             drinkButtons[i].setFont(buttonFont);
 
             final int drinkNumber = i; // Capture the current drink number
@@ -88,6 +104,7 @@ public class MenusApp extends JPanel {
 
         // Add labels and fields for editing
         nameField = new JTextField(20);
+        idField = new JTextField(20);
         priceField = new JTextField(20);
         ingredientsField = new JTextField(20);
         ingredientsValueField = new JTextField(20);
@@ -95,6 +112,8 @@ public class MenusApp extends JPanel {
         addDrinkButton = new JButton("Add Drink");
         removeDrinkButton = new JButton("Remove Drink");
 
+        editPanel.add(new JLabel("ID:"));
+        editPanel.add(idField);
         editPanel.add(new JLabel("Name:"));
         editPanel.add(nameField);
         editPanel.add(new JLabel("Price:"));
@@ -121,6 +140,7 @@ public class MenusApp extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Handle editing the drink and updating the drink info
+                drinkIDs[selectedDrink] = idField.getText();
                 drinkNames[selectedDrink] = nameField.getText();
                 drinkPrices[selectedDrink] = priceField.getText();
                 drinkIngredients[selectedDrink] = ingredientsField.getText();
@@ -140,10 +160,11 @@ public class MenusApp extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Add a new drink
-                addDrink("New Drink", "0.00", "Unknown Ingredients", "Unknown Amounts");
-
+                addDrink(nameField.getText(), priceField.getText(), ingredientsField.getText(), ingredientsValueField.getText());
+                String[] ingredientOfDrink = ingredientsField.getText().split(",");
+                String[] ingredientAmountsOfDrink = ingredientsValueField.getText().split(",");
                 //update database
-                //createNewRecipe();
+                managerFunctions.createNewRecipe(idField.getText(), nameField.getText(), ingredientOfDrink, ingredientAmountsOfDrink, priceField.getText());
             }
         });
 
@@ -159,7 +180,6 @@ public class MenusApp extends JPanel {
             }
         });
 
-        managerFunctions = m;
     }
 
     private void addDrink(String name, String price, String ingredients, String ingredientAmounts) {
@@ -202,7 +222,7 @@ public class MenusApp extends JPanel {
 
         int numDrinks = drinkButtons.length - 1;
         if (selectedDrink >= numDrinks) {
-            selectedDrink = 0;
+            selectedDrink = numDrinks;
         }
 
         // Create new arrays without the removed drink
