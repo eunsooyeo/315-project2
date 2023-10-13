@@ -101,6 +101,11 @@ public class Order {
         // check the ingredients available
         // find recipe of drinkName from recipe database
         int drinkID;
+        System.out.println(drinkName);
+        if(drinkName.contains("$")) {
+            String[] drinkNameAndPrice = drinkName.split("\\$");
+            drinkName = drinkNameAndPrice[0].trim();
+        }
         try {
             String queryString = "SELECT * FROM recipes WHERE lower(drinkname) = '" + drinkName.toLowerCase()
                     + "';";
@@ -240,7 +245,8 @@ public class Order {
         // parse drink info
         String[] tokens = drinkInfo.split("\n");
 
-        String drinkName = (tokens[0]).trim();
+        String[] drinkNameAndPrice = (tokens[0]).split("\\$");
+        String drinkName = drinkNameAndPrice[0].trim();
         String iceLevel = (tokens[1]).trim();
         String sugarLevel = (tokens[2]).trim();
         String[] toppingString = (tokens[3]).split(",");
