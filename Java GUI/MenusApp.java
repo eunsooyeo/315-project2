@@ -83,6 +83,7 @@ public class MenusApp extends JPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     selectedDrink = drinkNumber;
+                    idField.setText(drinkIDs[selectedDrink]);
                     nameField.setText(drinkNames[selectedDrink]); // Update the name field
                     priceField.setText(drinkPrices[selectedDrink]); // Update the price field
                     ingredientsField.setText(drinkIngredients[selectedDrink]); // Update the ingredients field
