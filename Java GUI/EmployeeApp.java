@@ -2,21 +2,27 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.TreeMap;
 
 public class EmployeeApp extends JPanel {
     private JTextArea detailsTextArea;
     private JTextField nameField;
-    private JTextField positionField;
+    private JTextField hoursField;
+    private JTextField passwordField; // Added password field
+    private JTextField payField; // Added pay field
     private JButton editButton;
     private DefaultListModel<String> managerListModel;
     private DefaultListModel<String> employeeListModel;
     private JTextArea informationTextArea;
     private ManagerFunctions managerFunctions;
+    private HashMap<String, ArrayList<String>> detailsMap;
 
-    public EmployeeApp(ManagerFunctions m) {
+    public EmployeeApp(ManagerFunctions msp) {
         setLayout(new BorderLayout());
-
-        managerFunctions = m;
+        
+        managerFunctions = msp;
 
         // Create the center panel with sections for managers and employees
         JPanel centerPanel = new JPanel(new GridLayout(2, 1));
@@ -26,8 +32,27 @@ public class EmployeeApp extends JPanel {
         managersSection.setLayout(new BoxLayout(managersSection, BoxLayout.X_AXIS));
 
         managerListModel = new DefaultListModel<>();
-        for (int i = 1; i <= 15; i++) {
-            managerListModel.addElement("Manager " + i);
+            //This should have the employee/manager with corresponding information
+        detailsMap = new HashMap<>();
+
+
+        TreeMap<String, Boolean> treeMap = managerFunctions.getEmployeeNames();
+        ArrayList<String> allManagers = new ArrayList<>();
+        ArrayList<String> allEmployees = new ArrayList<>();
+        for (String name : treeMap.keySet()){
+            if (treeMap.get(name)){ //if isManager is true
+                allManagers.add(name);
+            }
+            else{
+                allEmployees.add(name);
+            }
+            detailsMap.put(name, managerFunctions.getEmployeeInfo(name));
+        }
+
+        int numManagers = managerFunctions.getNumOfManagers();
+        for (int i = 0; i < numManagers; i++) {
+                //get all managers --------------------TODO
+            managerListModel.addElement(allManagers.get(i));
         }
 
         JList<String> managerList = new JList<>(managerListModel);
@@ -41,9 +66,13 @@ public class EmployeeApp extends JPanel {
         employeesSection.setLayout(new BoxLayout(employeesSection, BoxLayout.X_AXIS));
 
         employeeListModel = new DefaultListModel<>();
-        for (int i = 1; i <= 30; i++) {
-            employeeListModel.addElement("Employee " + i);
+
+        int numEmployees = managerFunctions.getNumOfEmployees();
+        for (int i = 0; i < numEmployees; i++) {
+            employeeListModel.addElement(allEmployees.get(i));
+            
         }
+
 
         JList<String> employeeList = new JList<>(employeeListModel);
         employeeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -66,7 +95,9 @@ public class EmployeeApp extends JPanel {
         editingPanel.setLayout(new BoxLayout(editingPanel, BoxLayout.Y_AXIS));
 
         nameField = new JTextField(20);
-        positionField = new JTextField(20);
+        hoursField = new JTextField(20);
+        passwordField = new JTextField(20); // Added password field
+        payField = new JTextField(20); // Added pay field
         editButton = new JButton("Edit Information");
 
         JButton addEmployeeButton = new JButton("Add Employee");
@@ -77,7 +108,11 @@ public class EmployeeApp extends JPanel {
         editingPanel.add(new JLabel("Name:"));
         editingPanel.add(nameField);
         editingPanel.add(new JLabel("Hours/Week:"));
-        editingPanel.add(positionField);
+        editingPanel.add(hoursField);
+        editingPanel.add(new JLabel("Password:")); // Added password label
+        editingPanel.add(passwordField); // Added password field
+        editingPanel.add(new JLabel("Pay:")); // Added pay label
+        editingPanel.add(payField); // Added pay field
         editingPanel.add(editButton);
         editingPanel.add(addEmployeeButton);
         editingPanel.add(addManagerButton);
@@ -93,14 +128,16 @@ public class EmployeeApp extends JPanel {
         managerList.addListSelectionListener(e -> {
             int selectedIndex = managerList.getSelectedIndex();
             if (selectedIndex != -1) {
-                displayManagerDetails(selectedIndex);
+                String managerName = managerListModel.get(selectedIndex);
+                displayManagerDetails(managerName);
             }
         });
 
         employeeList.addListSelectionListener(e -> {
             int selectedIndex = employeeList.getSelectedIndex();
             if (selectedIndex != -1) {
-                displayEmployeeDetails(selectedIndex);
+                String employeeName = employeeListModel.get(selectedIndex);
+                displayEmployeeDetails(employeeName);
             }
         });
 
@@ -120,15 +157,19 @@ public class EmployeeApp extends JPanel {
         addEmployeeButton.addActionListener(e -> {
             // Handle adding a new employee
             String newName = nameField.getText();
-            String newPosition = positionField.getText();
-            addEmployee(newName, newPosition);
+            String newPosition = hoursField.getText();
+            String newPassword = passwordField.getText(); // Get the password
+            String newPay = payField.getText(); // Get the pay
+            addEmployee(newName, newPosition, newPassword, newPay);
         });
 
         addManagerButton.addActionListener(e -> {
             // Handle adding a new manager
             String newName = nameField.getText();
-            String newPosition = positionField.getText();
-            addManager(newName, newPosition);
+            String newPosition = hoursField.getText();
+            String newPassword = passwordField.getText(); // Get the password
+            String newPay = payField.getText(); // Get the pay
+            addManager(newName, newPosition, newPassword, newPay);
         });
 
         removeEmployeeButton.addActionListener(e -> {
@@ -140,73 +181,94 @@ public class EmployeeApp extends JPanel {
         });
 
         removeManagerButton.addActionListener(e -> {
-        int selectedIndex = managerList.getSelectedIndex();
-        if (selectedIndex != -1) {
-            removeManager(selectedIndex);
+            int selectedIndex = managerList.getSelectedIndex();
+            if (selectedIndex != -1) {
+                removeManager(selectedIndex);
+            }
+        });
+    }
+
+    private void displayManagerDetails(String managerName) {
+        if (managerName != null) {
+            ArrayList<String> managerInfo = detailsMap.get(managerName);
+            if (managerInfo != null) {
+                detailsTextArea.setText("Manager Details:\n" + "Name: " + managerName + "\nPay: " + managerInfo.get(0) + "\nHours: " + managerInfo.get(1) + "\nPosition: " + managerInfo.get(2));
+            } else {
+                detailsTextArea.setText("Details not found for " + managerName);
+            }
+        } else {
+            detailsTextArea.setText("No manager selected.");
         }
-    });
     }
 
-    private void displayManagerDetails(int index) {
-        String managerDetails = managerListModel.get(index) + "\nInfo:\n";
-        detailsTextArea.setText(managerDetails);
-    }
-
-    private void displayEmployeeDetails(int index) {
-        String employeeDetails = employeeListModel.get(index) + "\nInfo:\n";
-        detailsTextArea.setText(employeeDetails);
+    private void displayEmployeeDetails(String employeeName) {
+        if (employeeName != null) {
+            ArrayList<String> employeeInfo = detailsMap.get(employeeName);
+            if (employeeInfo != null) {
+                detailsTextArea.setText("Employee Details:\n" + "Name: " + employeeName + "\nPay: " + employeeInfo.get(0) + "\nHours: " + employeeInfo.get(1) + "\nPosition: " + employeeInfo.get(2));
+            } else {
+                detailsTextArea.setText("Details not found for " + employeeName);
+            }
+        } else {
+            detailsTextArea.setText("No employee selected.");
+        }
     }
 
     private void updateManagerInformation(int index) {
         String newName = nameField.getText();
-        String newPosition = positionField.getText();
-        String updatedDetails = "Name: " + newName + "\nHours/Week: " + newPosition;
+        String newHours = hoursField.getText();
+        String newPassword = passwordField.getText(); // Get the password
+        String newPay = payField.getText(); // Get the pay
+        String updatedDetails = "Name: " + newName + "\nHours/Week: " + newHours +
+                "\nPassword: " + newPassword + "\nPay: " + newPay;
         managerListModel.set(index, newName);
         detailsTextArea.setText(updatedDetails);
 
-        //update database
-        managerFunctions.updateEmployeeSQL(newName,newPosition);
+        // Update the database
+        managerFunctions.updateEmployeeSQL(newName, newHours);
     }
 
     private void updateEmployeeInformation(int index) {
         String newName = nameField.getText();
-        String newPosition = positionField.getText();
-        String updatedDetails = "Name: " + newName + "\nHours/Week: " + newPosition;
+        String newHours = hoursField.getText();
+        String newPassword = passwordField.getText(); // Get the password
+        String newPay = payField.getText(); // Get the pay
+        String updatedDetails = "Name: " + newName + "\nHours/Week: " + newHours +
+                "\nPassword: " + newPassword + "\nPay: " + newPay;
         employeeListModel.set(index, newName);
         detailsTextArea.setText(updatedDetails);
 
-        //update database
-        managerFunctions.updateEmployeeSQL(newName,newPosition);
+        // Update the database
+        managerFunctions.updateEmployeeSQL(newName, newHours);
     }
 
-
-    private void addEmployee(String name, String position) {
+    private void addEmployee(String name, String hours, String password, String pay) {
         if (name.isEmpty()) {
             return; // Don't add if the name is empty
         }
-        //update database
-        managerFunctions.createNewEmployee(name,"password", "0.0", "0.0", position);
 
-        String newEmployee = "Employee " + (employeeListModel.getSize() + 1) + "\nName: " + name + "\nPosition: " + position;
-        employeeListModel.addElement(newEmployee);
-        detailsTextArea.setText(newEmployee);
+        // Update the database
+        managerFunctions.createNewEmployee(name, password, hours, pay, "Employee");
+        employeeListModel.addElement(name);
+        detailsTextArea.setText("Name: " + name + "\nHours/Week: " + hours +
+                "\nPassword: " + password + "\nPay: " + pay);
     }
 
-    private void addManager(String name, String position) {
+    private void addManager(String name, String hours, String password, String pay) {
         if (name.isEmpty()) {
             return; // Don't add if the name is empty
         }
-        //update database
-        managerFunctions.createNewEmployee(name,"password", "0.0", "0.0", position);
 
-        String newManager = "Manager " + (managerListModel.getSize() + 1) + "\nName: " + name + "\nPosition: " + position;
-        managerListModel.addElement(newManager);
-        detailsTextArea.setText(newManager);
+        // Update the database
+        managerFunctions.createNewEmployee(name, password, hours, pay, "Manager");
+        managerListModel.addElement(name);
+        detailsTextArea.setText("Name: " + name + "\nHours/Week: " + hours +
+                "\nPassword: " + password + "\nPay: " + pay);
     }
 
     private void removeEmployee(int index) {
         if (index >= 0 && index < employeeListModel.getSize()) {
-            //update database
+            // Update the database
             managerFunctions.removeEmployeeSQL(employeeListModel.get(index));
 
             employeeListModel.remove(index);
@@ -216,7 +278,7 @@ public class EmployeeApp extends JPanel {
 
     private void removeManager(int index) {
         if (index >= 0 && index < managerListModel.getSize()) {
-            //update database
+            // Update the database
             managerFunctions.removeEmployeeSQL(managerListModel.get(index));
 
             managerListModel.remove(index);
