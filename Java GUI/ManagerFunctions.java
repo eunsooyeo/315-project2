@@ -26,20 +26,46 @@ public class ManagerFunctions {
         }
     }
 
-    public void updateRecipeIngredient(String ingredientName, String ingredientValue, String drinkName) {
+    public void updateRecipeIngredient(String ingredientNames, String ingredientValues, String drinkName) {
         try {
+
+            String[] ingredientNamesAry = ingredientNames.split(",");
+            String[] ingredientValuesAry = ingredientValues.split(",");
+            //System.out.println("names: " + ingredientNames);
+            //ArrayList<String> ingredient_names = new ArrayList<String>(Arrays.asList(ingredientNames));
+            //ArrayList<String> ingredient_values = new ArrayList<String>(Arrays.asList(ingredientValues));
+            String ingredient_names_string = ingredientNames;
+            ingredient_names_string = ingredient_names_string.substring(1, ingredient_names_string.length() - 1);
+            String ingredient_values_string = ingredientValues;
+            ingredient_values_string = ingredient_values_string.substring(1, ingredient_values_string.length() - 1);
+
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            String sqlStatement = "UPDATE recipes SET ingredient_names = ARRAY_APPEND(ingredient_names,'"
-                    + ingredientName + "'), ingredient_values = ARRAY_APPEND(ingredient_values,"
-                    + ingredientValue + ") WHERE drinkname ='" + drinkName + "'";
+            String sqlStatement = "UPDATE recipes SET ingredient_names = " + ingredient_values_string + ", ingredient_values = " + ingredient_values_string + " WHERE drinkname ='" + drinkName + "'";
             // send statement to DBMS
             stmt.executeUpdate(sqlStatement);
 
-            // also update inventory if not exist
-            stmt.executeUpdate("INSERT INTO inventory (name, amount, capacity, unit, alert) SELECT '"
-                        + ingredientName + "', 0, 1000, 'unit', TRUE WHERE NOT EXISTS (SELECT name FROM inventory WHERE name = '" + ingredientName + "')");
+            String names;
+            for (int i = 0; i < ingredientNamesAry.length; i++) {
+                //remove quotes
+                if (ingredientNamesAry[i].startsWith("\"")){
+                    names = ingredientNamesAry[i].substring(1,ingredientNamesAry[i].length() -1);
+                }
+                else{
+                    names = ingredientNamesAry[i];
+                }
+                //remove brackets
+                if (i == 0){
+                    names = names.substring(1,names.length());
+                }
+                else if (i == ingredientNamesAry.length -1){
+                    names = names.substring(0,names.length()-1);
+                }
+                //System.out.println("names: " + names);
+                stmt.executeUpdate("INSERT INTO inventory (name, amount, capacity, unit, alert) SELECT '"
+                        + names + "', 0, 1000, 'unit', TRUE WHERE NOT EXISTS (SELECT name FROM inventory WHERE lower (name) = '" + names.toLowerCase() + "')");
+            }
         } catch (Exception e) {
             System.out.println("Error accessing Database. updateRecipeIngredient");
         }
