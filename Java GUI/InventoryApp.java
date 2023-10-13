@@ -9,10 +9,10 @@ import java.util.*;
 
 public class InventoryApp extends JPanel {
     private JButton prevItembutton = null;
-
-    public InventoryApp() {
+    private ManageFunctions managerFunctions;
+    public InventoryApp(ManagerFunctions m) {
         setLayout(new BorderLayout());
-
+        managerFunctions = m;
         // Create the center panel with a grid of 41 ingredients/items
         JPanel centerPanel = new JPanel(new GridLayout(6, 7));
 
@@ -21,8 +21,64 @@ public class InventoryApp extends JPanel {
         // Create the right sidebar for displaying item details
         JPanel rightSidebar = new JPanel();
         rightSidebar.setLayout(new BorderLayout());
-        JTextArea detailsTextArea = new JTextArea("Details will be displayed here.");
+        //JTextArea detailsTextArea = new JTextArea("Details will be displayed here.");
         rightSidebar.add(detailsTextArea, BorderLayout.CENTER);
+
+        JPanel editPanel = new JPanel();
+        editPanel.setLayout(new BoxLayout(editPanel, BoxLayout.Y_AXIS));
+
+
+            //add labels and fields for editing
+        JTextField nameField = new JTextField(20);
+        JTextField amountsField = new JTextField(20);
+        JTextField capacityAmountField = new JTextField(20);
+        JTextField unitsField  = new JTextField(20);
+
+        editPanel.add(new JLabel("Name:"));
+        editPanel.add(nameField);
+        editPanel.add(new JLabel("Amount:"));
+        editPanel.add(amountsField);
+        editPanel.add(new JLabel("Capacity:"));
+        editPanel.add(capacityAmountField);
+        editPanel.add(new JLabel("Units:"));
+        editPanel.add(unitsField);
+
+        JButton addButton = new JButton("Add");
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle adding an item
+                // Implement the logic to add an item to the inventory
+                // You can open a dialog or prompt the user for item details
+                managerFunctions.createNewInventory(nameField.getText(), amountsField.getText(), capacityAmountField.getText(), unitsField.getText());
+            }
+        });
+        
+        // Create "Edit" button
+        JButton editButton = new JButton("Edit");
+        editButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle editing an item
+                // Implement the logic to edit an item in the inventory
+                // You can open a dialog or prompt the user for item details to edit
+                managerFunctions.updateInventory(nameField.getText(), amountsField.getText(), capacityAmountField.getText(), unitsField.getText());
+            }
+        });
+
+        // Create "Delete" button
+        JButton deleteButton = new JButton("Delete");
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle deleting an item
+                // Implement the logic to delete an item from the inventory
+                // You can ask for confirmation or selection before deleting
+                managerfunctions.deleteInventory(nameField.getText());
+            }
+        });
+
+
 
         ArrayList<String> lowDrinks = getAllLowInventory();
         for (String item : items) {
@@ -155,9 +211,9 @@ public class InventoryApp extends JPanel {
             s = Double.toString(amount) + "/" + Double.toString(cap) + unit;
             arr.add(s);
             if (checkIfLow(name, amount, cap)) {
-                arr.add("true");
+                arr.add("TRUE");
             } else {
-                arr.add("false");
+                arr.add("FALSE");
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -180,7 +236,7 @@ public class InventoryApp extends JPanel {
             Connection conn = DriverManager.getConnection(dbConnectionString, dbSetup.user, dbSetup.pswd);
 
             Statement stmt = conn.createStatement();
-            String sqlString = "UPDATE inventory SET alert = TRUE WHERE lower(name) = '" + name.toLowerCase() + "';";
+            String sqlString = "UPDATE inventory SET alert = true WHERE lower(name) = '" + name.toLowerCase() + "';";
             stmt.executeUpdate(sqlString);
             return true;
         } catch (Exception e) {
@@ -189,14 +245,16 @@ public class InventoryApp extends JPanel {
         }
         return false;
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Inventory Page");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(800, 400);
-            frame.add(new InventoryApp());
-            frame.setVisible(true);
-        });
+    public void updateDisplay(){
+        //TODO !!!!
     }
+    // public static void main(String[] args) {
+    //     SwingUtilities.invokeLater(() -> {
+    //         JFrame frame = new JFrame("Inventory Page");
+    //         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    //         frame.setSize(800, 400);
+    //         frame.add(new InventoryApp());
+    //         frame.setVisible(true);
+    //     });
+    // }
 }
