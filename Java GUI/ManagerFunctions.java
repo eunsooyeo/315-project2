@@ -34,11 +34,12 @@ public class ManagerFunctions {
             String sqlStatement = "UPDATE recipes SET ingredient_names = ARRAY_APPEND(ingredient_names,'"
                     + ingredientName + "'), ingredient_values = ARRAY_APPEND(ingredient_values,"
                     + ingredientValue + ") WHERE drinkname ='" + drinkName + "'";
-            // also update inventory if not exist
-            sqlStatement += "INSERT INTO inventory (name, amount, capacity, unit, alert) VALUES ('" + ingredientName
-                    + "', 0, 1000, 'unit', TRUE) ON CONFLICT (name) DO NOTHING;";
             // send statement to DBMS
             stmt.executeUpdate(sqlStatement);
+
+            // also update inventory if not exist
+            stmt.executeUpdate("INSERT INTO inventory (name, amount, capacity, unit, alert) SELECT '"
+                        + ingredientName + "', 0, 1000, 'unit', TRUE WHERE NOT EXISTS (SELECT name FROM inventory WHERE name = '" + ingredientName + "')");
         } catch (Exception e) {
             System.out.println("Error accessing Database. updateRecipeIngredient");
         }
@@ -61,13 +62,23 @@ public class ManagerFunctions {
             String sqlStatement = "INSERT INTO recipes (recipeid, drinkname, ingredient_names, ingredient_values, price) VALUES ("
                     + drinkId + ", '" + drinkName + "','" + ingredient_names_string + "','"
                     + ingredient_values_string + "'," + price + ")";
-            System.out.println("names: " + ingredient_names);;
-            System.out.println("names_string: " + ingredient_values_string);
+            //System.out.println("names: " + ingredient_names);
+            //System.out.println("names_string: " + ingredient_names_string);
             stmt.executeUpdate(sqlStatement);
             // determine which ingredients need to be created in inventory using Conflict
+            String names;
             for (int i = 0; i < ingredient_names.size(); i++) {
-                stmt.executeUpdate("INSERT INTO inventory (name, amount, capacity, unit, alert) VALUES ("
-                        + ingredientNames[i] + ", 0, 1000, unit, TRUE) ON CONFLICT (name) DO NOTHING");
+                //remove quotes
+                names = ingredientNames[i].substring(1,ingredientNames[i].length()-1);
+                if (i == 0){
+                    names = names.substring(1,names.length());
+                }
+                else if (i == ingredient_names.size()-1){
+                    names = names.substring(0,names.length()-1);
+                }
+                //System.out.println("names: " + names);
+                stmt.executeUpdate("INSERT INTO inventory (name, amount, capacity, unit, alert) SELECT '"
+                        + names + "', 0, 1000, 'unit', TRUE WHERE NOT EXISTS (SELECT name FROM inventory WHERE name = '" + names + "')");
             }
         } catch (Exception e) {
             System.out.println("Error accessing Database.createNewRecipe");
@@ -80,7 +91,7 @@ public class ManagerFunctions {
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            String sqlStatement = "DELETE FROM recipes WHERE drinkname = '" + drinkName;
+            String sqlStatement = "DELETE FROM recipes WHERE drinkname = '" + drinkName + "'";
 
             // send statement to DBMS
             stmt.executeUpdate(sqlStatement);
