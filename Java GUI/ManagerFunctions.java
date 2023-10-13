@@ -252,7 +252,7 @@ public class ManagerFunctions {
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            String sqlStatement = "UPDATE inventory SET amount = " + amount + ", capacity = " + capacity + ", unit = '" + unit + "', alert = " + alert + " WHERE name = " + ingredient;
+            String sqlStatement = "UPDATE inventory SET amount = " + amount + ", capacity = " + capacity + ", unit = '" + unit + "', alert = " + alert + " WHERE lower(name) = '" + ingredient.toLowerCase() + "'";
             // send statement to DBMS
             stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {
