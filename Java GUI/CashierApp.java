@@ -32,6 +32,11 @@ public class CashierApp extends JFrame {
     public static Connection conn = null;
 
     public CashierApp(ManagerFunctions m, Order o) {
+        
+        // order.assign(o);
+        order = o;
+        managerFunctions = m;
+
         setTitle("Cashier Interface");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 400);
@@ -41,13 +46,26 @@ public class CashierApp extends JFrame {
         // Create the main panel to hold the UI components
         JPanel mainPanel = new JPanel(new BorderLayout());
 
+        int rows = 8;
+        boolean extraDrinks = managerFunctions.getNumberOfDrinks() > 19;
+        if(extraDrinks) rows = 9; 
+
         // Create the sidebar on the left with drink categories
         leftPanel = new JPanel();
-        leftPanel.setLayout(new GridLayout(8, 1));
+        leftPanel.setLayout(new GridLayout(rows, 1));
 
-        String[] categories = {
-                "Milk Tea", "Tea", "Fruit Tea", "Fresh Milk", "Ice Blended", "Tea Mojito", "Creama"
-        };
+        List<String> categories = new ArrayList<>();
+        categories.add("Milk Tea");
+        categories.add("Tea");
+        categories.add("Fruit Tea");
+        categories.add("Fresh Milk");
+        categories.add("Ice Blended");
+        categories.add("Tea Mojito");
+        categories.add("Creama");
+
+        if (extraDrinks) {
+            categories.add("Seasonal");
+        }
 
         drinkButtons = new ArrayList<>();
         for (String category : categories) {
@@ -66,10 +84,6 @@ public class CashierApp extends JFrame {
             leftPanel.add(categoryButton);
             drinkButtons.add(categoryButton);
         }
-
-        // order.assign(o);
-        order = o;
-        managerFunctions = m;
 
         JButton logoutButton = new JButton("Logout");
         logoutButton.addActionListener(new ActionListener() {
@@ -189,6 +203,8 @@ public class CashierApp extends JFrame {
             button.setEnabled(true);
         }
 
+        ArrayList<String> extraDrinksArr = managerFunctions.getAllDrinkNames();
+
         // Implement code to display specific drinks for the selected category
         switch (category) {
             case "Milk Tea":
@@ -223,6 +239,11 @@ public class CashierApp extends JFrame {
             case "Creama":
                 displaySpecificDrink("Coffee creama");
                 displaySpecificDrink("Cocoa creama");
+                break;
+            case "Seasonal":
+                for(int i = 19; i < extraDrinksArr.size(); i++) {
+                    displaySpecificDrink(extraDrinksArr.get(i));
+                }
                 break;
         }
 
