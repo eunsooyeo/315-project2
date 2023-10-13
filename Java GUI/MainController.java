@@ -36,13 +36,6 @@ public class MainController {
             System.exit(0);
         }
 
-        // try {
-        // conn.close();
-        // System.out.println("Connection Closed.");
-        // } catch (Exception e) {
-        // System.out.println("Connection NOT Closed.");
-        // }
-
         // create order class
         Order order = new Order(conn);
 
@@ -59,32 +52,14 @@ public class MainController {
         // "Information about employee Tom Hank: " +
         // managerFunctions.getEmployeeInfo("Tom Hank").toString());
         // ================================================================================================
-        System.out.println("number of drinks: " + managerFunctions.getNumberOfDrinks());
-        System.out.println("all drinks: " + managerFunctions.getAllDrinkNames().toString());
-        System.out.println("drink info: " + managerFunctions.getDrinkInfo("Honey milk tea").toString());
+        // System.out.println("number of drinks: " + managerFunctions.getNumberOfDrinks());
+        // System.out.println("all drinks: " + managerFunctions.getAllDrinkNames().toString());
+        // System.out.println("drink info: " + managerFunctions.getDrinkInfo("Honey milk tea").toString());
 
         // open GUI
         SwingUtilities.invokeLater(() -> {
             LoginApp loginApp = new LoginApp(order, managerFunctions);
             loginApp.setVisible(true);
         });
-
-        // Test ================ ================ ================ ================
-        // ArrayList<String> drinknames = new ArrayList<String>();
-        // drinknames.add("Honey milk tea");
-        // ArrayList<Integer> sugarlevel = new ArrayList<Integer>();
-        // sugarlevel.add(50);
-        // ArrayList<Integer> icelevel = new ArrayList<Integer>();
-        // icelevel.add(50);
-        // ArrayList<String> toppingnames = new ArrayList<String>();
-        // toppingnames.add("Aiyu Jelly");
-        // toppingnames.add("Pearls");
-        // Order(drinknames, sugarlevel, icelevel, toppingnames);
-
-        // ================ ================ ================ ================
-        // ================
-
-        // closing the connection
-
     }
 }

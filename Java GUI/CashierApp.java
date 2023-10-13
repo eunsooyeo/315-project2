@@ -67,6 +67,7 @@ public class CashierApp extends JFrame {
             drinkButtons.add(categoryButton);
         }
 
+        // order.assign(o);
         order = o;
         managerFunctions = m;
 
@@ -108,6 +109,7 @@ public class CashierApp extends JFrame {
                 if (!chargeButton.getText().equals("Charge: $0.00")) {
                     // Create the charge page and pass the total price
                     double totalAmount = totalPrice + taxAmount;
+
                     ChargePage chargePage = new ChargePage(CashierApp.this, totalAmount);
 
                     chargePage.addWindowListener(new WindowAdapter() {
@@ -120,6 +122,7 @@ public class CashierApp extends JFrame {
                     // Make the charge page visible
                     chargePage.setVisible(true);
 
+
                     Timer timer = new Timer(0, new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -129,6 +132,9 @@ public class CashierApp extends JFrame {
                             }
                         }
                     });
+
+                    //update order history
+                    // order.makeOrder();
 
                     timer.setRepeats(false); // Only trigger once
                     timer.start();
@@ -290,9 +296,6 @@ public class CashierApp extends JFrame {
                     name = name.substring(0, name.length() - 1);
                 }
 
-                System.out.println(drink);
-                System.out.println(name);
-
                 double price;
                 String queryString = "SELECT price FROM recipes WHERE lower(drinkname) = '" + name.toLowerCase()
                         + "';";
@@ -300,7 +303,6 @@ public class CashierApp extends JFrame {
                 ResultSet result = stmt.executeQuery(queryString);
                 result.next();
                 price = result.getDouble(1);
-                // System.out.println("price of " + drink + " is: " + price);
                 drinksPrice += price;
 
                 String updatedDrink = name + " $" + price + "\n" + drink.substring(drink.indexOf('\n') + 1);
@@ -357,6 +359,7 @@ public class CashierApp extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     // Reopen the CustomizeDrinkPopup with the selected drink's name
                     String drinkName = drinkLines[0]; // Get the original drink name
+                    order.restoreInventory(drink);
                     CustomizeDrinkPopup popup = new CustomizeDrinkPopup(CashierApp.this, drinkName, order);
                     if (popup != null) {
                         popup.addWindowListener(new WindowAdapter() {
@@ -378,7 +381,6 @@ public class CashierApp extends JFrame {
                                     } else {
                                         customizedDrink += "No Toppings";
                                     }
-                                    order.editInventory(drink, customizedDrink);
                                     updateSelectedDrink(drink, customizedDrink);
                                 }
                             }
