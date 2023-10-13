@@ -278,10 +278,23 @@ public class CashierApp extends JFrame {
         // to DB and match prices
         // Calculate the total price based on the number of selected drinks
         double drinksPrice = 0.0;
+        List<String> tempList = new ArrayList<>();
+
         try {
             for (String drink : selectedDrinks) {
+                String[] lines = drink.split("\n");
+                String name = lines[0];
+
+                if(lines[0].contains("$")) {
+                    name = lines[0].substring(0, lines[0].indexOf("$"));
+                    name = name.substring(0, name.length() - 1);
+                }
+
+                System.out.println(drink);
+                System.out.println(name);
+
                 double price;
-                String queryString = "SELECT price FROM recipes WHERE lower(drinkname) = '" + drink.toLowerCase()
+                String queryString = "SELECT price FROM recipes WHERE lower(drinkname) = '" + name.toLowerCase()
                         + "';";
                 Statement stmt = conn.createStatement();
                 ResultSet result = stmt.executeQuery(queryString);
@@ -289,11 +302,17 @@ public class CashierApp extends JFrame {
                 price = result.getDouble(1);
                 // System.out.println("price of " + drink + " is: " + price);
                 drinksPrice += price;
+
+                String updatedDrink = name + " $" + price + "\n" + drink.substring(drink.indexOf('\n') + 1);
+                tempList.add(updatedDrink);
             }
         } catch (Exception e) {
             System.out.println("error updating total price");
         }
 
+        if(!tempList.isEmpty()) selectedDrinks = tempList;
+
+        totalPrice = drinksPrice;
         taxAmount = drinksPrice * 0.0825;
         updateDisplayPanel();
     }
@@ -347,9 +366,7 @@ public class CashierApp extends JFrame {
                                         (popup.getSelectedToppings() != null
                                                 && !popup.getSelectedToppings().isEmpty())) {
                                     // Create a customized drink string based on the selections
-                                    String customizedDrink = drinkName + "\n"; // TODO
-                                                                               // *****************************************88
-                                                                               // ADD PRICE NEXT TO NAME
+                                    String customizedDrink = drinkName + "\n";
                                     if (popup.getSelectedIce() != null) {
                                         customizedDrink += popup.getSelectedIce() + "\n";
                                     }
