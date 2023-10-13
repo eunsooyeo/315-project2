@@ -105,7 +105,7 @@ public class CashierApp extends JFrame {
         chargeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!chargeButton.getText().equals("Charge: $0.00")) {
+                if (!chargeButton.getText().equals("Charge: $0.00")) {
                     // Create the charge page and pass the total price
                     double totalAmount = totalPrice + taxAmount;
                     ChargePage chargePage = new ChargePage(CashierApp.this, totalAmount);
@@ -123,7 +123,7 @@ public class CashierApp extends JFrame {
                     Timer timer = new Timer(0, new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if(!chargePage.isChargeCanceled()) {
+                            if (!chargePage.isChargeCanceled()) {
                                 // clear dislpayed drinks
                                 clearSelectedDrinks();
                             }
@@ -273,23 +273,23 @@ public class CashierApp extends JFrame {
         updateDisplayPanel();
     }
 
-    private void updateTotalPrice(ArrayList<String> drinkNames) {
+    private void updateTotalPrice(String drink) {
         // TODO **************************************************************** connect
         // to DB and match prices
         // Calculate the total price based on the number of selected drinks
         double drinksPrice = 0.0;
         try {
-            for (String drink : drinkNames) {
-                double price;
-                String queryString = "SELECT price FROM recipes WHERE lower(drinkname) = '" + drink.toLowerCase()
-                        + "';";
-                Statement stmt = conn.createStatement();
-                ResultSet result = stmt.executeQuery(queryString);
-                result.next();
-                price = result.getDouble(1);
-                // System.out.println("price of " + drink + " is: " + price);
-                drinksPrice += price;
-            }
+
+            double price;
+            String queryString = "SELECT price FROM recipes WHERE lower(drinkname) = '" + drink.toLowerCase()
+                    + "';";
+            Statement stmt = conn.createStatement();
+            ResultSet result = stmt.executeQuery(queryString);
+            result.next();
+            price = result.getDouble(1);
+            // System.out.println("price of " + drink + " is: " + price);
+            drinksPrice += price;
+
         } catch (Exception e) {
             System.out.println("error updating total price");
         }
