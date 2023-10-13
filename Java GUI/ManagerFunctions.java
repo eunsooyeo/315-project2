@@ -61,7 +61,7 @@ public class ManagerFunctions {
 
             String sqlStatement = "INSERT INTO recipes (recipeid, drinkname, ingredient_names, ingredient_values, price) VALUES ("
                     + getNumberOfDrinks() + ", '" + drinkName + "','" + ingredient_names_string + "','"
-                    + ingredient_values_string + "'," + price + ")";
+                    + ingredient_values_string + "'," + price + ") WHERE NOT EXISTS (SELECT drinkname FROM recipes WHERE lower(drinkname) = '" + drinkName.toLowerCase() + "')";
             //System.out.println("names: " + ingredient_names);
             //System.out.println("names_string: " + ingredient_names_string);
             stmt.executeUpdate(sqlStatement);
@@ -122,7 +122,7 @@ public class ManagerFunctions {
 
             stmt.executeQuery("SELECT setval(pg_get_serial_sequence('employee','id'), coalesce(max(id)+1, 1), false) FROM employee");
             // create an SQL statement
-            String sqlStatement = "INSERT INTO employee (id, name, password, pay, hours, manager) VALUES ('" + id + "','" + employeeName
+            String sqlStatement = "INSERT INTO employee (name, password, pay, hours, manager) VALUES ('" + employeeName
                     + "','" + password + "'," + pay + "," + hours + "," + m + ")";
 
             stmt.executeUpdate(sqlStatement);
@@ -237,7 +237,7 @@ public class ManagerFunctions {
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            String sqlStatement = "UPDATE employee SET hours = " + hours + ", pay = " + pay +  ", password = " + password + " WHERE name = '"
+            String sqlStatement = "UPDATE employee SET hours = " + hours + ", pay = " + pay +  ", password = '" + password + "' WHERE name = '"
                     + employeeName + "'";
             // send statement to DBMS
             stmt.executeUpdate(sqlStatement);

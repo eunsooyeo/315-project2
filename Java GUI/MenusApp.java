@@ -180,9 +180,6 @@ public class MenusApp extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 // Handle removing the selected drink and update the UI
                 removeDrink();
-
-                //update database
-                managerFunctions.removeRecipe(drinkNames[selectedDrink]);
             }
         });
 
@@ -232,6 +229,9 @@ public class MenusApp extends JPanel {
 
 
     private void removeDrink() {
+        //update database
+        managerFunctions.removeRecipe(drinkNames[selectedDrink]);
+        
         if (drinkButtons.length == 0) {
             return; // No drinks to remove
         }
