@@ -4,13 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 //package jdbc_demo.dbSetup;
 
-
 //@Kevin Tang
 public class LoginApp extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JLabel statusLabel;
-    private Order order; 
+    private Order order;
     private ManagerFunctions managerFunctions;
 
     // @param: none
@@ -37,7 +36,7 @@ public class LoginApp extends JFrame {
         JLabel passwordLabel = new JLabel("Password:");
         usernameField = new JTextField(15);
         passwordField = new JPasswordField(15);
-        JButton loginButton = new JButton("Login");
+        JButton loginButton = new JButton("<html><font color='black'>Login</font></html>");
         statusLabel = new JLabel("");
 
         // Add padding to the labels and center-align them
@@ -54,7 +53,9 @@ public class LoginApp extends JFrame {
                 String username = usernameField.getText();
                 char[] password = passwordField.getPassword();
 
-                /* TODO ****************************************************************************************************************************/
+                /*
+                 * TODO
+                 ****************************************************************************************************************************/
                 // Here, you can add code to validate the username and password.
                 // For simplicity, let's use "manager" and "cashier" as the valid usernames and
                 // "password" as the password.
@@ -108,5 +109,5 @@ public class LoginApp extends JFrame {
     // @param: none
     // @return : void
     // @tnrows: none
-    
+
 }
