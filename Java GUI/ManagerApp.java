@@ -77,7 +77,7 @@ public class ManagerApp extends JFrame {
         cardPanel.add(employeesPage, "Employees");
 
         // Create the Inventory page
-        JPanel inventoryPage = new InventoryApp();
+        JPanel inventoryPage = new InventoryApp(managerFunctions);
         cardPanel.add(inventoryPage, "Inventory");
 
         // Create the Supply History page

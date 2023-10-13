@@ -69,7 +69,13 @@ public class ManagerFunctions {
             String names;
             for (int i = 0; i < ingredient_names.size(); i++) {
                 //remove quotes
-                names = ingredientNames[i].substring(1,ingredientNames[i].length()-1);
+                if (ingredientNames[i].startsWith("\"")){
+                    names = ingredientNames[i].substring(1,ingredientNames[i].length()-1);
+                }
+                else{
+                    names = ingredientNames[i];
+                }
+                //remove brackets
                 if (i == 0){
                     names = names.substring(1,names.length());
                 }
