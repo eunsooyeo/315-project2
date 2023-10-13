@@ -296,4 +296,54 @@ public class ManagerFunctions {
         }
     }
 
+    public int getNumberOfDrinks() {
+        try {
+            Statement stmt = conn.createStatement();
+            String sqlString = "SELECT COUNT(*) FROM recipes;";
+            ResultSet result = stmt.executeQuery(sqlString);
+            result.next();
+            return result.getInt(1);
+
+        } catch (Exception e) {
+            System.out.println("Error counting recipes.");
+        }
+        return -1;
+    }
+
+    public ArrayList<String> getAllDrinkNames() {
+        ArrayList<String> drinks = new ArrayList<>();
+        try {
+            Statement stmt = conn.createStatement();
+            String sqlString = "SELECT drinkname FROM recipes;";
+            ResultSet result = stmt.executeQuery(sqlString);
+            while (result.next()) {
+                drinks.add(result.getString(1));
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error getting all drink names.");
+        }
+        return drinks;
+    }
+
+    public ArrayList<String> getDrinkInfo(String name) {
+        ArrayList<String> info = new ArrayList<>();
+        try {
+            Statement stmt = conn.createStatement();
+            String sqlString = "SELECT * FROM recipes WHERE lower(drinkname) = '" + name.toLowerCase() + "';";
+            ResultSet result = stmt.executeQuery(sqlString);
+            result.next();
+            info.add(Integer.toString(result.getInt(1)));
+            info.add(result.getString(2));
+            info.add(result.getArray(3).toString());
+            info.add(result.getArray(4).toString());
+            info.add(Double.toString(result.getDouble(5)));
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Error getting drink info.");
+        }
+        return info;
+    }
+
 }
