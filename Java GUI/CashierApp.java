@@ -366,13 +366,6 @@ public class CashierApp extends JFrame {
         updateDisplayPanel(); // Update the display panel to reflect the changes
     }
 
-    private void clearSelectedDrinks() {
-        selectedDrinks.clear(); // Clear the list of selected drinks
-        totalPrice = 0.0; // Reset the total price to zero
-        taxAmount = 0.0;
-        updateDisplayPanel(); // Update the display panel to reflect the changes
-    }
-
     /*
      * public static void main(String[] args) {
      * 
