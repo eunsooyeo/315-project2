@@ -8,6 +8,8 @@ import javax.naming.spi.DirStateFactory.Result;
 import java.util.*;
 
 public class InventoryApp extends JPanel {
+    private JButton prevItembutton = null;
+
     public InventoryApp() {
         setLayout(new BorderLayout());
 
@@ -15,19 +17,6 @@ public class InventoryApp extends JPanel {
         JPanel centerPanel = new JPanel(new GridLayout(6, 7));
 
         ArrayList<String> items = getAllInventoryNames();
-        // String[] items = {
-        // "Aiyu Jelly", "Aloe Vera", "Black Tea", "Brown Sugar", "Cocoa", "Coffee",
-        // "Creama",
-        // "Creamer", "Crystal Boba", "Cups", "Fructose", "Grapefruit", "Green Tea",
-        // "Herb Jelly",
-        // "Honey", "Ice", "Ice Cream", "Lime", "Lychee Jelly", "Mango", "Matcha",
-        // "Milk", "Mint",
-        // "Napkins", "Okinawa", "Oolong Tea", "Orange", "Passionfruit", "Peach",
-        // "Pearls", "Mini Pearls",
-        // "Pineapple", "Plastic Cover", "Pudding", "Red Bean", "Strawberry", "Straws",
-        // "Taro", "Water",
-        // "White Sugar", "Wintermelon"
-        // };
 
         // Create the right sidebar for displaying item details
         JPanel rightSidebar = new JPanel();
@@ -35,9 +24,15 @@ public class InventoryApp extends JPanel {
         JTextArea detailsTextArea = new JTextArea("Details will be displayed here.");
         rightSidebar.add(detailsTextArea, BorderLayout.CENTER);
 
+        ArrayList<String> lowDrinks = getAllLowInventory();
         for (String item : items) {
             JButton itemButton = new JButton(item);
-            itemButton.setBackground(Color.GRAY);
+            if (lowDrinks.contains(item)) {
+                // System.out.println("It should be yellow");
+                itemButton.setBackground(Color.YELLOW);
+                itemButton.setOpaque(true);
+            } else
+                itemButton.setBackground(Color.GRAY);
             itemButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -53,9 +48,16 @@ public class InventoryApp extends JPanel {
                     ArrayList<String> arr = getInfoForIngredient(item);
 
                     detailsTextArea.append(arr.get(0));
-                    if (arr.get(1).equals("true")) {
-                        itemButton.setBackground(Color.YELLOW);
-                    }
+                    // if (arr.get(1).equals("true")) {
+                    // prevItembutton = itemButton;
+                    // itemButton.setBackground(Color.YELLOW);
+                    // itemButton.setOpaque(true);
+
+                    // }
+                    // if (prevItembutton != null && (prevItembutton != itemButton)) {
+                    // prevItembutton.setBackground(Color.GRAY);
+                    // prevItembutton.setOpaque(false);
+                    // }
 
                 }
             });
@@ -64,6 +66,46 @@ public class InventoryApp extends JPanel {
 
         add(centerPanel, BorderLayout.CENTER);
         add(rightSidebar, BorderLayout.EAST);
+    }
+
+    private ArrayList<String> getAllLowInventory() {
+        ArrayList<String> drinksLow = new ArrayList<>();
+
+        try {
+            String teamName = "10r";
+            String dbName = "csce315331_" + teamName + "_db";
+            String dbConnectionString = "jdbc:postgresql://csce-315-db.engr.tamu.edu/" + dbName;
+            dbSetup myCredentials = new dbSetup();
+
+            Connection conn = DriverManager.getConnection(dbConnectionString, dbSetup.user, dbSetup.pswd);
+
+            Statement stmt = conn.createStatement();
+            String sqlString = "SELECT name FROM inventory;";
+            ResultSet result = stmt.executeQuery(sqlString);
+            ArrayList<String> drinks = new ArrayList<>();
+            while (result.next()) {
+                drinks.add(result.getString(1));
+            }
+
+            for (String name : drinks) {
+                sqlString = "SELECT (amount, capacity, unit) FROM inventory WHERE lower(name) = '"
+                        + name.toLowerCase() + "';";
+                result = stmt.executeQuery(sqlString);
+                result.next();
+                String str = result.getString(1);
+                double amount = Double.parseDouble(str.substring(1, str.indexOf(",")));
+                double cap = Double
+                        .parseDouble(str.substring(str.indexOf(",") + 1, str.indexOf(",", str.indexOf(",") + 1)));
+                String unit = str.substring(str.indexOf(",", str.indexOf(",") + 1) + 1, str.length() - 1);
+
+                if (checkIfLow(name, amount, cap)) {
+                    drinksLow.add(name);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error getting all low inventory names. getAllLowInventory");
+        }
+        return drinksLow;
     }
 
     public ArrayList<String> getAllInventoryNames() {
@@ -103,7 +145,6 @@ public class InventoryApp extends JPanel {
             Statement stmt = conn.createStatement();
             String sqlString = "SELECT (amount, capacity, unit) FROM inventory WHERE lower(name) = '"
                     + name.toLowerCase() + "';";
-            System.out.println(sqlString);
             ResultSet result = stmt.executeQuery(sqlString);
             result.next();
             String str = result.getString(1);
