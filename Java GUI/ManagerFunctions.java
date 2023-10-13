@@ -22,7 +22,7 @@ public class ManagerFunctions {
             // send statement to DBMS
             ResultSet result = stmt.executeQuery(sqlStatement);
         } catch (Exception e) {
-            System.out.println("Error accessing Database.");
+            System.out.println("Error accessing Database. updateRecipePrice");
         }
     }
 
@@ -40,7 +40,7 @@ public class ManagerFunctions {
             // send statement to DBMS
             stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {
-            System.out.println("Error accessing Database.");
+            System.out.println("Error accessing Database. updateRecipeIngredient");
         }
     }
 
@@ -68,7 +68,7 @@ public class ManagerFunctions {
                         + ingredient_names.get(i) + ", 0, 1000, unit, TRUE) ON CONFLICT (name) DO NOTHING");
             }
         } catch (Exception e) {
-            System.out.println("Error accessing Database.");
+            System.out.println("Error accessing Database.createNewRecipe");
             e.printStackTrace();
         }
     }
@@ -83,7 +83,7 @@ public class ManagerFunctions {
             // send statement to DBMS
             stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {
-            System.out.println("Error accessing Database.");
+            System.out.println("Error accessing Database. removeRecipe");
             e.printStackTrace();
         }
     }
@@ -106,7 +106,7 @@ public class ManagerFunctions {
 
             stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {
-            System.out.println("Error accessing Database.");
+            System.out.println("Error accessing Database. createNewEmployee");
             e.printStackTrace();
         }
     }
@@ -120,7 +120,7 @@ public class ManagerFunctions {
             // send statement to DBMS
             stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {
-            System.out.println("Error accessing Database.");
+            System.out.println("Error accessing Database. removeEmployeeSQL");
         }
     }
 
@@ -139,7 +139,7 @@ public class ManagerFunctions {
                 }
             }
         } catch (Exception e) {
-            System.out.println(e.toString());
+            System.out.println("Error access dtabase. getNumEmployee");
 
         }
         return employee;
@@ -161,7 +161,7 @@ public class ManagerFunctions {
                 }
             }
         } catch (Exception e) {
-            System.out.println(e.toString());
+            System.out.println("Error accessing database, get num of managers");
 
         }
         return managers;
@@ -180,7 +180,7 @@ public class ManagerFunctions {
                 map.put(name, isManager);
             }
         } catch (Exception e) {
-            System.out.println(e.toString());
+            System.out.println("error accessing database, getEmployee Names");
 
         }
         return map;
@@ -221,7 +221,7 @@ public class ManagerFunctions {
             // send statement to DBMS
             stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {
-            System.out.println("Error accessing Database.");
+            System.out.println("Error accessing Database. updateEmployeeSQL");
             e.printStackTrace();
         }
     }
@@ -246,7 +246,7 @@ public class ManagerFunctions {
             // send statement to DBMS
             stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {
-            System.out.println("Error accessing Database.");
+            System.out.println("Error accessing Database. addInventory");
             e.printStackTrace();
         }
     }
@@ -271,7 +271,7 @@ public class ManagerFunctions {
             // send statement to DBMS
             stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {
-            System.out.println("Error accessing Database.");
+            System.out.println("Error accessing Database. removeFromInventory");
             e.printStackTrace();
         }
     }
@@ -287,7 +287,7 @@ public class ManagerFunctions {
             // send statement to DBMS
             stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {
-            System.out.println("Error accessing Database.");
+            System.out.println("Error accessing Database. createNewInventory");
             e.printStackTrace();
         }
     }
@@ -302,7 +302,7 @@ public class ManagerFunctions {
             // send statement to DBMS
             stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {
-            System.out.println("Error accessing Database.");
+            System.out.println("Error accessing Database. deleteInventory");
             e.printStackTrace();
         }
     }
@@ -316,7 +316,7 @@ public class ManagerFunctions {
             return result.getInt(1);
 
         } catch (Exception e) {
-            System.out.println("Error counting recipes.");
+            System.out.println("Error counting recipes. getNumberofDrinks");
         }
         return -1;
     }
@@ -332,7 +332,7 @@ public class ManagerFunctions {
             }
 
         } catch (Exception e) {
-            System.out.println("Error getting all drink names.");
+            System.out.println("Error getting all drink names. getAllDrinkNames");
         }
         return drinks;
     }
@@ -352,7 +352,7 @@ public class ManagerFunctions {
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            System.out.println("Error getting drink info.");
+            System.out.println("Error getting drink info. getDrinkInfo");
         }
         return info;
     }
