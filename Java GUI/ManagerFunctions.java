@@ -17,12 +17,13 @@ public class ManagerFunctions {
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            String sqlStatement = "UPDATE recipes SET price = " + price + " WHERE drinkname = '"
-                    + drinkName + "'";
+            String sqlStatement = "UPDATE recipes SET price = " + price + " WHERE lower(drinkname) = '"
+                    + drinkName.toLowerCase() + "'";
             // send statement to DBMS
-            ResultSet result = stmt.executeQuery(sqlStatement);
+            stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {
             System.out.println("Error accessing Database. updateRecipePrice");
+            e.printStackTrace();
         }
     }
 
@@ -41,8 +42,9 @@ public class ManagerFunctions {
 
             // create a statement object
             Statement stmt = conn.createStatement();
+            //System.out.println("ingredient_names_string: " + ingredient_names_string);
             // create an SQL statement
-            String sqlStatement = "UPDATE recipes SET ingredient_names = " + ingredient_values_string + ", ingredient_values = " + ingredient_values_string + " WHERE drinkname ='" + drinkName + "'";
+            String sqlStatement = "UPDATE recipes SET ingredient_names = '{" + ingredient_names_string.toLowerCase() + "}', ingredient_values = '{" + ingredient_values_string + "}' WHERE lower(drinkname) ='" + drinkName.toLowerCase() + "'";
             // send statement to DBMS
             stmt.executeUpdate(sqlStatement);
 
@@ -63,11 +65,21 @@ public class ManagerFunctions {
                     names = names.substring(0,names.length()-1);
                 }
                 //System.out.println("names: " + names);
-                stmt.executeUpdate("INSERT INTO inventory (name, amount, capacity, unit, alert) SELECT '"
-                        + names + "', 0, 1000, 'unit', TRUE WHERE NOT EXISTS (SELECT name FROM inventory WHERE lower (name) = '" + names.toLowerCase() + "')");
+                //also take care of spaces
+                if (names.startsWith(" ")){
+                    names = names.substring(1,names.length());
+                }
+                //now remove inside quotes
+                if (names.startsWith("\"")){
+                    names = names.substring(1,names.length()-1);
+                }
+                createNewInventory(names,"0","1000","unit");
+                /*stmt.executeUpdate("INSERT INTO inventory (name, amount, capacity, unit, alert) SELECT '"
+                        + names + "', 0, 1000, 'unit', TRUE WHERE NOT EXISTS (SELECT name FROM inventory WHERE lower (name) = '" + names.toLowerCase() + "')");*/
             }
         } catch (Exception e) {
             System.out.println("Error accessing Database. updateRecipeIngredient");
+            e.printStackTrace();
         }
     }
 
@@ -85,9 +97,9 @@ public class ManagerFunctions {
             Statement stmt = conn.createStatement();
             // create an SQL statement
 
-            String sqlStatement = "INSERT INTO recipes (recipeid, drinkname, ingredient_names, ingredient_values, price) VALUES ("
-                    + getNumberOfDrinks() + ", '" + drinkName + "','" + ingredient_names_string + "','"
-                    + ingredient_values_string + "'," + price + ") WHERE NOT EXISTS (SELECT drinkname FROM recipes WHERE lower(drinkname) = '" + drinkName.toLowerCase() + "')";
+            String sqlStatement = "INSERT INTO recipes (recipeid, drinkname, ingredient_names, ingredient_values, price) SELECT "
+                    + (getNumberOfDrinks() + 1)  + ", '" + drinkName + "','" + ingredient_names_string.toLowerCase() + "','"
+                    + ingredient_values_string + "'," + price + " WHERE NOT EXISTS (SELECT drinkname FROM recipes WHERE lower(drinkname) = '" + drinkName.toLowerCase() + "')";
             //System.out.println("names: " + ingredient_names);
             //System.out.println("names_string: " + ingredient_names_string);
             stmt.executeUpdate(sqlStatement);
@@ -108,9 +120,18 @@ public class ManagerFunctions {
                 else if (i == ingredient_names.size()-1){
                     names = names.substring(0,names.length()-1);
                 }
+                //also take care of spaces
+                if (names.startsWith(" ")){
+                    names = names.substring(1,names.length());
+                }
+                //now remove inside quotes
+                if (names.startsWith("\"")){
+                    names = names.substring(1,names.length()-1);
+                }
+                createNewInventory(names,"0","1000","unit");
                 //System.out.println("names: " + names);
-                stmt.executeUpdate("INSERT INTO inventory (name, amount, capacity, unit, alert) SELECT '"
-                        + names + "', 0, 1000, 'unit', TRUE WHERE NOT EXISTS (SELECT name FROM inventory WHERE lower (name) = '" + names.toLowerCase() + "')");
+                /*stmt.executeUpdate("INSERT INTO inventory (name, amount, capacity, unit, alert) SELECT '"
+                        + names.toLowerCase() + "', 0, 1000, 'unit', TRUE WHERE NOT EXISTS (SELECT name FROM inventory WHERE lower(name) = '" + names.toLowerCase() + "')");*/
             }
         } catch (Exception e) {
             System.out.println("Error accessing Database.createNewRecipe");
@@ -124,7 +145,7 @@ public class ManagerFunctions {
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            String sqlStatement = "DELETE FROM recipes WHERE drinkname = '" + drinkName + "'";
+            String sqlStatement = "DELETE FROM recipes WHERE lower(drinkname) = '" + drinkName.toLowerCase() + "'";
 
             // send statement to DBMS
             stmt.executeUpdate(sqlStatement);
@@ -163,7 +184,7 @@ public class ManagerFunctions {
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            String sqlStatement = "DELETE FROM employee WHERE name ='" + employeeName + "'";
+            String sqlStatement = "DELETE FROM employee WHERE lower(name) ='" + employeeName.toLowerCase() + "'";
             // send statement to DBMS
             stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {
@@ -300,7 +321,7 @@ public class ManagerFunctions {
             Statement stmt = conn.createStatement();
             // create an SQL statement
             stmt.executeUpdate("INSERT INTO inventory (name, amount, capacity, unit, alert) SELECT '"
-                        + ingredient + "'," + amount + "," + capacity + ", '"+ unit + "', TRUE WHERE NOT EXISTS (SELECT name FROM inventory WHERE lower (name) = '" + ingredient.toLowerCase() + "')");
+                        + ingredient.toLowerCase() + "'," + amount + "," + capacity + ", '"+ unit + "', TRUE WHERE NOT EXISTS (SELECT name FROM inventory WHERE lower(name) = '" + ingredient.toLowerCase() + "')");
         } catch (Exception e) {
             System.out.println("Error accessing Database. createNewInventory");
             e.printStackTrace();
@@ -313,7 +334,7 @@ public class ManagerFunctions {
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            String sqlStatement = "DELETE FROM inventory WHERE name = '" + ingredient + "'";
+            String sqlStatement = "DELETE FROM inventory WHERE lower(name) = '" + ingredient.toLowerCase() + "'";
             // send statement to DBMS
             stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {

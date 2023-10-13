@@ -10,7 +10,7 @@ import java.sql.*;
 
 public class MenusApp extends JPanel {
     private JTextArea drinkDetailsTextArea;
-    private JTextField idField;
+    //private JTextField idField;
     private JTextField nameField;
     private JTextField priceField;
     private JTextField ingredientsField;
@@ -83,7 +83,7 @@ public class MenusApp extends JPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     selectedDrink = drinkNumber;
-                    idField.setText(drinkIDs[selectedDrink]);
+                    //idField.setText(drinkIDs[selectedDrink]);
                     nameField.setText(drinkNames[selectedDrink]); // Update the name field
                     priceField.setText(drinkPrices[selectedDrink]); // Update the price field
                     ingredientsField.setText(drinkIngredients[selectedDrink]); // Update the ingredients field
@@ -109,7 +109,7 @@ public class MenusApp extends JPanel {
 
         // Add labels and fields for editing
         nameField = new JTextField(20);
-        idField = new JTextField(20);
+        //idField = new JTextField(20);
         priceField = new JTextField(20);
         ingredientsField = new JTextField(20);
         ingredientsValueField = new JTextField(20);
@@ -117,8 +117,8 @@ public class MenusApp extends JPanel {
         addDrinkButton = new JButton("Add Drink");
         removeDrinkButton = new JButton("Remove Drink");
 
-        editPanel.add(new JLabel("ID:"));
-        editPanel.add(idField);
+        //editPanel.add(new JLabel("ID:"));
+        //editPanel.add(idField);
         editPanel.add(new JLabel("Name:"));
         editPanel.add(nameField);
         editPanel.add(new JLabel("Price:"));
@@ -145,8 +145,8 @@ public class MenusApp extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Handle editing the drink and updating the drink info
-                drinkIDs[selectedDrink] = idField.getText();
                 drinkNames[selectedDrink] = nameField.getText();
+                drinkIDs[selectedDrink] = managerFunctions.getDrinkInfo(drinkNames[selectedDrink]).get(0);
                 drinkPrices[selectedDrink] = priceField.getText();
                 drinkIngredients[selectedDrink] = ingredientsField.getText();
                 drinkIngredientsAmounts[selectedDrink] = ingredientsValueField.getText();
@@ -166,10 +166,6 @@ public class MenusApp extends JPanel {
                 System.out.println("Add Drink button clicked");
                 // Add a new drink
                 addDrink(nameField.getText(), priceField.getText(), ingredientsField.getText(), ingredientsValueField.getText());
-                String[] ingredientOfDrink = ingredientsField.getText().split(",");
-                String[] ingredientAmountsOfDrink = ingredientsValueField.getText().split(",");
-                //update database
-                managerFunctions.createNewRecipe(idField.getText(), nameField.getText(), ingredientOfDrink, ingredientAmountsOfDrink, priceField.getText());
             }
         });
 
@@ -187,6 +183,7 @@ public class MenusApp extends JPanel {
     private void addDrink(String name, String price, String ingredients, String ingredientAmounts) {
         // Add a new drink to the arrays
         int numDrinks = drinkButtons.length + 1;
+        String[] newIds = new String[numDrinks];
         String[] newNames = new String[numDrinks];
         String[] newPrices = new String[numDrinks];
         String[] newIngredients = new String[numDrinks];
@@ -197,8 +194,15 @@ public class MenusApp extends JPanel {
             return;
             }
         }
+
+        String[] ingredientOfDrink = ingredients.split(",");
+        String[] ingredientAmountsOfDrink = ingredientAmounts.split(",");
+        //update database
+        managerFunctions.createNewRecipe(Integer.toString(managerFunctions.getNumberOfDrinks() + 1), name, ingredientOfDrink, ingredientAmountsOfDrink, price);
+        
         // Copy existing data to the new arrays
         for (int i = 0; i < drinkButtons.length; i++) {
+            newIds[i] = drinkIDs[i];
             newNames[i] = drinkNames[i];
             newPrices[i] = drinkPrices[i];
             newIngredients[i] = drinkIngredients[i];
@@ -206,12 +210,14 @@ public class MenusApp extends JPanel {
         }
 
         // Add the new drink data
+        newIds[numDrinks -1] = Integer.toString(managerFunctions.getNumberOfDrinks() + 1);
         newNames[numDrinks - 1] = name;
         newPrices[numDrinks - 1] = price;
         newIngredients[numDrinks - 1] = ingredients;
         newIngredientAmounts[numDrinks - 1] = ingredientAmounts;
 
         // Update arrays with new data
+        drinkIDs = newIds;
         drinkNames = newNames;
         drinkPrices = newPrices;
         drinkIngredients = newIngredients;
