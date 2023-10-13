@@ -60,7 +60,7 @@ public class ManagerFunctions {
             // create an SQL statement
 
             String sqlStatement = "INSERT INTO recipes (recipeid, drinkname, ingredient_names, ingredient_values, price) VALUES ("
-                    + drinkId + ", '" + drinkName + "','" + ingredient_names_string + "','"
+                    + getNumberOfDrinks() + ", '" + drinkName + "','" + ingredient_names_string + "','"
                     + ingredient_values_string + "'," + price + ")";
             //System.out.println("names: " + ingredient_names);
             //System.out.println("names_string: " + ingredient_names_string);
