@@ -242,7 +242,7 @@ public class EmployeeApp extends JPanel {
         detailsMap.put(newName, managerInfo);
         detailsMap.remove(oldManager);
         // Update the database
-        managerFunctions.updateEmployeeSQL(newName, newHours);
+        managerFunctions.updateEmployeeSQL(newName, newHours, newPassword, newPay);
     }
 
 
@@ -268,7 +268,7 @@ public class EmployeeApp extends JPanel {
         detailsMap.put(newName, employeeInfo);
         detailsMap.remove(oldEmployee);
         // Update the database
-        managerFunctions.updateEmployeeSQL(newName, newHours);
+        managerFunctions.updateEmployeeSQL(newName, newHours, newPassword, newPay);
     }
 
 
@@ -298,7 +298,7 @@ public class EmployeeApp extends JPanel {
         }
 
         // Update the database
-        managerFunctions.createNewEmployee(id, name, password, hours, pay, "Manager");
+        managerFunctions.createNewEmployee(id, name, password, hours, pay, "t");
         managerListModel.addElement(name);
         detailsTextArea.setText("Name: " + name + "\nHours/Week: " + hours +
                 "\nPassword: " + password + "\nPay: " + pay);

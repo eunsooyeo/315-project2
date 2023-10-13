@@ -57,6 +57,7 @@ public class MenusApp extends JPanel {
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         // Create the center panel for drink buttons
         centerPanel = new JPanel();
+        centerPanel.setPreferredSize(new Dimension(750, 300));
 
         // Create a scroll pane for the drink buttons panel
         JScrollPane scrollPane = new JScrollPane(centerPanel);
@@ -98,6 +99,9 @@ public class MenusApp extends JPanel {
         // Create the panel for drink information and editing
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BorderLayout());
+
+        JScrollPane rscroll = new JScrollPane(rightPanel);
+        add(rscroll, BorderLayout.EAST);
 
         JPanel editPanel = new JPanel();
         editPanel.setLayout(new BoxLayout(editPanel, BoxLayout.Y_AXIS));
@@ -159,6 +163,7 @@ public class MenusApp extends JPanel {
         addDrinkButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println("Add Drink button clicked");
                 // Add a new drink
                 addDrink(nameField.getText(), priceField.getText(), ingredientsField.getText(), ingredientsValueField.getText());
                 String[] ingredientOfDrink = ingredientsField.getText().split(",");
@@ -189,7 +194,12 @@ public class MenusApp extends JPanel {
         String[] newPrices = new String[numDrinks];
         String[] newIngredients = new String[numDrinks];
         String[] newIngredientAmounts = new String[numDrinks];
-
+        for (int i = 0; i < drinkNames.length; i++) {
+            if (drinkNames[i].equals(name)) {
+            // Drink with the same name already exists, so we won't add it again
+            return;
+            }
+        }
         // Copy existing data to the new arrays
         for (int i = 0; i < drinkButtons.length; i++) {
             newNames[i] = drinkNames[i];
@@ -202,7 +212,7 @@ public class MenusApp extends JPanel {
         newNames[numDrinks - 1] = name;
         newPrices[numDrinks - 1] = price;
         newIngredients[numDrinks - 1] = ingredients;
-        newIngredientAmounts[numDrinks -1] = ingredientAmounts;
+        newIngredientAmounts[numDrinks - 1] = ingredientAmounts;
 
         // Update arrays with new data
         drinkNames = newNames;
@@ -213,7 +223,12 @@ public class MenusApp extends JPanel {
         // Update drink buttons and display
         updateDrinkButtons();
         updateDisplay();
+
+        // Update the UI to reflect the changes
+        centerPanel.revalidate();
+        centerPanel.repaint();
     }
+
 
     private void removeDrink() {
         if (drinkButtons.length == 0) {
@@ -265,7 +280,7 @@ public class MenusApp extends JPanel {
             drinkButtons[i] = new JButton(drinkNames[i]);
 
             // Increase the font size for the buttons
-            Font buttonFont = new Font(drinkButtons[i].getFont().getName(), Font.PLAIN, 36);
+            Font buttonFont = new Font(drinkButtons[i].getFont().getName(), Font.PLAIN, 18);
             drinkButtons[i].setFont(buttonFont);
 
             final int drinkNumber = i; // Capture the current drink number
