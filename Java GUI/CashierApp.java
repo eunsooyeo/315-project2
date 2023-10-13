@@ -303,9 +303,22 @@ public class CashierApp extends JFrame {
                 ResultSet result = stmt.executeQuery(queryString);
                 result.next();
                 price = result.getDouble(1);
-                drinksPrice += price;
 
-                String updatedDrink = name + " $" + price + "\n" + drink.substring(drink.indexOf('\n') + 1);
+                String[] tempToppings = lines[lines.length - 1].split(", ");
+                double extra = 0;
+
+                if(!tempToppings[0].trim().toLowerCase().equals("no toppings")) {
+                    extra += tempToppings.length * 0.5;
+                }
+
+                drinksPrice += price;
+                drinksPrice += extra;
+
+                String updatedDrink;
+            
+                if(extra != 0) updatedDrink = name + " $" + price + " + $" + extra + "\n" + drink.substring(drink.indexOf('\n') + 1);
+                else updatedDrink = name + " $" + price + "\n" + drink.substring(drink.indexOf('\n') + 1);
+
                 tempList.add(updatedDrink);
             }
         } catch (Exception e) {
@@ -382,6 +395,7 @@ public class CashierApp extends JFrame {
                                         customizedDrink += "No Toppings";
                                     }
                                     updateSelectedDrink(drink, customizedDrink);
+                                    updateTotalPrice();
                                 }
                             }
                         });
