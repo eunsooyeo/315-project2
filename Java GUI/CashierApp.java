@@ -357,6 +357,7 @@ public class CashierApp extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     // Reopen the CustomizeDrinkPopup with the selected drink's name
                     String drinkName = drinkLines[0]; // Get the original drink name
+                    order.restoreInventory(drink);
                     CustomizeDrinkPopup popup = new CustomizeDrinkPopup(CashierApp.this, drinkName, order);
                     if (popup != null) {
                         popup.addWindowListener(new WindowAdapter() {
@@ -378,7 +379,7 @@ public class CashierApp extends JFrame {
                                     } else {
                                         customizedDrink += "No Toppings";
                                     }
-                                    order.editInventory(drink, customizedDrink);
+                                    // order.editInventory(drink, customizedDrink);
                                     updateSelectedDrink(drink, customizedDrink);
                                 }
                             }
