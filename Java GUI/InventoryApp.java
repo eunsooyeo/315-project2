@@ -10,6 +10,11 @@ import java.util.*;
 public class InventoryApp extends JPanel {
     private JButton prevItembutton = null;
     private ManagerFunctions managerFunctions;
+<<<<<<< Updated upstream
+=======
+    private JTextArea detailsTextArea;
+
+>>>>>>> Stashed changes
     public InventoryApp(ManagerFunctions m) {
         setLayout(new BorderLayout());
         managerFunctions = m;
@@ -21,7 +26,11 @@ public class InventoryApp extends JPanel {
         // Create the right sidebar for displaying item details
         JPanel rightSidebar = new JPanel();
         rightSidebar.setLayout(new BorderLayout());
+<<<<<<< Updated upstream
         JTextArea detailsTextArea = new JTextArea("Details will be displayed here.");
+=======
+        detailsTextArea = new JTextArea("Details will be displayed here.");
+>>>>>>> Stashed changes
         rightSidebar.add(detailsTextArea, BorderLayout.CENTER);
 
         JPanel editPanel = new JPanel();
@@ -51,7 +60,9 @@ public class InventoryApp extends JPanel {
                 // Implement the logic to add an item to the inventory
                 // You can open a dialog or prompt the user for item details
                 managerFunctions.createNewInventory(nameField.getText(), amountsField.getText(), capacityAmountField.getText(), unitsField.getText());
+                updateDisplay();
             }
+            
         });
         
         // Create "Edit" button
@@ -63,6 +74,7 @@ public class InventoryApp extends JPanel {
                 // Implement the logic to edit an item in the inventory
                 // You can open a dialog or prompt the user for item details to edit
                 managerFunctions.updateInventory(nameField.getText(), amountsField.getText(), capacityAmountField.getText(), unitsField.getText());
+                updateDisplay();
             }
         });
 
@@ -75,9 +87,22 @@ public class InventoryApp extends JPanel {
                 // Implement the logic to delete an item from the inventory
                 // You can ask for confirmation or selection before deleting
                 managerFunctions.deleteInventory(nameField.getText());
+<<<<<<< Updated upstream
+=======
+                updateDisplay();
+>>>>>>> Stashed changes
             }
         });
 
+        editPanel.add(addButton);
+        editPanel.add(editButton);
+        editPanel.add(deleteButton);
+
+        // Add components to the right sidebar
+        rightSidebar.add(detailsTextArea, BorderLayout.CENTER);
+        rightSidebar.add(editPanel, BorderLayout.SOUTH);
+
+        // Add center panel and right sidebar to the main panel
 
 
         ArrayList<String> lowDrinks = getAllLowInventory();
@@ -247,6 +272,42 @@ public class InventoryApp extends JPanel {
     }
     public void updateDisplay(){
         //TODO !!!!
+        JPanel centerPanel = (JPanel) getComponent(0);  // Assuming the center panel is the first component
+        centerPanel.removeAll();  // Clear the current buttons
+
+        ArrayList<String> items = getAllInventoryNames();
+        ArrayList<String> low = getAllLowInventory();
+        for (String item : items) {
+            JButton itemButton = new JButton(item);
+            if(low.contains(item)){
+                itemButton.setBackground(Color.YELLOW);
+                itemButton.setOpaque(true);
+            }
+            else{
+                itemButton.setBackground(Color.GRAY);
+            }
+            
+            itemButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Handle button click
+                    // Display item details in the right sidebar
+                    // Implement this as in your original code
+                    detailsTextArea.selectAll();
+                    detailsTextArea.replaceSelection(item);
+                    detailsTextArea.append("\n");
+                    ArrayList<String> arr = getInfoForIngredient(item);
+
+                    detailsTextArea.append(arr.get(0));
+
+                }
+            });
+            centerPanel.add(itemButton);  // Add the new button to the center panel
+        }
+
+        // Repaint or revalidate the panel
+        centerPanel.revalidate();
+        centerPanel.repaint();
     }
     // public static void main(String[] args) {
     //     SwingUtilities.invokeLater(() -> {
