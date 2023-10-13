@@ -278,7 +278,7 @@ public class EmployeeApp extends JPanel {
         }
 
         // Update the database
-        managerFunctions.createNewEmployee(name, password, hours, pay, "Employee");
+        managerFunctions.createNewEmployee(id, name, password, hours, pay, "f");
         employeeListModel.addElement(name);
         detailsTextArea.setText("Name: " + name + "\nHours/Week: " + hours +
                 "\nPassword: " + password + "\nPay: " + pay);
@@ -298,7 +298,7 @@ public class EmployeeApp extends JPanel {
         }
 
         // Update the database
-        managerFunctions.createNewEmployee(name, password, hours, pay, "Manager");
+        managerFunctions.createNewEmployee(id, name, password, hours, pay, "t");
         managerListModel.addElement(name);
         detailsTextArea.setText("Name: " + name + "\nHours/Week: " + hours +
                 "\nPassword: " + password + "\nPay: " + pay);
