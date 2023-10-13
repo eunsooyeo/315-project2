@@ -189,7 +189,7 @@ public class Order {
 
     public boolean restoreInventory(String drinkInfo) {
         // parse drink info
-        String[] tokens = drinkInfo.split("\\|");
+        String[] tokens = drinkInfo.split("\n");
 
         String drinkName = (tokens[0]).trim();
         String iceLevel = (tokens[1]).trim();
@@ -303,7 +303,7 @@ public class Order {
         restoreInventory(oldDrink);
 
         // parse new drink
-        String[] tokens = newDrink.split("\\|");
+        String[] tokens = newDrink.split("\n");
 
         String drinkName = (tokens[0]).trim();
         String iceLevel = (tokens[1]).trim();
@@ -313,6 +313,7 @@ public class Order {
 
         updateInventory(drinkName, iceLevel, sugarLevel, toppings);
 
+        return true;
     }
 
 }
