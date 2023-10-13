@@ -100,7 +100,7 @@ public class CustomizeDrinkPopup extends JDialog {
                     //TODO: Add message on GUI that order cannot be made because inventory item is low
 
                     ////////
-                }
+                }*/
             }
         });
 

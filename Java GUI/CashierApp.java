@@ -93,12 +93,46 @@ public class CashierApp extends JFrame {
         JScrollPane displayScrollPane = new JScrollPane(displayPanel);
         displayScrollPane.setPreferredSize(new Dimension(400, 200));
 
-        chargeButton = new JButton("Charge $0.00");
+        chargeButton = new JButton("Charge: $0.00");
         JButton ticketsButton = new JButton("Print Ticket");
 
         // Make the buttons span the full width
         chargeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         ticketsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        chargeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!chargeButton.getText().equals("Charge: $0.00")) {
+                    // Create the charge page and pass the total price
+                    double totalAmount = totalPrice + taxAmount;
+                    ChargePage chargePage = new ChargePage(CashierApp.this, totalAmount);
+
+                    chargePage.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosing(WindowEvent e) {
+                            chargePage.setChargeCanceled(true);
+                        }
+                    });
+
+                    // Make the charge page visible
+                    chargePage.setVisible(true);
+
+                    Timer timer = new Timer(0, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            if(!chargePage.isChargeCanceled()) {
+                                // clear dislpayed drinks
+                                clearSelectedDrinks();
+                            }
+                        }
+                    });
+
+                    timer.setRepeats(false); // Only trigger once
+                    timer.start();
+                }
+            }
+        });
 
         totalPriceLabel = new JLabel("Total Price: $0.00");
         taxLabel = new JLabel("Tax: $0.00");
@@ -323,6 +357,13 @@ public class CashierApp extends JFrame {
             selectedDrinks.set(index, newDrink);
             updateDisplayPanel();
         }
+    }
+
+    private void clearSelectedDrinks() {
+        selectedDrinks.clear(); // Clear the list of selected drinks
+        totalPrice = 0.0; // Reset the total price to zero
+        taxAmount = 0.0;
+        updateDisplayPanel(); // Update the display panel to reflect the changes
     }
 
     /*
