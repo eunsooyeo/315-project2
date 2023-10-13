@@ -161,6 +161,24 @@ public class ManagerFunctions {
         return managers;
     }
 
+    public ArrayList<String> getEmployeeNames() {
+        ArrayList<String> names = new ArrayList<>();
+        try {
+            String sqlStatement = "SELECT name FROM employee;";
+            Statement stmt = conn.createStatement();
+            ResultSet result = stmt.executeQuery(sqlStatement);
+
+            while (result.next()) {
+                String name = result.getString(1);
+                names.add(name);
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+
+        }
+        return names;
+    }
+
     // returns an arraylist consist of the id, name, password, pay, hours, and
     // manager status
     // ^ all as string

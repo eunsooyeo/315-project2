@@ -19,9 +19,9 @@ public class CustomizeDrinkPopup extends JDialog {
     private Order order;
 
     public CustomizeDrinkPopup(JFrame parent, String drinkName, Order o) {
-        
+
         super(parent, "Customize Drink", true);
-        
+
         order = o;
         setLayout(new BorderLayout());
 
@@ -37,22 +37,22 @@ public class CustomizeDrinkPopup extends JDialog {
         // Ice options
         JPanel icePanel = new JPanel();
         icePanel.add(new JLabel("Ice: "));
-        String[] iceOptions = {"Regular Ice", "No Ice", "Light Ice", "Extra Ice"};
+        String[] iceOptions = { "Regular Ice", "No Ice", "Light Ice", "Extra Ice" };
         iceComboBox = new JComboBox<>(iceOptions);
         icePanel.add(iceComboBox);
 
         // Sweetness options
         JPanel sweetnessPanel = new JPanel();
         sweetnessPanel.add(new JLabel("Sweetness: "));
-        String[] sweetnessOptions = {"100% sugar", "80% sugar", "50% sugar", "30% sugar", "0% sugar"};
+        String[] sweetnessOptions = { "100% sugar", "80% sugar", "50% sugar", "30% sugar", "0% sugar" };
         sweetnessComboBox = new JComboBox<>(sweetnessOptions);
         sweetnessPanel.add(sweetnessComboBox);
 
         // Toppings options
         JPanel toppingsPanel = new JPanel();
         toppingsPanel.add(new JLabel("Toppings: "));
-        String[] toppingOptions = {"Pearl", "Mini Pearl", "Ice Cream", "Pudding", "Aloe Vera", "Red Bean",
-                "Herb Jelly", "Aiyu Jelly", "Lychee Jelly", "Creama", "Crystal Boba"};
+        String[] toppingOptions = { "Pearl", "Mini Pearl", "Ice Cream", "Pudding", "Aloe Vera", "Red Bean",
+                "Herb Jelly", "Aiyu Jelly", "Lychee Jelly", "Creama", "Crystal Boba" };
         toppingsCheckboxes = new JCheckBox[toppingOptions.length];
         for (int i = 0; i < toppingOptions.length; i++) {
             toppingsCheckboxes[i] = new JCheckBox(toppingOptions[i]);
@@ -83,7 +83,7 @@ public class CustomizeDrinkPopup extends JDialog {
                 selectedIce = iceComboBox.getSelectedItem().toString();
                 selectedSweetness = sweetnessComboBox.getSelectedItem().toString();
                 selectedToppings = new ArrayList<String>();
-                
+
                 for (int i = 0; i < toppingOptions.length; i++) {
                     if (toppingsCheckboxes[i].isSelected()) {
                         selectedToppings.add(toppingOptions[i]);
@@ -93,14 +93,18 @@ public class CustomizeDrinkPopup extends JDialog {
                 // Close the pop-up
                 dispose();
 
-                //make update to database
-                boolean updatedInventory = order.updateInventory(drinkName, selectedIce, selectedSweetness, selectedToppings);
-                /*if(!updatedInventory){
-                    ////////
-                    //TODO: Add message on GUI that order cannot be made because inventory item is low
-
-                    ////////
-                }
+                // make update to database
+                boolean updatedInventory = order.updateInventory(drinkName, selectedIce, selectedSweetness,
+                        selectedToppings);
+                /*
+                 * if(!updatedInventory){
+                 * ////////
+                 * //TODO: Add message on GUI that order cannot be made because inventory item
+                 * is low
+                 * 
+                 * ////////
+                 * }
+                 */
             }
         });
 
