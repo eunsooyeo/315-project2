@@ -225,7 +225,7 @@ public class EmployeeApp extends JPanel {
         detailsTextArea.setText(updatedDetails);
 
         // Update the database
-        managerFunctions.updateEmployeeSQL(newName, newHours);
+        managerFunctions.updateEmployeeSQL(newName, newHours, newPassword, newPay);
     }
 
     private void updateEmployeeInformation(int index) {
@@ -239,7 +239,7 @@ public class EmployeeApp extends JPanel {
         detailsTextArea.setText(updatedDetails);
 
         // Update the database
-        managerFunctions.updateEmployeeSQL(newName, newHours);
+        managerFunctions.updateEmployeeSQL(newName, newHours, newPassword, newPay);
     }
 
     private void addEmployee(String name, String hours, String password, String pay) {

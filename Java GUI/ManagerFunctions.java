@@ -17,8 +17,8 @@ public class ManagerFunctions {
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            String sqlStatement = "UPDATE recipes SET price = " + Double.parseDouble(price) + " WHERE drinkname = "
-                    + drinkName + ";";
+            String sqlStatement = "UPDATE recipes SET price = " + price + " WHERE drinkname = '"
+                    + drinkName + "'";
             // send statement to DBMS
             ResultSet result = stmt.executeQuery(sqlStatement);
         } catch (Exception e) {
@@ -31,14 +31,14 @@ public class ManagerFunctions {
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            String sqlStatement = "UPDATE recipes SET ingredient_names = ARRAY_APPEND(ingredient_names,"
-                    + ingredientName + "), ingredient_values = ARRAY_APPEND(ingredient_values,"
-                    + Double.parseDouble(ingredientValue) + ") WHERE drinkname =" + drinkName + ";";
+            String sqlStatement = "UPDATE recipes SET ingredient_names = ARRAY_APPEND(ingredient_names,'"
+                    + ingredientName + "'), ingredient_values = ARRAY_APPEND(ingredient_values,"
+                    + ingredientValue + ") WHERE drinkname ='" + drinkName + "'";
             // also update inventory if not exist
-            sqlStatement += "INSERT INTO inventory (name, amount, capacity, unit, alert) VALUES (" + ingredientName
-                    + ", 0, 1000, 'unit', TRUE) ON CONFLICT (name) DO NOTHING;";
+            sqlStatement += "INSERT INTO inventory (name, amount, capacity, unit, alert) VALUES ('" + ingredientName
+                    + "', 0, 1000, 'unit', TRUE) ON CONFLICT (name) DO NOTHING;";
             // send statement to DBMS
-            ResultSet result = stmt.executeQuery(sqlStatement);
+            stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {
             System.out.println("Error accessing Database.");
         }
@@ -49,30 +49,27 @@ public class ManagerFunctions {
         try {
             ArrayList<String> ingredient_names = new ArrayList<String>(Arrays.asList(ingredientNames));
             ArrayList<String> ingredient_values = new ArrayList<String>(Arrays.asList(ingredientValues));
-
+            /*String ingredient_names_string = ingredient_names.toString();
+            ingredient_names_string = ingredient_names_string.substring(1,ingredient_names_string.length()-1);
+            String ingredient_values_string = ingredient_values.toString();
+            ingredient_values_string = ingredient_values_string.substring(1,ingredient_values_string.length()-1);
+            */
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
 
-            // convert arraylist<string> to arraylist<double>
-            ArrayList<Double> ingredient_values_double = new ArrayList<>();
-            for (int i = 0; i < ingredient_values.size(); i++) {
-                ingredient_values_double.add(Double.parseDouble(ingredient_values.get(i)));
-            }
-
             String sqlStatement = "INSERT INTO recipes (recipeid, drinkname, ingredient_names, ingredient_values, price) VALUES ("
-                    + Integer.parseInt(drinkId) + ", " + drinkName + "," + ingredient_names + ","
-                    + ingredient_values_double + "," + Double.parseDouble(price) + ");";
-
+                    + drinkId + ", '" + drinkName + "','" + ingredient_names + "','"
+                    + ingredient_values + "'," + price + ")";
+            stmt.executeUpdate(sqlStatement);
             // determine which ingredients need to be created in inventory using Conflict
             for (int i = 0; i < ingredient_names.size(); i++) {
-                sqlStatement += "INSERT INTO inventory (name, amount, capacity, unit, alert) VALUES ("
-                        + ingredient_names.get(i) + ", 0, 1000, 'unit', TRUE) ON CONFLICT (name) DO NOTHING;";
+                stmt.executeUpdate("INSERT INTO inventory (name, amount, capacity, unit, alert) VALUES ("
+                        + ingredient_names.get(i) + ", 0, 1000, unit, TRUE) ON CONFLICT (name) DO NOTHING");
             }
-            // send statement to DBMS
-            ResultSet result = stmt.executeQuery(sqlStatement);
         } catch (Exception e) {
             System.out.println("Error accessing Database.");
+            e.printStackTrace();
         }
     }
 
@@ -81,27 +78,36 @@ public class ManagerFunctions {
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            String sqlStatement = "DELETE FROM recipes WHERE drinkname = " + drinkName + ";";
+            String sqlStatement = "DELETE FROM recipes WHERE drinkname = '" + drinkName;
 
             // send statement to DBMS
-            ResultSet result = stmt.executeQuery(sqlStatement);
+            stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {
             System.out.println("Error accessing Database.");
+            e.printStackTrace();
         }
     }
 
     public void createNewEmployee(String employeeName, String password, String pay, String hours, String manager) {
+        Boolean ret = false;
+        int rows = 0;
         try {
+            //determine if manager
+            String m = "FALSE";
+            if (manager.charAt(0) == 'T' || manager.charAt(0) == 't'){
+                m = "TRUE";
+            }
+            //conn.createStatement().executeUpdate("SELECT setval(pg_get_serial_sequence('employee','id'), coalesce(max(id)+1, 1), false) FROM employee");
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            String sqlStatement = "INSERT INTO employee (name, password, pay, hours, manager) VALUES (" + employeeName
-                    + "," + password + "," + Double.parseDouble(pay) + "," + Double.parseDouble(hours) + "," + manager
-                    + ");";
-            // send statement to DBMS
-            ResultSet result = stmt.executeQuery(sqlStatement);
+            String sqlStatement = "INSERT INTO employee (name, password, pay, hours, manager) VALUES ('" + employeeName
+                    + "','" + password + "'," + pay + "," + hours + "," + m + ")";
+
+            stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {
             System.out.println("Error accessing Database.");
+            e.printStackTrace();
         }
     }
 
@@ -110,9 +116,9 @@ public class ManagerFunctions {
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            String sqlStatement = "DELETE FROM employee WHERE name =" + employeeName + ";";
+            String sqlStatement = "DELETE FROM employee WHERE name ='" + employeeName + "'";
             // send statement to DBMS
-            ResultSet result = stmt.executeQuery(sqlStatement);
+            stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {
             System.out.println("Error accessing Database.");
         }
@@ -205,17 +211,18 @@ public class ManagerFunctions {
         return info;
     }
 
-    public void updateEmployeeSQL(String employeeName, String hours) {
+    public void updateEmployeeSQL(String employeeName, String hours, String password, String pay) {
         try {
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            String sqlStatement = "UPDATE employees SET hours = " + Double.parseDouble(hours) + " WHERE name = "
-                    + employeeName + ";";
+            String sqlStatement = "UPDATE employee SET hours = " + hours + ", pay = " + pay +  ", password = " + password + " WHERE name = '"
+                    + employeeName + "'";
             // send statement to DBMS
-            ResultSet result = stmt.executeQuery(sqlStatement);
+            stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {
             System.out.println("Error accessing Database.");
+            e.printStackTrace();
         }
     }
 
@@ -235,11 +242,12 @@ public class ManagerFunctions {
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            String sqlStatement = "UPDATE inventory SET amount = " + amount + " WHERE name = " + ingredient + ";";
+            String sqlStatement = "UPDATE inventory SET amount = " + amount + " WHERE name = " + ingredient;
             // send statement to DBMS
-            ResultSet result = stmt.executeQuery(sqlStatement);
+            stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {
             System.out.println("Error accessing Database.");
+            e.printStackTrace();
         }
     }
 
@@ -247,7 +255,7 @@ public class ManagerFunctions {
     public void removeFromInventory(String ingredient, String reduceAmount) {
         try {
             // get original amount
-            String getIngredientAmount = "SELECT * FROM inventory WHERE lower(name) = '" + ingredient + "';";
+            String getIngredientAmount = "SELECT * FROM inventory WHERE lower(name) = '" + ingredient + "'";
             ResultSet result2 = conn.createStatement().executeQuery(getIngredientAmount);
             result2.next();
             float amount = result2.getFloat("amount");
@@ -259,11 +267,12 @@ public class ManagerFunctions {
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            String sqlStatement = "UPDATE inventory SET amount = " + amount + " WHERE name = " + ingredient + ";";
+            String sqlStatement = "UPDATE inventory SET amount = " + amount + " WHERE name = " + ingredient;
             // send statement to DBMS
-            ResultSet result = stmt.executeQuery(sqlStatement);
+            stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {
             System.out.println("Error accessing Database.");
+            e.printStackTrace();
         }
     }
 
@@ -274,11 +283,12 @@ public class ManagerFunctions {
             Statement stmt = conn.createStatement();
             // create an SQL statement
             String sqlStatement = "INSERT INTO inventory (name, amount, capacity, unit, alert) VALUES (" + ingredient
-                    + ", 0," + Double.parseDouble(capacity) + "," + unit + ", TRUE) ON CONFLICT (name) DO NOTHING;";
+                    + ", 0," + capacity + "," + unit + ", TRUE) ON CONFLICT (name) DO NOTHING";
             // send statement to DBMS
-            ResultSet result = stmt.executeQuery(sqlStatement);
+            stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {
             System.out.println("Error accessing Database.");
+            e.printStackTrace();
         }
     }
 
@@ -288,11 +298,12 @@ public class ManagerFunctions {
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            String sqlStatement = "DELETE FROM inventory WHERE name =" + ingredient + ";";
+            String sqlStatement = "DELETE FROM inventory WHERE name =" + ingredient;
             // send statement to DBMS
-            ResultSet result = stmt.executeQuery(sqlStatement);
+            stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {
             System.out.println("Error accessing Database.");
+            e.printStackTrace();
         }
     }
 
