@@ -192,7 +192,7 @@ public class EmployeeApp extends JPanel {
         if (managerName != null) {
             ArrayList<String> managerInfo = detailsMap.get(managerName);
             if (managerInfo != null) {
-                detailsTextArea.setText("Manager Details:\n" + "Name: " + managerName + "\nPay: " + managerInfo.get(0) + "\nHours: " + managerInfo.get(1) + "\nPosition: " + managerInfo.get(2));
+                detailsTextArea.setText("Manager Details:\n"+ "ID: " + managerInfo.get(0) + "\nName: " + managerName + "\nPay: " + managerInfo.get(3) + "\nHours: " + managerInfo.get(4) + "\nPosition: manager");
             } else {
                 detailsTextArea.setText("Details not found for " + managerName);
             }
@@ -205,7 +205,7 @@ public class EmployeeApp extends JPanel {
         if (employeeName != null) {
             ArrayList<String> employeeInfo = detailsMap.get(employeeName);
             if (employeeInfo != null) {
-                detailsTextArea.setText("Employee Details:\n" + "Name: " + employeeName + "\nPay: " + employeeInfo.get(0) + "\nHours: " + employeeInfo.get(1) + "\nPosition: " + employeeInfo.get(2));
+                detailsTextArea.setText("Employee Details:\n"+ "ID: " + employeeInfo.get(0) + "\nName: " + employeeName + "\nPay: " + employeeInfo.get(3) + "\nHours: " + employeeInfo.get(4) + "\nPosition: employee");
             } else {
                 detailsTextArea.setText("Details not found for " + employeeName);
             }
