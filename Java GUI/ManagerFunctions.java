@@ -78,7 +78,7 @@ public class ManagerFunctions {
                 }
                 //System.out.println("names: " + names);
                 stmt.executeUpdate("INSERT INTO inventory (name, amount, capacity, unit, alert) SELECT '"
-                        + names + "', 0, 1000, 'unit', TRUE WHERE NOT EXISTS (SELECT name FROM inventory WHERE name = '" + names + "')");
+                        + names + "', 0, 1000, 'unit', TRUE WHERE NOT EXISTS (SELECT name FROM inventory WHERE lower (name) = '" + names.toLowerCase() + "')");
             }
         } catch (Exception e) {
             System.out.println("Error accessing Database.createNewRecipe");
@@ -242,22 +242,17 @@ public class ManagerFunctions {
     }
 
     // add amount to ingredient in inventory
-    public void addInventory(String ingredient, String newAmount) {
+    public void updateInventory(String ingredient, String amount, String capacity, String unit) {
         try {
-            // get original amount
-            String getIngredientAmount = "SELECT * FROM inventory WHERE lower(name) = '" + ingredient + "';";
-            ResultSet result2 = conn.createStatement().executeQuery(getIngredientAmount);
-            result2.next();
-            float amount = result2.getFloat("amount");
-
-            float newAmountFloat = Float.parseFloat(newAmount);
-            // add newAmount
-            amount += newAmountFloat;
+            String alert = "TRUE";
+            if (Double.parseDouble(amount) / Double.parseDouble(capacity) > 0.1){
+                alert = "FALSE";
+            }
 
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            String sqlStatement = "UPDATE inventory SET amount = " + amount + " WHERE name = " + ingredient;
+            String sqlStatement = "UPDATE inventory SET amount = " + amount + ", capacity = " + capacity + ", unit = '" + unit + "', alert = " + alert + " WHERE name = " + ingredient;
             // send statement to DBMS
             stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {
@@ -266,41 +261,14 @@ public class ManagerFunctions {
         }
     }
 
-    // remove amount of ingredient from inventory
-    public void removeFromInventory(String ingredient, String reduceAmount) {
-        try {
-            // get original amount
-            String getIngredientAmount = "SELECT * FROM inventory WHERE lower(name) = '" + ingredient + "'";
-            ResultSet result2 = conn.createStatement().executeQuery(getIngredientAmount);
-            result2.next();
-            float amount = result2.getFloat("amount");
-
-            float reduceAmountFloat = Float.parseFloat(reduceAmount);
-            // reduce amount by desired amount
-            amount -= reduceAmountFloat;
-
-            // create a statement object
-            Statement stmt = conn.createStatement();
-            // create an SQL statement
-            String sqlStatement = "UPDATE inventory SET amount = " + amount + " WHERE name = " + ingredient;
-            // send statement to DBMS
-            stmt.executeUpdate(sqlStatement);
-        } catch (Exception e) {
-            System.out.println("Error accessing Database. removeFromInventory");
-            e.printStackTrace();
-        }
-    }
-
     // add new ingredient to inventory
-    public void createNewInventory(String ingredient, String capacity, String unit) {
+    public void createNewInventory(String ingredient, String amount, String capacity, String unit) {
         try {
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            String sqlStatement = "INSERT INTO inventory (name, amount, capacity, unit, alert) VALUES (" + ingredient
-                    + ", 0," + capacity + "," + unit + ", TRUE) ON CONFLICT (name) DO NOTHING";
-            // send statement to DBMS
-            stmt.executeUpdate(sqlStatement);
+            stmt.executeUpdate("INSERT INTO inventory (name, amount, capacity, unit, alert) SELECT '"
+                        + ingredient + "'," + amount + "," + capacity + ", '"+ unit + "', TRUE WHERE NOT EXISTS (SELECT name FROM inventory WHERE lower (name) = '" + ingredient.toLowerCase() + "')");
         } catch (Exception e) {
             System.out.println("Error accessing Database. createNewInventory");
             e.printStackTrace();
@@ -313,7 +281,7 @@ public class ManagerFunctions {
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            String sqlStatement = "DELETE FROM inventory WHERE name =" + ingredient;
+            String sqlStatement = "DELETE FROM inventory WHERE name = '" + ingredient + "'";
             // send statement to DBMS
             stmt.executeUpdate(sqlStatement);
         } catch (Exception e) {

@@ -180,7 +180,7 @@ public class InventoryApp extends JPanel {
             Connection conn = DriverManager.getConnection(dbConnectionString, dbSetup.user, dbSetup.pswd);
 
             Statement stmt = conn.createStatement();
-            String sqlString = "UPDATE inventory SET alert = true WHERE lower(name) = '" + name.toLowerCase() + "';";
+            String sqlString = "UPDATE inventory SET alert = TRUE WHERE lower(name) = '" + name.toLowerCase() + "';";
             stmt.executeUpdate(sqlString);
             return true;
         } catch (Exception e) {
