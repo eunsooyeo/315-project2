@@ -13,7 +13,7 @@ public class InventoryApp extends JPanel {
             "Aiyu Jelly", "Aloe Vera", "Black Tea", "Brown Sugar", "Cocoa", "Coffee", "Creama",
             "Creamer", "Crystal Boba", "Cups", "Fructose", "Grapefruit", "Green Tea", "Herb Jelly",
             "Honey", "Ice", "Ice Cream", "Lime", "Lychee Jelly", "Mango", "Matcha", "Milk", "Mint",
-            "Napkins", "Okinawa", "Oolong Tea", "Orange", "Passionfruit", "Peach", "Pearls", "Perals Mini",
+            "Napkins", "Okinawa", "Oolong Tea", "Orange", "Passionfruit", "Peach", "Pearls", "Mini Pearls",
             "Pineapple", "Plastic Cover", "Pudding", "Red Bean", "Strawberry", "Straws", "Taro", "Water",
             "White Sugar", "Wintermelon"
         };
