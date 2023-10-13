@@ -273,23 +273,23 @@ public class CashierApp extends JFrame {
         updateDisplayPanel();
     }
 
-    private void updateTotalPrice(String drink) {
+    private void updateTotalPrice() {
         // TODO **************************************************************** connect
         // to DB and match prices
         // Calculate the total price based on the number of selected drinks
         double drinksPrice = 0.0;
         try {
-
-            double price;
-            String queryString = "SELECT price FROM recipes WHERE lower(drinkname) = '" + drink.toLowerCase()
-                    + "';";
-            Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery(queryString);
-            result.next();
-            price = result.getDouble(1);
-            // System.out.println("price of " + drink + " is: " + price);
-            drinksPrice += price;
-
+            for (String drink : selectedDrinks) {
+                double price;
+                String queryString = "SELECT price FROM recipes WHERE lower(drinkname) = '" + drink.toLowerCase()
+                        + "';";
+                Statement stmt = conn.createStatement();
+                ResultSet result = stmt.executeQuery(queryString);
+                result.next();
+                price = result.getDouble(1);
+                // System.out.println("price of " + drink + " is: " + price);
+                drinksPrice += price;
+            }
         } catch (Exception e) {
             System.out.println("error updating total price");
         }
