@@ -306,10 +306,11 @@ public class MenusApp extends JPanel {
     private void updateDisplay() {
         if (selectedDrink >= 0 && selectedDrink < drinkButtons.length) {
             String name = drinkNames[selectedDrink];
+            String id = drinkIDs[selectedDrink];
             String price = drinkPrices[selectedDrink];
             String ingredients = drinkIngredients[selectedDrink];
             String ingredientAmounts = drinkIngredientsAmounts[selectedDrink];
-            String drinkInfo = "Drink Info:\nName: " + name + "\nPrice: $" + price + "\nIngredients: " + ingredients + "\nIngredient amounts: " + ingredientAmounts;
+            String drinkInfo = "Drink Info:\nID: " + id + "\nName: "+ name + "\nPrice: $" + price + "\nIngredients: " + ingredients + "\nIngredient amounts: " + ingredientAmounts;
             drinkDetailsTextArea.setText(drinkInfo);
         } else {
             drinkDetailsTextArea.setText("Select a drink");
