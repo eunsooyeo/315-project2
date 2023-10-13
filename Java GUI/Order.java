@@ -11,7 +11,8 @@ public class Order {
     public Order(Connection db_connection) {
         conn = db_connection;
     }
-        /*
+
+    /*
      * @Return : boolean
      * * false if the order fails to be created
      * * may be due to reasons: insufficient ingredient or errors
@@ -32,7 +33,7 @@ public class Order {
     public boolean makeOrder() {
         // find recipe of drinkName from recipe database
         int[] drinkIDs = new int[drinkNames.size()];
-    
+
         for (int index = 0; index < drinkNames.size(); index++) {
             String drinkName = drinkNames.get(index);
             try {
@@ -45,35 +46,38 @@ public class Order {
                 // Array ingredientsArr = result.getArray("ingredient_names");
                 // String[] ingredients = (String[]) ingredientsArr.getArray();
                 // Array ingredientAmountArr = result.getArray("ingredient_values");
-                // BigDecimal[] ingredientAmount = (BigDecimal[]) ingredientAmountArr.getArray();
+                // BigDecimal[] ingredientAmount = (BigDecimal[])
+                // ingredientAmountArr.getArray();
                 // float price = result.getFloat("price");
 
                 // make subtractions from inventory database
                 // for (int i = 0; i < ingredients.length; i++) {
-                //     String ingredient = ingredients[i].toLowerCase();
-                //     String getIngredientAmount = "SELECT * FROM inventory WHERE lower(name) = '" + ingredient + "';";
-                //     ResultSet result2 = conn.createStatement().executeQuery(getIngredientAmount);
-                //     result2.next();
-                //     float amount = result2.getFloat("amount");
-                //     if (ingredient.equals("brown sugar") || ingredient.equals("fructose")
-                //             || ingredient.equals("honey") || ingredient.equals("white sugar")) {
-                //         amount -= (ingredientAmount[i]).intValue() * sugarLevel.get(index) / 100;
-                //     }
-                //     amount -= (ingredientAmount[i]).intValue();
-                //     if (amount < 0) {
-                //         return false;
-                //     }
-                //     String updateIngredientAmount = "UPDATE inventory SET amount = " + amount + " WHERE lower(name) = '"
-                //             + ingredient + "';";
-                //     conn.createStatement().executeUpdate(updateIngredientAmount);
+                // String ingredient = ingredients[i].toLowerCase();
+                // String getIngredientAmount = "SELECT * FROM inventory WHERE lower(name) = '"
+                // + ingredient + "';";
+                // ResultSet result2 = conn.createStatement().executeQuery(getIngredientAmount);
+                // result2.next();
+                // float amount = result2.getFloat("amount");
+                // if (ingredient.equals("brown sugar") || ingredient.equals("fructose")
+                // || ingredient.equals("honey") || ingredient.equals("white sugar")) {
+                // amount -= (ingredientAmount[i]).intValue() * sugarLevel.get(index) / 100;
+                // }
+                // amount -= (ingredientAmount[i]).intValue();
+                // if (amount < 0) {
+                // return false;
+                // }
+                // String updateIngredientAmount = "UPDATE inventory SET amount = " + amount + "
+                // WHERE lower(name) = '"
+                // + ingredient + "';";
+                // conn.createStatement().executeUpdate(updateIngredientAmount);
                 // }
                 // update ice
                 // String getIceAmount = "SELECT amount FROM inventory WHERE name = 'Ice';";
                 // result = conn.createStatement().executeQuery(getIceAmount);
                 // result.next();
                 // String updateIceAmount = "UPDATE inventory SET amount = "
-                //         + (result.getInt("amount") - iceLevel.get(index) / 10)
-                //         + " WHERE name = 'Ice';";
+                // + (result.getInt("amount") - iceLevel.get(index) / 10)
+                // + " WHERE name = 'Ice';";
                 // conn.createStatement().executeUpdate(updateIceAmount);
 
                 drinkIDs[index] = recipeID;
@@ -104,9 +108,8 @@ public class Order {
         return true;
     }
 
-
     public boolean updateInventory(String drinkName, String iceLevel, String sugarLevel, ArrayList<String> toppings) {
-        //check the ingredients available
+        // check the ingredients available
         // find recipe of drinkName from recipe database
         int drinkID;
         try {
@@ -122,18 +125,15 @@ public class Order {
             Array ingredientAmountArr = result.getArray("ingredient_values");
             BigDecimal[] ingredientAmount = (BigDecimal[]) ingredientAmountArr.getArray();
 
-            //first determine sugar level
+            // first determine sugar level
             Integer sugarLevelInt = 100;
-            if (sugarLevel == "0% sugar"){
+            if (sugarLevel == "0% sugar") {
                 sugarLevelInt = 0;
-            }
-            else if (sugarLevel == "30% sugar"){
+            } else if (sugarLevel == "30% sugar") {
                 sugarLevelInt = 30;
-            }
-            else if (sugarLevel == "50% sugar"){
+            } else if (sugarLevel == "50% sugar") {
                 sugarLevelInt = 50;
-            }
-            else if (sugarLevel == "80% sugar"){
+            } else if (sugarLevel == "80% sugar") {
                 sugarLevelInt = 80;
             }
 
@@ -152,18 +152,17 @@ public class Order {
                 if (amount < 0) {
                     return false;
                 }
-                String updateIngredientAmount = "UPDATE inventory SET amount = " + amount + " WHERE lower(name) = '"+ ingredient + "';";
+                String updateIngredientAmount = "UPDATE inventory SET amount = " + amount + " WHERE lower(name) = '"
+                        + ingredient + "';";
                 conn.createStatement().executeUpdate(updateIngredientAmount);
             }
-            //determine ice level
+            // determine ice level
             Integer iceLevelInt = 0;
-            if (iceLevel == "Regular Ice"){
+            if (iceLevel == "Regular Ice") {
                 iceLevelInt = 100;
-            }
-            else if (iceLevel == "Light Ice"){
+            } else if (iceLevel == "Light Ice") {
                 iceLevelInt = 50;
-            }
-            else if (iceLevel == "Extra Ice"){
+            } else if (iceLevel == "Extra Ice") {
                 iceLevelInt = 150;
             }
 
@@ -172,7 +171,7 @@ public class Order {
             result = conn.createStatement().executeQuery(getIceAmount);
             result.next();
             float amount = result.getInt("amount");
-            amount -= iceLevelInt /10;
+            amount -= iceLevelInt / 10;
             if (amount < 0) {
                 return false;
             }
@@ -189,20 +188,21 @@ public class Order {
     }
 
     public boolean restoreInventory(String drinkInfo) {
-        //parse drink info
+        // parse drink info
         String[] tokens = drinkInfo.split("\n");
 
         String drinkName = (tokens[0]).trim();
         String iceLevel = (tokens[1]).trim();
         String sugarLevel = (tokens[2]).trim();
-        String[] toppingString = (tokens[3].replaceAll("\\s+","")).split(",");
+        String[] toppingString = (tokens[3].replaceAll("\\s+", "")).split(",");
         List<String> toppings = new ArrayList<String>(Arrays.asList(toppingString));
 
-        //check the ingredients available
+        // check the ingredients available
         // find recipe of drinkName from recipe database
         int drinkID;
         try {
-            String queryString = "SELECT recipeid, ingredient_names, ingredient_values FROM recipes WHERE lower(drinkname) = '" + drinkName.toLowerCase()
+            String queryString = "SELECT recipeid, ingredient_names, ingredient_values FROM recipes WHERE lower(drinkname) = '"
+                    + drinkName.toLowerCase()
                     + "'";
             ResultSet result = conn.createStatement().executeQuery(queryString);
 
@@ -215,18 +215,15 @@ public class Order {
             Array ingredientAmountArr = result.getArray("ingredient_values");
             BigDecimal[] ingredientAmount = (BigDecimal[]) ingredientAmountArr.getArray();
 
-            //first determine sugar level
+            // first determine sugar level
             Integer sugarLevelInt = 100;
-            if (sugarLevel == "0% sugar"){
+            if (sugarLevel == "0% sugar") {
                 sugarLevelInt = 0;
-            }
-            else if (sugarLevel == "30% sugar"){
+            } else if (sugarLevel == "30% sugar") {
                 sugarLevelInt = 30;
-            }
-            else if (sugarLevel == "50% sugar"){
+            } else if (sugarLevel == "50% sugar") {
                 sugarLevelInt = 50;
-            }
-            else if (sugarLevel == "80% sugar"){
+            } else if (sugarLevel == "80% sugar") {
                 sugarLevelInt = 80;
             }
 
@@ -242,19 +239,18 @@ public class Order {
                     amount += (ingredientAmount[i]).floatValue() * sugarLevelInt / 100.0;
                 }
                 amount += (ingredientAmount[i]).floatValue();
-                
-                String updateIngredientAmount = "UPDATE inventory SET amount = " + amount + " WHERE lower(name) = '"+ ingredient + "';";
+
+                String updateIngredientAmount = "UPDATE inventory SET amount = " + amount + " WHERE lower(name) = '"
+                        + ingredient + "';";
                 conn.createStatement().executeUpdate(updateIngredientAmount);
             }
-            //determine ice level
+            // determine ice level
             Integer iceLevelInt = 0;
-            if (iceLevel == "Regular Ice"){
+            if (iceLevel == "Regular Ice") {
                 iceLevelInt = 100;
-            }
-            else if (iceLevel == "Light Ice"){
+            } else if (iceLevel == "Light Ice") {
                 iceLevelInt = 50;
-            }
-            else if (iceLevel == "Extra Ice"){
+            } else if (iceLevel == "Extra Ice") {
                 iceLevelInt = 150;
             }
 
@@ -264,7 +260,7 @@ public class Order {
             result.next();
             float amount = result.getInt("amount");
             amount += iceLevelInt / 10;
-        
+
             String updateIceAmount = "UPDATE inventory SET amount = "
                     + amount
                     + " WHERE name = 'Ice';";
@@ -275,19 +271,19 @@ public class Order {
             return false;
         }
 
-        //now check the toppings
+        // now check the toppings
         // update topping, each topping is +10 in inventory
         for (int index = 0; index < toppings.size(); index++) {
             String topping = toppings.get(index).toLowerCase();
             String getToppingAmount = "SELECT amount FROM inventory WHERE lower(name) = '" + topping + "';";
             try {
                 ResultSet result = conn.createStatement().executeQuery(getToppingAmount);
-                if(!result.next()) {
+                if (!result.next()) {
                     continue;
                 }
                 float amount = result.getFloat("amount");
                 amount += 10;
-            
+
                 String updateToppingAmount = "UPDATE inventory SET amount = "
                         + amount
                         + " WHERE lower(name) = '" + topping + "';";
@@ -306,18 +302,18 @@ public class Order {
     public boolean editInventory(String oldDrink, String newDrink) {
         restoreInventory(oldDrink);
 
-        //parse new drink
+        // parse new drink
         String[] tokens = newDrink.split("\n");
 
         String drinkName = (tokens[0]).trim();
         String iceLevel = (tokens[1]).trim();
         String sugarLevel = (tokens[2]).trim();
-        String[] toppingString = (tokens[3].replaceAll("\\s+","")).split(",");
+        String[] toppingString = (tokens[3].replaceAll("\\s+", "")).split(",");
         ArrayList<String> toppings = new ArrayList<String>(Arrays.asList(toppingString));
 
         updateInventory(drinkName, iceLevel, sugarLevel, toppings);
 
         return true;
     }
-    
+
 }

@@ -29,6 +29,8 @@ public class CashierApp extends JFrame {
 
     private JButton chargeButton;
 
+    public static Connection conn = null;
+
     public CashierApp(ManagerFunctions m, Order o) {
         setTitle("Cashier Interface");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -159,6 +161,20 @@ public class CashierApp extends JFrame {
         mainPanel.add(rightPanel, BorderLayout.EAST);
 
         add(mainPanel);
+
+        String teamName = "10r";
+        String dbName = "csce315331_" + teamName + "_db";
+        String dbConnectionString = "jdbc:postgresql://csce-315-db.engr.tamu.edu/" + dbName;
+        dbSetup myCredentials = new dbSetup();
+
+        // connect to database
+        try {
+            conn = DriverManager.getConnection(dbConnectionString, dbSetup.user, dbSetup.pswd);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
     }
 
     private void updateMiddlePanel(String category) {
@@ -257,14 +273,28 @@ public class CashierApp extends JFrame {
         updateDisplayPanel();
     }
 
-    private void updateTotalPrice() {
+    private void updateTotalPrice(ArrayList<String> drinkNames) {
         // TODO **************************************************************** connect
         // to DB and match prices
         // Calculate the total price based on the number of selected drinks
-        double drinkPrice = 5.0; // Set the base price per drink - DELETE THIS LATER
+        double drinksPrice = 0.0;
+        try {
+            for (String drink : drinkNames) {
+                double price;
+                String queryString = "SELECT price FROM recipes WHERE lower(drinkname) = '" + drink.toLowerCase()
+                        + "';";
+                Statement stmt = conn.createStatement();
+                ResultSet result = stmt.executeQuery(queryString);
+                result.next();
+                price = result.getDouble(1);
+                // System.out.println("price of " + drink + " is: " + price);
+                drinksPrice += price;
+            }
+        } catch (Exception e) {
+            System.out.println("error updating total price");
+        }
 
-        totalPrice = selectedDrinks.size() * drinkPrice;
-        taxAmount = totalPrice * 0.0825;
+        taxAmount = drinksPrice * 0.0825;
         updateDisplayPanel();
     }
 
@@ -296,7 +326,8 @@ public class CashierApp extends JFrame {
             removeButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    //////////////////////////TODO: REMOVE DRINK FROM DATABASE //////////////////////////
+                    ////////////////////////// TODO: REMOVE DRINK FROM DATABASE
+                    ////////////////////////// //////////////////////////
                     order.restoreInventory(drink);
                     removeSelectedDrink(drink);
                 }
