@@ -51,10 +51,10 @@ public class ManagerFunctions {
             ArrayList<String> ingredient_names = new ArrayList<String>(Arrays.asList(ingredientNames));
             ArrayList<String> ingredient_values = new ArrayList<String>(Arrays.asList(ingredientValues));
             String ingredient_names_string = ingredient_names.toString();
-            ingredient_names_string = ingredient_names_string.substring(1,ingredient_names_string.length()-1);
+            ingredient_names_string = ingredient_names_string.substring(1, ingredient_names_string.length() - 1);
             String ingredient_values_string = ingredient_values.toString();
-            ingredient_values_string = ingredient_values_string.substring(1,ingredient_values_string.length()-1);
-            
+            ingredient_values_string = ingredient_values_string.substring(1, ingredient_values_string.length() - 1);
+
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
@@ -86,6 +86,7 @@ public class ManagerFunctions {
         }
     }
 
+
     public void removeRecipe(String drinkName) {
         try {
             // create a statement object
@@ -101,7 +102,7 @@ public class ManagerFunctions {
         }
     }
 
-    public void createNewEmployee(String employeeName, String password, String pay, String hours, String manager) {
+    public void createNewEmployee(String id, String employeeName, String password, String pay, String hours, String manager) {
         Boolean ret = false;
         int rows = 0;
         try {
@@ -115,7 +116,7 @@ public class ManagerFunctions {
 
             stmt.executeQuery("SELECT setval(pg_get_serial_sequence('employee','id'), coalesce(max(id)+1, 1), false) FROM employee");
             // create an SQL statement
-            String sqlStatement = "INSERT INTO employee (name, password, pay, hours, manager) VALUES ('" + employeeName
+            String sqlStatement = "INSERT INTO employee (id, name, password, pay, hours, manager) VALUES ('" + id + "','" + employeeName
                     + "','" + password + "'," + pay + "," + hours + "," + m + ")";
 
             stmt.executeUpdate(sqlStatement);
