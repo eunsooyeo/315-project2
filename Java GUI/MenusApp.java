@@ -151,12 +151,11 @@ public class MenusApp extends JPanel {
                 drinkIngredients[selectedDrink] = ingredientsField.getText();
                 drinkIngredientsAmounts[selectedDrink] = ingredientsValueField.getText();
 
-                drinkButtons[selectedDrink].setText(drinkNames[selectedDrink]); // Update the drink button text
-                updateDisplay();
-
                 //update recipe database
                 managerFunctions.updateRecipeIngredient(drinkIngredients[selectedDrink],drinkIngredientsAmounts[selectedDrink],drinkNames[selectedDrink]);
                 managerFunctions.updateRecipePrice(drinkNames[selectedDrink], drinkPrices[selectedDrink]);
+                drinkButtons[selectedDrink].setText(drinkNames[selectedDrink]); // Update the drink button text
+                updateDisplay();
             }
         });
 
