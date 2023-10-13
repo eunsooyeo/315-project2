@@ -6,10 +6,29 @@ import java.util.*;
 public class Order {
     private ArrayList<String> drinkNames;
     private ArrayList<Float> prices;
+    private ArrayList<Integer> numToppings;
     public static Connection conn;
 
     public Order(Connection db_connection) {
         conn = db_connection;
+    }
+
+    public void assign(Order o) {
+        this.drinkNames = o.getDrinkNames();
+        this.prices = o.getPrices();
+        this.numToppings = o.getNumToppings();
+    }
+
+    public ArrayList<String> getDrinkNames() {
+        return drinkNames;
+    }
+
+    public ArrayList<Float> getPrices() {
+        return prices;
+    }
+
+    public ArrayList<Integer> getNumToppings() {
+        return numToppings;
     }
 
     /*
@@ -31,6 +50,12 @@ public class Order {
      * * returns true if everything functions properly, false otherwise
      */
     public boolean makeOrder() {
+        for(int index = 0; index < drinkNames.size(); index++) {
+            System.out.println(drinkNames.get(index));
+        }
+        for(int index = 0; index < prices.size(); index++) {
+            System.out.println(prices.get(index));
+        }
         // find recipe of drinkName from recipe database
         int[] drinkIDs = new int[drinkNames.size()];
         float totalPrice = 0.0f;
@@ -43,45 +68,9 @@ public class Order {
                 result.next();
                 int recipeID = result.getInt("recipeid");
 
-                // Array ingredientsArr = result.getArray("ingredient_names");
-                // String[] ingredients = (String[]) ingredientsArr.getArray();
-                // Array ingredientAmountArr = result.getArray("ingredient_values");
-                // BigDecimal[] ingredientAmount = (BigDecimal[])
-                // ingredientAmountArr.getArray();
-                // float price = result.getFloat("price");
-
-                // make subtractions from inventory database
-                // for (int i = 0; i < ingredients.length; i++) {
-                // String ingredient = ingredients[i].toLowerCase();
-                // String getIngredientAmount = "SELECT * FROM inventory WHERE lower(name) = '"
-                // + ingredient + "';";
-                // ResultSet result2 = conn.createStatement().executeQuery(getIngredientAmount);
-                // result2.next();
-                // float amount = result2.getFloat("amount");
-                // if (ingredient.equals("brown sugar") || ingredient.equals("fructose")
-                // || ingredient.equals("honey") || ingredient.equals("white sugar")) {
-                // amount -= (ingredientAmount[i]).intValue() * sugarLevel.get(index) / 100;
-                // }
-                // amount -= (ingredientAmount[i]).intValue();
-                // if (amount < 0) {
-                // return false;
-                // }
-                // String updateIngredientAmount = "UPDATE inventory SET amount = " + amount + "
-                // WHERE lower(name) = '"
-                // + ingredient + "';";
-                // conn.createStatement().executeUpdate(updateIngredientAmount);
-                // }
-                // update ice
-                // String getIceAmount = "SELECT amount FROM inventory WHERE name = 'Ice';";
-                // result = conn.createStatement().executeQuery(getIceAmount);
-                // result.next();
-                // String updateIceAmount = "UPDATE inventory SET amount = "
-                // + (result.getInt("amount") - iceLevel.get(index) / 10)
-                // + " WHERE name = 'Ice';";
-                // conn.createStatement().executeUpdate(updateIceAmount);
-
                 drinkIDs[index] = recipeID;
                 totalPrice += prices.get(index);
+                totalPrice += numToppings.get(index) * 0.5;
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -185,6 +174,7 @@ public class Order {
 
             //now check the toppings
             // update topping, each topping is +10 in inventory
+            Integer numToppingForDrink = 0;
             for (int index = 0; index < toppings.size(); index++) {
                 String topping = toppings.get(index).trim().toLowerCase();
                 String getToppingAmount = "SELECT amount FROM inventory WHERE lower(name) = '" + topping + "';";
@@ -200,6 +190,7 @@ public class Order {
                             + amount
                             + " WHERE lower(name) = '" + topping + "';";
                     conn.createStatement().executeUpdate(updateToppingAmount);
+                    numToppingForDrink += 1;
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -236,6 +227,7 @@ public class Order {
 
             drinkNames.add(drinkName);
             prices.add(price);
+            numToppings.add(numToppingForDrink);
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -328,6 +320,7 @@ public class Order {
 
             //now check the toppings
             // update topping, each topping is +10 in inventory
+            Integer numToppingForDrink = 0;
             for (int index = 0; index < toppings.size(); index++) {
                 String topping = toppings.get(index).trim().toLowerCase();
                 String getToppingAmount = "SELECT amount FROM inventory WHERE lower(name) = '" + topping + "';";
@@ -343,7 +336,7 @@ public class Order {
                             + amount
                             + " WHERE lower(name) = '" + topping + "';";
                     conn.createStatement().executeUpdate(updateToppingAmount);
-
+                    numToppingForDrink += 1;
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -379,6 +372,7 @@ public class Order {
         
             drinkNames.remove(drinkName);
             prices.remove(price);
+            numToppings.remove(numToppingForDrink);
 
         } catch (Exception e) {
             e.printStackTrace();

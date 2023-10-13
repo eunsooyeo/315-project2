@@ -67,6 +67,7 @@ public class CashierApp extends JFrame {
             drinkButtons.add(categoryButton);
         }
 
+        // order.assign(o);
         order = o;
         managerFunctions = m;
 
@@ -108,6 +109,7 @@ public class CashierApp extends JFrame {
                 if (!chargeButton.getText().equals("Charge: $0.00")) {
                     // Create the charge page and pass the total price
                     double totalAmount = totalPrice + taxAmount;
+
                     ChargePage chargePage = new ChargePage(CashierApp.this, totalAmount);
 
                     chargePage.addWindowListener(new WindowAdapter() {
@@ -120,6 +122,7 @@ public class CashierApp extends JFrame {
                     // Make the charge page visible
                     chargePage.setVisible(true);
 
+
                     Timer timer = new Timer(0, new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -129,6 +132,9 @@ public class CashierApp extends JFrame {
                             }
                         }
                     });
+
+                    //update order history
+                    // order.makeOrder();
 
                     timer.setRepeats(false); // Only trigger once
                     timer.start();

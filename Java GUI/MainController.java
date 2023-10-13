@@ -52,9 +52,9 @@ public class MainController {
         // "Information about employee Tom Hank: " +
         // managerFunctions.getEmployeeInfo("Tom Hank").toString());
         // ================================================================================================
-        System.out.println("number of drinks: " + managerFunctions.getNumberOfDrinks());
-        System.out.println("all drinks: " + managerFunctions.getAllDrinkNames().toString());
-        System.out.println("drink info: " + managerFunctions.getDrinkInfo("Honey milk tea").toString());
+        // System.out.println("number of drinks: " + managerFunctions.getNumberOfDrinks());
+        // System.out.println("all drinks: " + managerFunctions.getAllDrinkNames().toString());
+        // System.out.println("drink info: " + managerFunctions.getDrinkInfo("Honey milk tea").toString());
 
         // open GUI
         SwingUtilities.invokeLater(() -> {
