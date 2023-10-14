@@ -58,11 +58,6 @@ public class MainController {
         // managerFunctions.getAllDrinkNames().toString());
         // System.out.println("drink info: " + managerFunctions.getDrinkInfo("Honey milk
         // tea").toString());
-        ArrayList<ArrayList<String>> list = managerFunctions.getFilteredSalesHistory("2023-12-01", "2023-12-02");
-        for (ArrayList<String> l : list) {
-            System.out.println(l.toString());
-        
-        }
 
         // open GUI
         SwingUtilities.invokeLater(() -> {
