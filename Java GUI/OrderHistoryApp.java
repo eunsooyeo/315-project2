@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.*;
 
 public class OrderHistoryApp extends JPanel {
     private JTextField fromField;
@@ -13,6 +14,8 @@ public class OrderHistoryApp extends JPanel {
     private CardLayout cardLayout;
     private JPanel switchPanel;
 
+    private JLabel totalOrdersLabel;
+    private JLabel totalRevenuesLabel;
 
     public OrderHistoryApp(ManagerFunctions m) {
         managerFunctions = m;
@@ -23,8 +26,8 @@ public class OrderHistoryApp extends JPanel {
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
 
-        JLabel totalOrdersLabel = new JLabel("Total Orders: ");
-        JLabel totalRevenuesLabel = new JLabel("Total Revenue: ");
+        totalOrdersLabel = new JLabel("Total Orders: ");
+        totalRevenuesLabel = new JLabel("Total Revenue: ");
 
         JLabel fromLabel = new JLabel("From (YYYY-MM-DD):");
         fromField = new JTextField("From", 10);
@@ -47,9 +50,8 @@ public class OrderHistoryApp extends JPanel {
                     JOptionPane.showMessageDialog(OrderHistoryApp.this, "ERROR\n\nPlease Input Dates");
                     return;
                 }
-                String[] fromDates = fromText.split("/");
-                String[] toDates = toText.split("/");
-                totalOrdersLabel.setText("Total Orders: " + "TOTAL ORDERS BUTTON PRESSED");
+
+                displayOrders(fromText, toText);
             }
         });
 
@@ -68,9 +70,6 @@ public class OrderHistoryApp extends JPanel {
         switchPanel.add(totalRevenuesLabel);
         
         add(switchPanel, BorderLayout.CENTER);
-
-        
-
     }
 
     private class TextFieldFocusListener extends FocusAdapter {
@@ -95,5 +94,30 @@ public class OrderHistoryApp extends JPanel {
                 source.setText(defaultText);
             }
         }
+    }
+
+    public void displayOrders(String fromDate, String toDate) {
+        switchPanel.removeAll();
+        switchPanel.add(totalOrdersLabel);
+        switchPanel.add(totalRevenuesLabel);
+
+        ArrayList<ArrayList<String>> sales = managerFunctions.getFilteredSalesHistory(fromDate, toDate);
+        int totalOrders = 0;
+        double totalRevenue = 0.0;
+
+        for(int i = 0; i < sales.size(); i++) {
+            String orderData = sales.get(i).get(0) + "    Total: " + sales.get(i).get(1) + "    Revenue:$" + sales.get(i).get(2);
+            JLabel orderLabel = new JLabel(orderData);
+            switchPanel.add(orderLabel);
+
+            totalOrders += Integer.parseInt(sales.get(i).get(1));
+            totalRevenue += Double.parseDouble(sales.get(i).get(2));
+        }
+
+        totalOrdersLabel.setText("Total Orders: " + totalOrders);
+        totalRevenuesLabel.setText("Total Revenue: " + totalRevenue);
+
+        switchPanel.revalidate();
+        switchPanel.repaint();
     }
 }
