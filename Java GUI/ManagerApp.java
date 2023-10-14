@@ -88,6 +88,9 @@ public class ManagerApp extends JFrame {
         JPanel menusPage = new MenusApp(m);
         cardPanel.add(menusPage, "Menus");
 
+        JPanel orderHistoryPage = new OrderHistoryApp(managerFunctions);
+        cardPanel.add(orderHistoryPage, "Order History");
+
         // Initially show the Employees page
         cardLayout.show(cardPanel, "Employees");
 
@@ -125,6 +128,12 @@ public class ManagerApp extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 openMenusApp();
                 cardLayout.show(cardPanel, "Menus");
+            }
+        });
+        orderHistoryButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(cardPanel, "Order History");
             }
         });
 
