@@ -13,7 +13,7 @@ public class OrderHistoryApp extends JPanel {
     private ManagerFunctions managerFunctions;
     private CardLayout cardLayout;
     private JPanel switchPanel;
-
+    private JPanel drinksPanel; // New panel for drink labels
     private JLabel totalOrdersLabel;
     private JLabel totalRevenuesLabel;
 
@@ -61,14 +61,22 @@ public class OrderHistoryApp extends JPanel {
         topPanel.add(toField);
         topPanel.add(submitButton); // Add the submit button
 
+        JPanel totalLabelsPanel = new JPanel(new BorderLayout());
+        totalLabelsPanel.add(totalOrdersLabel, BorderLayout.WEST);
+        totalLabelsPanel.add(totalRevenuesLabel, BorderLayout.EAST);
+
+        // Add the top panel to the main content panel
+        add(totalLabelsPanel, BorderLayout.NORTH);
         add(topPanel, BorderLayout.NORTH);
 
-        // Create a panel for switching between "Orders" and "Revenues"
+        // Create a panel the list of drinks
+        drinksPanel = new JPanel(new GridLayout(0, 3));
+
         switchPanel = new JPanel();
         switchPanel.setBackground(new Color(220, 220, 220)); // Light gray color
         switchPanel.add(totalOrdersLabel);
         switchPanel.add(totalRevenuesLabel);
-        
+        switchPanel.add(drinksPanel);
         add(switchPanel, BorderLayout.CENTER);
     }
 
@@ -97,18 +105,25 @@ public class OrderHistoryApp extends JPanel {
     }
 
     public void displayOrders(String fromDate, String toDate) {
-        switchPanel.removeAll();
-        switchPanel.add(totalOrdersLabel);
-        switchPanel.add(totalRevenuesLabel);
+        drinksPanel.removeAll();
 
         ArrayList<ArrayList<String>> sales = managerFunctions.getFilteredSalesHistory(fromDate, toDate);
         int totalOrders = 0;
         double totalRevenue = 0.0;
 
         for(int i = 0; i < sales.size(); i++) {
-            String orderData = sales.get(i).get(0) + "    Total: " + sales.get(i).get(1) + "    Revenue:$" + sales.get(i).get(2);
-            JLabel orderLabel = new JLabel(orderData);
-            switchPanel.add(orderLabel);
+            //String orderData = sales.get(i).get(0) + "    Total: " + sales.get(i).get(1) + "    Revenue:$" + sales.get(i).get(2);
+            String orderNameText = sales.get(i).get(0);
+            String orderTotalText = "Total: " + sales.get(i).get(1);
+            String orderRevenueText = "Revenue:$" + sales.get(i).get(2);
+
+            JLabel orderName = new JLabel(orderNameText);
+            JLabel orderTotal = new JLabel(orderTotalText);
+            JLabel orderRevenue = new JLabel(orderRevenueText);
+            //JLabel orderLabel = new JLabel("<html>" + orderData + "</html>");
+            drinksPanel.add(orderName);
+            drinksPanel.add(orderTotal);
+            drinksPanel.add(orderRevenue);
 
             totalOrders += Integer.parseInt(sales.get(i).get(1));
             totalRevenue += Double.parseDouble(sales.get(i).get(2));
@@ -117,6 +132,8 @@ public class OrderHistoryApp extends JPanel {
         totalOrdersLabel.setText("Total Orders: " + totalOrders);
         totalRevenuesLabel.setText("Total Revenue: " + totalRevenue);
 
+        drinksPanel.revalidate();
+        drinksPanel.repaint();
         switchPanel.revalidate();
         switchPanel.repaint();
     }
