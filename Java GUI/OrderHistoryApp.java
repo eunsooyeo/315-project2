@@ -26,12 +26,12 @@ public class OrderHistoryApp extends JPanel {
         JLabel totalOrdersLabel = new JLabel("Total Orders: ");
         JLabel totalRevenuesLabel = new JLabel("Total Revenue: ");
 
-        JLabel fromLabel = new JLabel("From (MM-DD-YYYY):");
+        JLabel fromLabel = new JLabel("From (YYYY-MM-DD):");
         fromField = new JTextField("From", 10);
         fromField.setFont(new Font("Arial", Font.PLAIN, 12)); // Smaller font size
         fromField.addFocusListener(new TextFieldFocusListener("From"));
 
-        JLabel toLabel = new JLabel("To (MM-DD-YYYY):");
+        JLabel toLabel = new JLabel("To (YYYY-MM-DD):");
         toField = new JTextField("To", 10);
         toField.setFont(new Font("Arial", Font.PLAIN, 12)); // Smaller font size
         toField.addFocusListener(new TextFieldFocusListener("To"));
