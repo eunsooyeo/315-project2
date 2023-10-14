@@ -84,7 +84,7 @@ public class ManagerApp extends JFrame {
         JPanel supplyHistoryPage = new SupplyHistoryApp(managerFunctions);
         cardPanel.add(supplyHistoryPage, "Supply History");
 
-        //Create the Menus page
+        // Create the Menus page
         JPanel menusPage = new MenusApp(m);
         cardPanel.add(menusPage, "Menus");
 
@@ -143,18 +143,20 @@ public class ManagerApp extends JFrame {
     private void openMenusApp() {
         MenusApp menusApp = new MenusApp(managerFunctions);
         menusApp.setVisible(true);
-        //dispose();
+        // dispose();
     }
 
-    private void openEmployeeApp(){
+    private void openEmployeeApp() {
         EmployeeApp employeeApp = new EmployeeApp(managerFunctions);
         employeeApp.setVisible(true);
     }
 
-    /*public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            ManagerApp managerApp = new ManagerApp(order);
-            managerApp.setVisible(true);
-        });
-    }*/
+    /*
+     * public static void main(String[] args) {
+     * SwingUtilities.invokeLater(() -> {
+     * ManagerApp managerApp = new ManagerApp(order);
+     * managerApp.setVisible(true);
+     * });
+     * }
+     */
 }
