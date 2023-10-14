@@ -393,4 +393,37 @@ public class ManagerFunctions {
         return info;
     }
 
+    public ArrayList<String> getAllSupplyHistory() {
+        ArrayList<String> supplyHistory = new ArrayList<>();
+        try {
+            Statement stmt = conn.createStatement();
+            String sqlString = "SELECT * FROM supply_history;";
+            ResultSet result = stmt.executeQuery(sqlString);
+            while (result.next()) {
+                String received = (result.getString(8) == null) ? "Not Received" : result.getString(8);
+                supplyHistory.add(result.getString(2) + "     #" + result.getString(3) + "    " + result.getString(7) + "     " + received + result.getString(4) + "\n" + result.getString(5) + "\n" + result.getString(6));
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Error getting supply history .getAllSupplyHistory");
+        }
+        return supplyHistory;
+    }
+
+    public String getUnitOfIngredient(String name) {
+        String unit = "";
+        try {
+            Statement stmt = conn.createStatement();
+            String sqlString = "SELECT unit FROM inventory WHERE lower(name) = '" + name.toLowerCase() + "';";
+            ResultSet result = stmt.executeQuery(sqlString);
+            result.next();
+            unit = result.getString(1);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Error getting an ingredient's unit .getUnitOfIngredient");
+        }
+        return unit;
+    }
 }
