@@ -110,6 +110,7 @@ public class ManagerApp extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(cardPanel, "Inventory");
+                ((InventoryApp) cardPanel.getComponent(1)).updateDisplay();
             }
         });
 
