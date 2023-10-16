@@ -519,6 +519,7 @@ public class ManagerFunctions {
     public ArrayList<String> getExcessReport(String beginningDate) {
         //set endDate to be current date
         String endDate = java.time.LocalDate.now().toString();
+        double numDrinks = 0.0;
         TreeMap<String, Double> currItemAndAmount = new TreeMap<>();
         TreeMap<String, Double> salesItemAndAmount = new TreeMap<>();
         ArrayList<String> excessItems = new ArrayList<>();
@@ -533,7 +534,7 @@ public class ManagerFunctions {
             while (result.next()) {
                 String item = result.getString(1);
                 Double amount = result.getDouble(2);
-
+                
                 //populate map with all the ingredients and its current amount
                 currItemAndAmount.put(item, amount);
                 //populate map with items and initialize to 0
@@ -551,9 +552,10 @@ public class ManagerFunctions {
 
                 //loop through each of the drinks/recipes
                 for (String s : drinkIDs) {
+                    ++numDrinks;
                     //for each recipe get the ingredients and their amounts
-                    // reference the recipe database, get name and price
-                    sqlString = "SELECT ingredient_names, ingredient_values FROM recipes WHERE recipeid = " + Integer.parseInt(s) + ";";
+                    //reference the recipe database, get name and price
+                    String sqlString = "SELECT ingredient_names, ingredient_values FROM recipes WHERE recipeid = " + Integer.parseInt(s) + ";";
                     Statement stmt2 = conn.createStatement();
                     ResultSet result2 = stmt2.executeQuery(sqlString);
                     result2.next();
@@ -563,11 +565,20 @@ public class ManagerFunctions {
                     String[] ingredient_values = tmp.substring(1, tmp.length() - 1).split(",");
 
                     for (int i = 0; i < ingredient_names.length; ++i) {
+                        if(ingredient_names[i].contains("\"")) {
+                            ingredient_names[i] = ingredient_names[i].substring(1, ingredient_names[i].length() - 1);
+                        }
                         double currAmount = salesItemAndAmount.get(ingredient_names[i]);
                         double newAmount = currAmount + Double.parseDouble(ingredient_values[i]);
                         salesItemAndAmount.replace(ingredient_names[i], newAmount);
                     }
                 }
+            }
+
+            //account for cups, napkins, straws, and plastic cover
+            List<String> items = Arrays.asList("cups", "straws", "plastic cover", "napkins");
+            for(String item: items) {
+                salesItemAndAmount.replace(item, numDrinks);
             }
 
             //loop through the ingredients array
@@ -576,7 +587,7 @@ public class ManagerFunctions {
                 double totalAmount = currItemAndAmount.get(key) + salesAmount;
 
                 //compare to the current amount array and determine if it's 10%
-                if (totalAmount < (salesAmount * 0.1)) {
+                if (salesAmount< (totalAmount * 0.1)) {
                     excessItems.add(key);
                 }
             }
