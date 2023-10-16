@@ -141,14 +141,13 @@ public class CashierApp extends JFrame {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             if (!chargePage.isChargeCanceled()) {
+                                //update order history
+                                order.makeOrder(selectedDrinks, totalAmount);
                                 // clear dislpayed drinks
                                 clearSelectedDrinks();
                             }
                         }
                     });
-
-                    //update order history
-                    // order.makeOrder();
 
                     timer.setRepeats(false); // Only trigger once
                     timer.start();

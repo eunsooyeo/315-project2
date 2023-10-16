@@ -4,31 +4,10 @@ import javax.naming.spi.DirStateFactory.Result;
 import java.util.*;
 
 public class Order {
-    private ArrayList<String> drinkNames;
-    private ArrayList<Float> prices;
-    private ArrayList<Integer> numToppings;
     public static Connection conn;
 
     public Order(Connection db_connection) {
         conn = db_connection;
-    }
-
-    public void assign(Order o) {
-        this.drinkNames = o.getDrinkNames();
-        this.prices = o.getPrices();
-        this.numToppings = o.getNumToppings();
-    }
-
-    public ArrayList<String> getDrinkNames() {
-        return drinkNames;
-    }
-
-    public ArrayList<Float> getPrices() {
-        return prices;
-    }
-
-    public ArrayList<Integer> getNumToppings() {
-        return numToppings;
     }
 
     /*
@@ -49,18 +28,16 @@ public class Order {
      * * updates orders
      * * returns true if everything functions properly, false otherwise
      */
-    public boolean makeOrder() {
-        for(int index = 0; index < drinkNames.size(); index++) {
-            System.out.println(drinkNames.get(index));
-        }
-        for(int index = 0; index < prices.size(); index++) {
-            System.out.println(prices.get(index));
-        }
+    public boolean makeOrder(List<String> drinkNames, double totalPrice) {
         // find recipe of drinkName from recipe database
         int[] drinkIDs = new int[drinkNames.size()];
-        float totalPrice = 0.0f;
+
         for (int index = 0; index < drinkNames.size(); index++) {
-            String drinkName = drinkNames.get(index);
+            //parse drink name
+            String drink = drinkNames.get(index);
+            int lastIndexOfDrink = drink.indexOf("$");
+            String drinkName = drink.substring(0, lastIndexOfDrink).trim();
+
             try {
                 String queryString = "SELECT * FROM recipes WHERE lower(drinkname) = '" + drinkName.toLowerCase()
                         + "';";
@@ -69,9 +46,6 @@ public class Order {
                 int recipeID = result.getInt("recipeid");
 
                 drinkIDs[index] = recipeID;
-                totalPrice += prices.get(index);
-                totalPrice += numToppings.get(index) * 0.5;
-
             } catch (Exception e) {
                 e.printStackTrace();
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -84,14 +58,12 @@ public class Order {
                 + Arrays.toString(drinkIDs)
                 + ", '" + java.time.LocalDate.now().toString() + "', '"
                 + time.getHour() + ":" + time.getMinute() + ":" + time.getSecond() + "', "
-                + totalPrice + ");";
-
+                + String.format("%.2f", totalPrice) + ");";
         try {
             conn.createStatement().executeUpdate(updateOrdersString);
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            // return false;
         }
 
         return true;
@@ -101,7 +73,6 @@ public class Order {
         // check the ingredients available
         // find recipe of drinkName from recipe database
         int drinkID;
-        System.out.println(drinkName);
         if(drinkName.contains("$")) {
             String[] drinkNameAndPrice = drinkName.split("\\$");
             drinkName = drinkNameAndPrice[0].trim();
@@ -164,7 +135,7 @@ public class Order {
             }
 
             // update ice
-            String getIceAmount = "SELECT amount FROM inventory WHERE name = 'Ice';";
+            String getIceAmount = "SELECT amount FROM inventory WHERE name = 'ice';";
             result = conn.createStatement().executeQuery(getIceAmount);
             result.next();
             float amount = result.getInt("amount");
@@ -174,7 +145,7 @@ public class Order {
             }
             String updateIceAmount = "UPDATE inventory SET amount = "
                     + (result.getInt("amount") - iceLevelInt / 10)
-                    + " WHERE name = 'Ice';";
+                    + " WHERE name = 'ice';";
             conn.createStatement().executeUpdate(updateIceAmount);
 
             //now check the toppings
@@ -205,7 +176,7 @@ public class Order {
             }
 
             //add back Cups, Straws, Plastic Cover, Napkins
-            List<String> items = Arrays.asList("Cups", "Straws", "Plastic Cover", "Napkins");
+            List<String> items = Arrays.asList("cups", "straws", "plastic cover", "napkins");
             for(int index = 0; index < items.size(); index++) {
                 String item = items.get(index);
                 String getItemAmount = "SELECT amount FROM inventory WHERE name = '" + item + "';";
@@ -230,9 +201,9 @@ public class Order {
                 }
             }
 
-            drinkNames.add(drinkName);
-            prices.add(price);
-            numToppings.add(numToppingForDrink);
+            // drinkNames.add(drinkName);
+            // prices.add(price);
+            // numToppings.add(numToppingForDrink);
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -313,7 +284,7 @@ public class Order {
             }
 
             // update ice
-            String getIceAmount = "SELECT amount FROM inventory WHERE name = 'Ice';";
+            String getIceAmount = "SELECT amount FROM inventory WHERE name = 'ice';";
             result = conn.createStatement().executeQuery(getIceAmount);
             result.next();
             float amount = result.getInt("amount");
@@ -321,7 +292,7 @@ public class Order {
 
             String updateIceAmount = "UPDATE inventory SET amount = "
                     + amount
-                    + " WHERE name = 'Ice';";
+                    + " WHERE name = 'ice';";
             conn.createStatement().executeUpdate(updateIceAmount);
 
             //now check the toppings
@@ -351,7 +322,7 @@ public class Order {
             }
 
             //add back Cups, Straws, Plastic Cover, Napkins
-            List<String> items = Arrays.asList("Cups", "Straws", "Plastic Cover", "Napkins");
+            List<String> items = Arrays.asList("cups", "straws", "plastic cover", "napkins");
             for(int index = 0; index < items.size(); index++) {
                 String item = items.get(index);
                 String getItemAmount = "SELECT amount FROM inventory WHERE name = '" + item + "';";
@@ -376,9 +347,9 @@ public class Order {
                 }
             }
         
-            drinkNames.remove(drinkName);
-            prices.remove(price);
-            numToppings.remove(numToppingForDrink);
+            // drinkNames.remove(drinkName);
+            // prices.remove(price);
+            // numToppings.remove(numToppingForDrink);
 
         } catch (Exception e) {
             e.printStackTrace();
