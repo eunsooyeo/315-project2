@@ -516,4 +516,76 @@ public class ManagerFunctions {
 
     }
 
+    public ArrayList<String> getExcessReport(String beginningDate, String endDate) {
+        //set endDate to be current date
+        TreeMap<String, Double> currItemAndAmount = new TreeMap<>();
+        TreeMap<String, Double> salesItemAndAmount = new TreeMap<>();
+        ArrayList<String> excessItems = new ArrayList<>():
+
+        try {
+            //call the inventory
+            Statement stmt = conn.createStatement();
+            String callInventory = "SELECT name, amount FROM inventory";
+            ResultSet result = stmt.executeQuery(callInventory);
+
+            //loop through each row in the inventory
+            while (result.next()) {
+                String item = result.getString(1);
+                Double amount = result.getDouble(2);
+
+                //populate map with all the ingredients and its current amount
+                currItemAndAmount.put(item, amount);
+                //populate map with items and initialize to 0
+                salesItemAndAmount.put(item, 0.0);
+            }
+
+            String getOrders = "SELECT drink_id FROM orders WHERE date >= '" + beginningDate + "' AND date <= '"
+                    + endDate + "';";
+            result = stmt.executeQuery(getOrders);
+
+            //loop through all the orders within the time frame
+            while (result.next()) {
+                String tmp = result.getString(1);
+                String[] drinkIDs = tmp.substring(1, tmp.length() - 1).split(",");
+
+                //loop through each of the drinks/recipes
+                for (String s : drinkIDs) {
+                    //for each recipe get the ingredients and their amounts
+                    // reference the recipe database, get name and price
+                    sqlString = "SELECT ingredient_names, ingredient_values FROM recipes WHERE recipeid = " + Integer.parseInt(s) + ";";
+                    Statement stmt2 = conn.createStatement();
+                    ResultSet result2 = stmt2.executeQuery(sqlString);
+                    result2.next();
+                    tmp = result2.getString(1);
+                    String[] ingredient_names = tmp.substring(1, tmp.length() - 1).split(",");
+                    tmp = result2.getString(2);
+                    String[] ingredient_values = tmp.substring(1, tmp.length() - 1).split(",");
+
+                    for (int i = 0; i < ingredient_names.length; ++i) {
+                        double currAmount = salesItemAndAmount.get(ingredient_names[i]);
+                        double newAmount = currAmount + Double.parseDouble(ingredient_values[i]);
+                        salesItemAndAmount.replace(ingredient_names[i], newAmount);
+                    }
+                }
+            }
+
+            //loop through the ingredients array
+            for (String key : currItemAndAmount.keySet()) {
+                double salesAmount = salesItemAndAmount.get(key);
+                double totalAmount = currItemAndAmount.get(key) + salesAmount;
+
+                //compare to the current amount array and determine if it's 10%
+                if (totalAmount < (salesAmount * 0.1)) {
+                    excessItems.add(key);
+                }
+            }
+        } 
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Error getting excess report");
+        }
+        
+        return excessItems;
+    }
+
 }
