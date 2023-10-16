@@ -203,7 +203,7 @@ public class CashierApp extends JFrame {
             button.setEnabled(true);
         }
 
-        ArrayList<String> extraDrinksArr = managerFunctions.getAllDrinkNames();
+        ArrayList<String> extraDrinksArr = managerFunctions.getAllSortedDrinks();
 
         // Implement code to display specific drinks for the selected category
         switch (category) {

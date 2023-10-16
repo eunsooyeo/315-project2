@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.*;
+import javax.swing.border.Border;
 
 public class OrderHistoryApp extends JPanel {
     private JTextField fromField;
@@ -23,8 +24,11 @@ public class OrderHistoryApp extends JPanel {
         setLayout(new BorderLayout());
 
         // Create a panel for the "From" and "To" fields at the top
-        JPanel topPanel = new JPanel();
-        topPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setBorder(BorderFactory.createEmptyBorder(25, 30, 20, 30)); // Add padding
+
+        JPanel dateFieldsPanel = new JPanel();
+        dateFieldsPanel.setLayout(new BoxLayout(dateFieldsPanel, BoxLayout.X_AXIS));
 
         totalOrdersLabel = new JLabel("Total Orders: ");
         totalRevenuesLabel = new JLabel("Total Revenue: ");
@@ -55,28 +59,30 @@ public class OrderHistoryApp extends JPanel {
             }
         });
 
-        topPanel.add(fromLabel);
-        topPanel.add(fromField);
-        topPanel.add(toLabel);
-        topPanel.add(toField);
-        topPanel.add(submitButton); // Add the submit button
+        dateFieldsPanel.add(fromLabel);
+        dateFieldsPanel.add(fromField);
+        dateFieldsPanel.add(toLabel);
+        dateFieldsPanel.add(toField);
+        dateFieldsPanel.add(submitButton);
 
-        JPanel totalLabelsPanel = new JPanel(new BorderLayout());
-        totalLabelsPanel.add(totalOrdersLabel, BorderLayout.WEST);
-        totalLabelsPanel.add(totalRevenuesLabel, BorderLayout.EAST);
+        topPanel.add(dateFieldsPanel, BorderLayout.NORTH);
 
-        // Add the top panel to the main content panel
-        add(totalLabelsPanel, BorderLayout.NORTH);
+        JPanel totalLabelsPanel = new JPanel();
+        totalLabelsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
+        totalLabelsPanel.add(totalOrdersLabel);
+        totalLabelsPanel.add(totalRevenuesLabel);
+
+        topPanel.add(totalLabelsPanel, BorderLayout.CENTER);
+
         add(topPanel, BorderLayout.NORTH);
 
-        // Create a panel the list of drinks
         drinksPanel = new JPanel(new GridLayout(0, 3));
+        drinksPanel.setBackground(new Color(207, 209, 212)); // Background color
+        drinksPanel.setBorder(BorderFactory.createEmptyBorder(7, 30, 7, 30)); // Padding
 
-        switchPanel = new JPanel();
-        switchPanel.setBackground(new Color(220, 220, 220)); // Light gray color
-        switchPanel.add(totalOrdersLabel);
-        switchPanel.add(totalRevenuesLabel);
-        switchPanel.add(drinksPanel);
+        JPanel switchPanel = new JPanel(new BorderLayout());
+        switchPanel.add(drinksPanel, BorderLayout.CENTER);
+
         add(switchPanel, BorderLayout.CENTER);
     }
 
@@ -113,14 +119,29 @@ public class OrderHistoryApp extends JPanel {
 
         for(int i = 0; i < sales.size(); i++) {
             //String orderData = sales.get(i).get(0) + "    Total: " + sales.get(i).get(1) + "    Revenue:$" + sales.get(i).get(2);
-            String orderNameText = sales.get(i).get(0);
+            String orderNameText = "  " + sales.get(i).get(0);
             String orderTotalText = "Total: " + sales.get(i).get(1);
-            String orderRevenueText = "Revenue:$" + sales.get(i).get(2);
+            String orderRevenueText = "Revenue: $" + sales.get(i).get(2);
 
             JLabel orderName = new JLabel(orderNameText);
             JLabel orderTotal = new JLabel(orderTotalText);
             JLabel orderRevenue = new JLabel(orderRevenueText);
-            //JLabel orderLabel = new JLabel("<html>" + orderData + "</html>");
+            
+            Border bottomBorder = BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(207, 209, 212));
+
+            orderName.setBorder(bottomBorder);
+            orderTotal.setBorder(bottomBorder);
+            orderRevenue.setBorder(bottomBorder);
+
+            // Set a lighter background color for each label
+            orderName.setBackground(new Color(240, 240, 240));
+            orderTotal.setBackground(new Color(240, 240, 240));
+            orderRevenue.setBackground(new Color(240, 240, 240));
+
+            orderName.setOpaque(true);
+            orderTotal.setOpaque(true);
+            orderRevenue.setOpaque(true);
+
             drinksPanel.add(orderName);
             drinksPanel.add(orderTotal);
             drinksPanel.add(orderRevenue);
@@ -130,11 +151,9 @@ public class OrderHistoryApp extends JPanel {
         }
 
         totalOrdersLabel.setText("Total Orders: " + totalOrders);
-        totalRevenuesLabel.setText("Total Revenue: " + totalRevenue);
+        totalRevenuesLabel.setText("Total Revenue: $" + totalRevenue);
 
         drinksPanel.revalidate();
         drinksPanel.repaint();
-        switchPanel.revalidate();
-        switchPanel.repaint();
     }
 }
