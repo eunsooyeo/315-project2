@@ -391,6 +391,22 @@ public class ManagerFunctions {
         return drinks;
     }
 
+    public ArrayList<String> getAllSortedDrinks() {
+        ArrayList<String> drinks = new ArrayList<>();
+        try {
+            Statement stmt = conn.createStatement();
+            String sqlString = "SELECT drinkname FROM recipes ORDER BY recipeid;";
+            ResultSet result = stmt.executeQuery(sqlString);
+            while (result.next()) {
+                drinks.add(result.getString(1));
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error getting all sorted drink names. getAllSortedDrinks");
+        }
+        return drinks;
+    }
+
     public ArrayList<String> getDrinkInfo(String name) {
         ArrayList<String> info = new ArrayList<>();
         try {
