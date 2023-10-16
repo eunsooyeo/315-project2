@@ -516,8 +516,9 @@ public class ManagerFunctions {
 
     }
 
-    public ArrayList<String> getExcessReport(String beginningDate, String endDate) {
+    public ArrayList<String> getExcessReport(String beginningDate) {
         //set endDate to be current date
+        String endDate = java.time.LocalDate.now().toString();
         TreeMap<String, Double> currItemAndAmount = new TreeMap<>();
         TreeMap<String, Double> salesItemAndAmount = new TreeMap<>();
         ArrayList<String> excessItems = new ArrayList<>();
