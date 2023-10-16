@@ -520,7 +520,7 @@ public class ManagerFunctions {
         //set endDate to be current date
         TreeMap<String, Double> currItemAndAmount = new TreeMap<>();
         TreeMap<String, Double> salesItemAndAmount = new TreeMap<>();
-        ArrayList<String> excessItems = new ArrayList<>():
+        ArrayList<String> excessItems = new ArrayList<>();
 
         try {
             //call the inventory
@@ -552,7 +552,7 @@ public class ManagerFunctions {
                 for (String s : drinkIDs) {
                     //for each recipe get the ingredients and their amounts
                     // reference the recipe database, get name and price
-                    sqlString = "SELECT ingredient_names, ingredient_values FROM recipes WHERE recipeid = " + Integer.parseInt(s) + ";";
+                    String sqlString = "SELECT ingredient_names, ingredient_values FROM recipes WHERE recipeid = " + Integer.parseInt(s) + ";";
                     Statement stmt2 = conn.createStatement();
                     ResultSet result2 = stmt2.executeQuery(sqlString);
                     result2.next();
