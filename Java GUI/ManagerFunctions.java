@@ -2,6 +2,7 @@ import java.math.BigDecimal;
 import java.sql.*;
 import javax.naming.spi.DirStateFactory.Result;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ManagerFunctions {
     private ArrayList<String> drinkNames;
@@ -500,4 +501,82 @@ public class ManagerFunctions {
 
     }
 
+    // checks if arraylist item exists in targetlist
+    private int containsList(ArrayList<ArrayList<String>> targetlist, ArrayList<String> item) {
+        ArrayList<String> item2 = new ArrayList<>();
+        item2.add(item.get(1));
+        item2.add(item.get(0));
+        for (int i = 0; i < targetlist.size(); i++) {
+            if (targetlist.get(i).equals(item) || targetlist.get(i).equals(item2)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    // returns a treemap with key being an arraylist (of size 2) of the drinksIDs,
+    // with value being the number of its occurrence
+    public TreeMap<ArrayList<String>, Integer> getWhatSalesTogether(String beginningDate, String endDate) {
+        ArrayList<String[]> list = new ArrayList<>();
+
+        try {
+            Statement stmt = conn.createStatement();
+            String sqlString = "SELECT drink_id FROM orders WHERE date >= '" + beginningDate + "' AND date <= '"
+                    + endDate + "';";
+            ResultSet result = stmt.executeQuery(sqlString);
+            while (result.next()) {
+                String s = result.getString(1);
+                s = s.substring(1, s.length() - 1);
+                String[] sstr = s.split(",");
+                list.add(sstr);
+                // System.out.println(Arrays.toString(sstr));
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Error getting what sales together");
+        }
+
+        ArrayList<ArrayList<String>> recordName = new ArrayList<>();
+        ArrayList<Integer[]> recordAmount = new ArrayList<>();
+        for (String[] str : list) {
+            if (str.length < 2)
+                continue;
+            for (int i = 0; i < str.length; i++) {
+                for (int j = i + 1; j < str.length; j++) {
+                    if (str[i].equals(str[j]))
+                        continue;
+                    ArrayList<String> tmpName = new ArrayList<>();
+                    tmpName.add(str[i]);
+                    tmpName.add(str[j]);
+                    int index = containsList(recordName, tmpName);
+                    if (index > -1) {
+                        Integer[] integer = new Integer[2];
+                        integer[0] = recordAmount.get(index)[0] + 1;
+                        integer[1] = recordAmount.get(index)[1];
+                        recordAmount.set(index, integer);
+                    } else {
+                        recordName.add(tmpName);
+                        Integer[] integer = new Integer[2];
+                        integer[0] = 1;
+                        integer[1] = recordAmount.size();
+                        recordAmount.add(integer);
+                    }
+                }
+
+            }
+        }
+
+        Collections.sort(recordAmount, new Comparator<Integer[]>() {
+            public int compare(Integer[] int1, Integer[] int2) {
+                return -(int1[0] - int2[0]);
+            }
+        });
+        TreeMap<ArrayList<String>, Integer> map = new TreeMap<>();
+
+        for (Integer[] intarr : recordAmount) {
+            map.put(recordName.get(intarr[1]), intarr[0]);
+        }
+        return map;
+    }
 }
