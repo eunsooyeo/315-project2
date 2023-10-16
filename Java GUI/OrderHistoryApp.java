@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.*;
+import javax.swing.border.Border;
 
 public class OrderHistoryApp extends JPanel {
     private JTextField fromField;
@@ -12,7 +14,9 @@ public class OrderHistoryApp extends JPanel {
     private ManagerFunctions managerFunctions;
     private CardLayout cardLayout;
     private JPanel switchPanel;
-
+    private JPanel drinksPanel; // New panel for drink labels
+    private JLabel totalOrdersLabel;
+    private JLabel totalRevenuesLabel;
 
     public OrderHistoryApp(ManagerFunctions m) {
         managerFunctions = m;
@@ -20,11 +24,14 @@ public class OrderHistoryApp extends JPanel {
         setLayout(new BorderLayout());
 
         // Create a panel for the "From" and "To" fields at the top
-        JPanel topPanel = new JPanel();
-        topPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setBorder(BorderFactory.createEmptyBorder(25, 30, 20, 30)); // Add padding
 
-        JLabel totalOrdersLabel = new JLabel("Total Orders: ");
-        JLabel totalRevenuesLabel = new JLabel("Total Revenue: ");
+        JPanel dateFieldsPanel = new JPanel();
+        dateFieldsPanel.setLayout(new BoxLayout(dateFieldsPanel, BoxLayout.X_AXIS));
+
+        totalOrdersLabel = new JLabel("Total Orders: ");
+        totalRevenuesLabel = new JLabel("Total Revenue: ");
 
         JLabel fromLabel = new JLabel("From (YYYY-MM-DD):");
         fromField = new JTextField("From", 10);
@@ -47,30 +54,36 @@ public class OrderHistoryApp extends JPanel {
                     JOptionPane.showMessageDialog(OrderHistoryApp.this, "ERROR\n\nPlease Input Dates");
                     return;
                 }
-                String[] fromDates = fromText.split("/");
-                String[] toDates = toText.split("/");
-                totalOrdersLabel.setText("Total Orders: " + "TOTAL ORDERS BUTTON PRESSED");
+
+                displayOrders(fromText, toText);
             }
         });
 
-        topPanel.add(fromLabel);
-        topPanel.add(fromField);
-        topPanel.add(toLabel);
-        topPanel.add(toField);
-        topPanel.add(submitButton); // Add the submit button
+        dateFieldsPanel.add(fromLabel);
+        dateFieldsPanel.add(fromField);
+        dateFieldsPanel.add(toLabel);
+        dateFieldsPanel.add(toField);
+        dateFieldsPanel.add(submitButton);
+
+        topPanel.add(dateFieldsPanel, BorderLayout.NORTH);
+
+        JPanel totalLabelsPanel = new JPanel();
+        totalLabelsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
+        totalLabelsPanel.add(totalOrdersLabel);
+        totalLabelsPanel.add(totalRevenuesLabel);
+
+        topPanel.add(totalLabelsPanel, BorderLayout.CENTER);
 
         add(topPanel, BorderLayout.NORTH);
 
-        // Create a panel for switching between "Orders" and "Revenues"
-        switchPanel = new JPanel();
-        switchPanel.setBackground(new Color(220, 220, 220)); // Light gray color
-        switchPanel.add(totalOrdersLabel);
-        switchPanel.add(totalRevenuesLabel);
-        
+        drinksPanel = new JPanel(new GridLayout(0, 3));
+        drinksPanel.setBackground(new Color(207, 209, 212)); // Background color
+        drinksPanel.setBorder(BorderFactory.createEmptyBorder(7, 30, 7, 30)); // Padding
+
+        JPanel switchPanel = new JPanel(new BorderLayout());
+        switchPanel.add(drinksPanel, BorderLayout.CENTER);
+
         add(switchPanel, BorderLayout.CENTER);
-
-        
-
     }
 
     private class TextFieldFocusListener extends FocusAdapter {
@@ -95,5 +108,52 @@ public class OrderHistoryApp extends JPanel {
                 source.setText(defaultText);
             }
         }
+    }
+
+    public void displayOrders(String fromDate, String toDate) {
+        drinksPanel.removeAll();
+
+        ArrayList<ArrayList<String>> sales = managerFunctions.getFilteredSalesHistory(fromDate, toDate);
+        int totalOrders = 0;
+        double totalRevenue = 0.0;
+
+        for(int i = 0; i < sales.size(); i++) {
+            //String orderData = sales.get(i).get(0) + "    Total: " + sales.get(i).get(1) + "    Revenue:$" + sales.get(i).get(2);
+            String orderNameText = "  " + sales.get(i).get(0);
+            String orderTotalText = "Total: " + sales.get(i).get(1);
+            String orderRevenueText = "Revenue: $" + sales.get(i).get(2);
+
+            JLabel orderName = new JLabel(orderNameText);
+            JLabel orderTotal = new JLabel(orderTotalText);
+            JLabel orderRevenue = new JLabel(orderRevenueText);
+            
+            Border bottomBorder = BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(207, 209, 212));
+
+            orderName.setBorder(bottomBorder);
+            orderTotal.setBorder(bottomBorder);
+            orderRevenue.setBorder(bottomBorder);
+
+            // Set a lighter background color for each label
+            orderName.setBackground(new Color(240, 240, 240));
+            orderTotal.setBackground(new Color(240, 240, 240));
+            orderRevenue.setBackground(new Color(240, 240, 240));
+
+            orderName.setOpaque(true);
+            orderTotal.setOpaque(true);
+            orderRevenue.setOpaque(true);
+
+            drinksPanel.add(orderName);
+            drinksPanel.add(orderTotal);
+            drinksPanel.add(orderRevenue);
+
+            totalOrders += Integer.parseInt(sales.get(i).get(1));
+            totalRevenue += Double.parseDouble(sales.get(i).get(2));
+        }
+
+        totalOrdersLabel.setText("Total Orders: " + totalOrders);
+        totalRevenuesLabel.setText("Total Revenue: $" + totalRevenue);
+
+        drinksPanel.revalidate();
+        drinksPanel.repaint();
     }
 }

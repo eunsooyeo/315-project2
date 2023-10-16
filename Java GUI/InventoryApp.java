@@ -101,6 +101,7 @@ public class InventoryApp extends JPanel {
             if (lowDrinks.contains(item)) {
                 // System.out.println("It should be yellow");
                 itemButton.setBackground(Color.YELLOW);
+                itemButton.setText("<html>" + item + "<br>(low supply)</html>");
                 itemButton.setOpaque(true);
             } else
                 itemButton.setBackground(Color.GRAY);
@@ -272,6 +273,7 @@ public class InventoryApp extends JPanel {
             if(low.contains(item)){
                 itemButton.setBackground(Color.YELLOW);
                 itemButton.setOpaque(true);
+                itemButton.setText("<html>" + item + "<br>(low supply)</html>");
             }
             else{
                 itemButton.setBackground(Color.GRAY);

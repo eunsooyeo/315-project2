@@ -27,6 +27,7 @@ public class MenusApp extends JPanel {
     private int selectedDrink;
     private JPanel centerPanel;
     private ManagerFunctions managerFunctions;
+    private JPanel drinkListPanel;
 
     public MenusApp(ManagerFunctions m) {
         setLayout(new BorderLayout());
@@ -40,6 +41,7 @@ public class MenusApp extends JPanel {
         drinkIngredients = new String[numDrinks];
         drinkIngredientsAmounts = new String[numDrinks];
 
+        // Simulate a list of drinks
         ArrayList<String> allDrinks = managerFunctions.getAllDrinkNames();
 
         for (int i = 0; i < numDrinks; i++) {
@@ -51,39 +53,39 @@ public class MenusApp extends JPanel {
             drinkPrices[i] = drinkInformation.get(4); // Initialize drink prices
             drinkIngredients[i] = drinkInformation.get(2); // Initialize drink ingredients
             drinkIngredientsAmounts[i] = drinkInformation.get(3);
-
         }
 
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        // Create the center panel for drink buttons
-        centerPanel = new JPanel();
-        centerPanel.setPreferredSize(new Dimension(750, 300));
+        // Create the center panel with a scrollable list of drinks
+        centerPanel = new JPanel(new BorderLayout());
 
-        // Create a scroll pane for the drink buttons panel
-        JScrollPane scrollPane = new JScrollPane(centerPanel);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        // Create a grid layout for the drink buttons with 5 columns
-        int maxColumns = 5;
-        centerPanel.setLayout(new GridLayout(0, maxColumns)); // 0 rows, maxColumns columns
-        
+        // Create a scroll pane to hold the drink list
+        JScrollPane scrollPane = new JScrollPane();
+        drinkListPanel = new JPanel();
+        drinkListPanel.setLayout(new BoxLayout(drinkListPanel, BoxLayout.Y_AXIS));
 
         drinkButtons = new JButton[numDrinks];
-        for (int i = 0; i < numDrinks; i++) {
-            drinkButtons[i] = new JButton(drinkNames[i]);
-            
 
-            Dimension buttonSize = new Dimension(150, 50); // Set your preferred button size here
-            drinkButtons[i].setPreferredSize(buttonSize);
-            // Increase the font size for the buttons
-            Font buttonFont = new Font(drinkButtons[i].getFont().getName(), Font.PLAIN, 18);
-            drinkButtons[i].setFont(buttonFont);
+        for (int i = 0; i < numDrinks; i++ ) {
+            JPanel drinkRow = new JPanel(new BorderLayout());
+            drinkRow.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY));
+
+            JLabel drinkLabel = new JLabel(allDrinks.get(i));
+            drinkButtons[i] = new JButton(allDrinks.get(i));
+
+            drinkLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            drinkButtons[i].setHorizontalAlignment(SwingConstants.CENTER);
+            drinkButtons[i].setBackground(new Color(240, 240, 240));
+
+            drinkRow.add(drinkLabel, BorderLayout.CENTER);
+            drinkRow.add(drinkButtons[i], BorderLayout.CENTER);
 
             final int drinkNumber = i; // Capture the current drink number
+
             drinkButtons[i].addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     selectedDrink = drinkNumber;
-                    //idField.setText(drinkIDs[selectedDrink]);
+
                     nameField.setText(drinkNames[selectedDrink]); // Update the name field
                     priceField.setText(drinkPrices[selectedDrink]); // Update the price field
                     ingredientsField.setText(drinkIngredients[selectedDrink]); // Update the ingredients field
@@ -92,13 +94,22 @@ public class MenusApp extends JPanel {
                 }
             });
 
-            centerPanel.add(drinkButtons[i]);
+            drinkListPanel.add(drinkRow);
         }
 
-        add(scrollPane, BorderLayout.WEST); // Place the scrollable panel on the left
+        scrollPane.setViewportView(drinkListPanel);
+        centerPanel.add(scrollPane, BorderLayout.CENTER);
+
+        add(centerPanel, BorderLayout.CENTER);
+
+        // Create the panel for displaying drink details
+        JPanel rightPanel = new JPanel(new BorderLayout());
+        drinkDetailsTextArea = new JTextArea();
+        rightPanel.add(new JScrollPane(drinkDetailsTextArea), BorderLayout.CENTER);
+        add(rightPanel, BorderLayout.EAST);
 
         // Create the panel for drink information and editing
-        JPanel rightPanel = new JPanel();
+        //JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BorderLayout());
 
         JScrollPane rscroll = new JScrollPane(rightPanel);
@@ -271,23 +282,38 @@ public class MenusApp extends JPanel {
 
         // Update drink buttons and display
         updateDrinkButtons();
-        updateDisplay();
+        //updateDisplay();
+
+        nameField.setText("");
+        priceField.setText("");
+        ingredientsField.setText("");
+        ingredientsValueField.setText("");
+        drinkDetailsTextArea.setText("Select a drink");
     }
 
     private void updateDrinkButtons() {
         // Clear existing drink buttons
-        for (int i = 0; i < drinkButtons.length; i++) {
-            centerPanel.remove(drinkButtons[i]);
-        }
+        drinkListPanel.removeAll();
+        /*for (int i = 0; i < drinkButtons.length; i++) {
+            drinkListPanel.remove(drinkButtons[i]);
+        } */
 
         // Create new drink buttons based on the updated data
         drinkButtons = new JButton[drinkNames.length];
+
         for (int i = 0; i < drinkNames.length; i++) {
+            JPanel drinkRow = new JPanel(new BorderLayout());
+            drinkRow.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY));
+
+            JLabel drinkLabel = new JLabel(drinkNames[i]);
             drinkButtons[i] = new JButton(drinkNames[i]);
 
-            // Increase the font size for the buttons
-            Font buttonFont = new Font(drinkButtons[i].getFont().getName(), Font.PLAIN, 18);
-            drinkButtons[i].setFont(buttonFont);
+            drinkLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            drinkButtons[i].setHorizontalAlignment(SwingConstants.CENTER);
+            drinkButtons[i].setBackground(new Color(240, 240, 240));
+
+            drinkRow.add(drinkLabel, BorderLayout.CENTER);
+            drinkRow.add(drinkButtons[i], BorderLayout.CENTER);
 
             final int drinkNumber = i; // Capture the current drink number
             drinkButtons[i].addActionListener(new ActionListener() {
@@ -302,11 +328,12 @@ public class MenusApp extends JPanel {
                 }
             });
 
-            centerPanel.add(drinkButtons[i]);
+            drinkListPanel.add(drinkRow);
         }
 
-        centerPanel.revalidate();
-        centerPanel.repaint();
+        drinkListPanel.revalidate();
+        drinkListPanel.repaint();
+        updateDisplay();
     }
 
     private void updateDisplay() {
