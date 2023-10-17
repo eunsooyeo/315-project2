@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
 /*
+GUI design for cashier interface
 @author Kevin Tang
 @author Dicong Wang
 */
@@ -34,6 +35,12 @@ public class CashierApp extends JFrame {
 
     public static Connection conn = null;
 
+    /*
+    @function Constructor to layout cashier page
+    @param m to include managerfunctions
+    @param o order to include the order functions
+
+    */
     public CashierApp(ManagerFunctions m, Order o) {
         
         // order.assign(o);
@@ -199,6 +206,13 @@ public class CashierApp extends JFrame {
         }
     }
 
+    /*
+    @function Updates the middle panel for which category of drinks is selected
+    @param category string of the selected drink category
+    @return none
+    @throws none
+
+    */
     private void updateMiddlePanel(String category) {
         middlePanel.removeAll();
         for (JButton button : drinkButtons) {
@@ -253,6 +267,13 @@ public class CashierApp extends JFrame {
         middlePanel.repaint();
     }
 
+    /*
+    @function Function to set up display popup of drink selection
+    @param drinkName to show which drink was selected
+    @return none
+    @throws none
+
+    */
     private void displaySpecificDrink(String drinkName) {
         JButton drinkButton = new JButton(drinkName);
         drinkButton.addActionListener(new ActionListener() {
@@ -290,18 +311,37 @@ public class CashierApp extends JFrame {
         middlePanel.add(drinkButton);
     }
 
+    /*
+    @function Function that adds the selected drink information to the right side panel and updates the price
+    @param drinkName string of added drink
+    @return none
+    @throws none
+
+    */
     private void addSelectedDrink(String drinkName) {
         selectedDrinks.add(drinkName);
         updateTotalPrice();
         updateDisplayPanel();
     }
+    /*
+    @function Function that removes the selected drink information from the right side panel and updates the price
+    @param drinkName string of drink
+    @return none
+    @throws none
 
+    */
     private void removeSelectedDrink(String drinkName) {
         selectedDrinks.remove(drinkName);
         updateTotalPrice();
         updateDisplayPanel();
     }
+    /*
+    @function Function that updates total price using information from database and toppings 
+    @param none
+    @return none
+    @throws Errors from accessing database
 
+    */
     private void updateTotalPrice() {
         // TODO **************************************************************** connect
         // to DB and match prices
@@ -355,6 +395,13 @@ public class CashierApp extends JFrame {
         updateDisplayPanel();
     }
 
+    /*
+    @function Function that updates the right panel to include tax and total prices and allow for edit and removal of drinks
+    @param none
+    @return none
+    @throws none
+
+    */
     private void updateDisplayPanel() {
         totalPriceLabel.setText(String.format("Total Price: $%.2f", totalPrice));
         taxLabel.setText(String.format("Tax: $%.2f", taxAmount));
@@ -436,7 +483,14 @@ public class CashierApp extends JFrame {
         displayPanel.revalidate();
         displayPanel.repaint();
     }
+    /*
+    @function Function that updates the selected drink information to the right side panel and updates the price
+    @param oldDrink string of the original drink
+    @param newDrink string of new drink selected
+    @return none
+    @throws none
 
+    */
     private void updateSelectedDrink(String oldDrink, String newDrink) {
         // Replace the old drink with the new drink in the selected drinks list
         int index = selectedDrinks.indexOf(oldDrink);
@@ -445,7 +499,13 @@ public class CashierApp extends JFrame {
             updateDisplayPanel();
         }
     }
+    /*
+    @function Function that clears the right panel and resets price to zero
+    @param none
+    @return none
+    @throws none
 
+    */
     private void clearSelectedDrinks() {
         selectedDrinks.clear(); // Clear the list of selected drinks
         totalPrice = 0.0; // Reset the total price to zero

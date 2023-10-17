@@ -8,8 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /*
-@author: Kevin Tang
-@author: Dicong Wang
+This class is for the main control of the GUI and sets up the database connection. Has main where all other pages eventually connect to 
+@author Kevin Tang
+@author Dicong Wang
 */
 public class MainController {
     public static Connection conn = null;

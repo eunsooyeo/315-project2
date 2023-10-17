@@ -3,11 +3,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 /*
+Completion Popup for GUI to show final screen after order placed
 @author Kevin Tang
 @author Dicong Wang
 */
 public class CompletionPopup extends JDialog {
     /*
+    @function Constructor to set up GUI for page
     @param parentFrame  to reference original frame of GUI
     @return none
     @throws none

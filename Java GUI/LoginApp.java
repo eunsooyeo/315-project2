@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 //package jdbc_demo.dbSetup;
 
 /*
+Login app page in GUI for username and password entry
 @author: Kevin Tang
 @author: Dicong Wang
 */
@@ -15,9 +16,11 @@ public class LoginApp extends JFrame {
     private Order order;
     private ManagerFunctions managerFunctions;
 
-    // @param: none
-    // @return : void
-    // @tnrows: none
+    // @function Constructor for the start-up login page
+    // @param o include to allow access to order functions
+    // @param m include to allow access to managerFunctions
+    // @return none
+    // @throws none
     public LoginApp(Order o, ManagerFunctions m) {
         setTitle("Login Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -27,10 +30,10 @@ public class LoginApp extends JFrame {
         order = o;
         managerFunctions = m;
     }
-
-    // @param: none
-    // @return : void
-    // @tnrows: none
+    // @function sets up components of login page
+    // @param none
+    // @return none
+    // @tnrows none
     private void initComponents() {
         JPanel centerPanel = new JPanel(new GridLayout(3, 2, 5, 10));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -90,27 +93,23 @@ public class LoginApp extends JFrame {
         statusLabel.setFont(new Font("Arial", Font.BOLD, 14));
         add(statusLabel, BorderLayout.SOUTH);
     }
-
-    // @param: none
-    // @return : void
-    // @tnrows: none
+    // @function opens manager app page
+    // @param none
+    // @return none
+    // @tnrows none
     private void openManagerApp() {
         ManagerApp managerApp = new ManagerApp(managerFunctions, order);
         managerApp.setVisible(true);
         dispose();
     }
-
-    // @param: none
-    // @return : void
-    // @tnrows: none
+    // @function opens cashier app page
+    // @param none
+    // @return void
+    // @tnrows none
     private void openCashierApp() {
         CashierApp cashierApp = new CashierApp(managerFunctions, order);
         cashierApp.setVisible(true);
         dispose();
     }
-
-    // @param: none
-    // @return : void
-    // @tnrows: none
 
 }

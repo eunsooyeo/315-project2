@@ -4,10 +4,22 @@ import java.util.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/*
+Supply History app creates page for the supply history in GUI
+@author Kevin Tang
+@author Dicong Wang
+*/
 public class SupplyHistoryApp extends JPanel {
 
     private ManagerFunctions managerFunctions;
 
+    /*
+    @function Constructor to set up the supply history page
+    @param m to include managerFunctions usability
+    @return none
+    @throws none
+
+    */
     public SupplyHistoryApp(ManagerFunctions m) {
         managerFunctions = m;
         setLayout(new BorderLayout());
@@ -52,7 +64,14 @@ public class SupplyHistoryApp extends JPanel {
 
         add(centerPanel, BorderLayout.CENTER);
     }
+    /*
+    @function Function to display the supply order details with a message joptionpane
+    @param row string of the row of information
+    @param supplyOrder string of the order items
+    @return none
+    @throws none
 
+    */
     private void showSupplyDetails(String row, String supplyOrder) {
         
         String[] lines = supplyOrder.split("\n");

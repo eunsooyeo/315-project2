@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 /*
+Customize drink popup page on GUI
 @author Kevin Tang
 @author Dicong Wang
 */
@@ -21,11 +22,12 @@ public class CustomizeDrinkPopup extends JDialog {
 
     private Order order;
     /*
-    @param parent  to reference original frame of GUI
-    @param drinkName  to include information about drink
-    @param o  order to include usage of functions
-    @return
-    @throws
+    @function constructor for the customization page
+    @param parent to reference original frame of GUI
+    @param drinkName to include information about drink
+    @param o order to include usage of functions
+    @return none
+    @throws none
     */
     public CustomizeDrinkPopup(JFrame parent, String drinkName, Order o) {
 
@@ -125,6 +127,7 @@ public class CustomizeDrinkPopup extends JDialog {
         setVisible(true);
     }
     /*
+    @function Get function to get the selected ice string
     @param none
     @return String of the user-selected ice amount
     @throws none
@@ -133,6 +136,7 @@ public class CustomizeDrinkPopup extends JDialog {
         return selectedIce;
     }
     /*
+    @function Get function to get the selected sweetness
     @param none
     @return String of the user-selected sweetness level
     @throws none
@@ -141,6 +145,7 @@ public class CustomizeDrinkPopup extends JDialog {
         return selectedSweetness;
     }
     /*
+    @function Get function to return an arraylist of the toppings selected
     @param none
     @return array of strings of selected toppings
     @throws none
