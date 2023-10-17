@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.*;
 import javax.swing.border.Border;
 
+/** 
+This class sets up the Reports page on the manager side 
+@author Kevin Tang
+@author Dicong Wang
+*/
 public class ReportsApp extends JPanel {
     private ManagerFunctions managerFunctions;
     private JPanel mainPanel;
@@ -14,6 +19,12 @@ public class ReportsApp extends JPanel {
     private JPanel centeredPanel;
     private JLabel excessIngredients;
 
+    /** 
+    @function Constructor to set up the reports page
+    @param m to allow usage of managerFunctions
+    @throws none
+
+    */
     public ReportsApp(ManagerFunctions m) {
         excessIngredients = new JLabel();
 
@@ -69,6 +80,12 @@ public class ReportsApp extends JPanel {
         add(mainPanel, BorderLayout.CENTER);
     }
 
+    /** 
+    @function sets up GUI to show the excess ingredients information page
+    @param none
+    @return void
+    @throws none
+    */
     private void showExcessIngredientsForm() {
         // Replace the main panel content with a form
         mainPanel.removeAll();
@@ -114,6 +131,13 @@ public class ReportsApp extends JPanel {
         mainPanel.repaint();
     }
 
+    /** 
+    @function information fill for the report of excess ingredients
+    @param none
+    @return void
+    @throws none
+
+    */
     private void generateExcessIngredientsReport() {
         //centeredPanel.removeAll();
 
@@ -146,6 +170,12 @@ public class ReportsApp extends JPanel {
         centeredPanel.repaint();
     }
 
+    /** 
+    @function sets up GUI to show the popular drink pairs page
+    @param none
+    @return void
+    @throws none
+    */
     private void showPopularDrinkPairsForm() {
         // Replace the main panel content with a form
         mainPanel.removeAll();
@@ -203,6 +233,12 @@ public class ReportsApp extends JPanel {
         mainPanel.repaint();
     }
 
+    /** 
+    @function generates the report information for popular drink pairs
+    @param none
+    @return void
+    @throws none
+    */
     private void generatePopularDrinkPairsReport() {
         //centeredPanel.removeAll();
 
@@ -228,6 +264,13 @@ public class ReportsApp extends JPanel {
         centeredPanel.repaint();
     }
 
+    /** 
+    @function checks if date entered is valid
+    @param date string of the entered date
+    @return boolean true if the date is invalid
+    @throws none
+
+    */
     private boolean invalidDate(String date) {
         if(date.length() != 10) return true;
         for(int i = 0; i < date.length(); i++) {

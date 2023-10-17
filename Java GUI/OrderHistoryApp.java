@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.*;
 import javax.swing.border.Border;
 
+/** 
+Menus page on the manager side
+@author Kevin Tang
+@author Dicong Wang
+*/
 public class OrderHistoryApp extends JPanel {
     private JTextField fromField;
     private JTextField toField;
@@ -18,6 +23,11 @@ public class OrderHistoryApp extends JPanel {
     private JLabel totalOrdersLabel;
     private JLabel totalRevenuesLabel;
 
+    /** 
+    @function Constructor to set up the GUI page
+    @param m to allow usage of managerFunctions
+    @throws none
+    */
     public OrderHistoryApp(ManagerFunctions m) {
         managerFunctions = m;
 
@@ -91,13 +101,26 @@ public class OrderHistoryApp extends JPanel {
         add(switchPanel, BorderLayout.CENTER);
     }
 
+    /** 
+    Class to setup the textfield to either default or inputted
+    */
     private class TextFieldFocusListener extends FocusAdapter {
         private String defaultText;
-
+        /** 
+        @function Constructor to set up TextFieldFocusListener class
+        @param defaultText string to set the default
+        @return void
+        @throws none
+        */
         public TextFieldFocusListener(String defaultText) {
             this.defaultText = defaultText;
         }
-
+        /** 
+        @function focusGained shows redirecton to the focusevent
+        @param e focusevent for setting the source of text
+        @return void
+        @throws none
+        */
         @Override
         public void focusGained(FocusEvent e) {
             JTextField source = (JTextField) e.getSource();
@@ -105,7 +128,12 @@ public class OrderHistoryApp extends JPanel {
                 source.setText("");
             }
         }
-
+        /** 
+        @function focusLost shows if the focusevent text is empty
+        @param e focusevent for setting the source of text
+        @return void
+        @throws none
+        */
         @Override
         public void focusLost(FocusEvent e) {
             JTextField source = (JTextField) e.getSource();
@@ -115,6 +143,13 @@ public class OrderHistoryApp extends JPanel {
         }
     }
 
+    /** 
+    @function display the order information from start to end date, including total, revenues
+    @param fromDate string of start date
+    @param toDate string of end date
+    @return void
+    @throws none
+    */
     public void displayOrders(String fromDate, String toDate) {
         drinksPanel.removeAll();
 
@@ -162,6 +197,12 @@ public class OrderHistoryApp extends JPanel {
         drinksPanel.repaint();
     }
 
+    /** 
+    @function invaliddate boolean returns true if the date is not valid
+    @param date string of entered date
+    @return boolean for validity of date
+    @throws none
+    */
     private boolean invalidDate(String date) {
         if(date.length() != 10) return true;
         for(int i = 0; i < date.length(); i++) {

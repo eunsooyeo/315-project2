@@ -2,17 +2,34 @@ import java.math.BigDecimal;
 import java.sql.*;
 import javax.naming.spi.DirStateFactory.Result;
 import java.util.*;
-import java.util.stream.Collectors;
+/** 
+All functions that interact with database for the manager side of the POS system
+@author Sarah Brasseaux
+@author Eunsoo Yeo
+@author Yuqian Cao
+*/import java.util.stream.Collectors;
 
 public class ManagerFunctions {
     private ArrayList<String> drinkNames;
     private double totalPrice;
     private Connection conn;
 
+    /** 
+    @function ManagerFunctions constructor that initializes the database connection
+    @param db_connection to use the existing database connection
+
+    */
     public ManagerFunctions(Connection db_connection) {
         conn = db_connection;
     }
+    /** 
+    @function Function to update the price for a recipe in the database when a manager edits it in the POS
+    @param drinkName to know what recipe to access
+    @param price the new price to change the recipe
+    @return void
+    @throws when error updating the database using the SQL commands
 
+    */
     public void updateRecipePrice(String drinkName, String price) {
         try {
             // create a statement object
@@ -28,6 +45,15 @@ public class ManagerFunctions {
         }
     }
 
+    /** 
+    @function Function to update the ingredients for a recipe in the database when a manager edits it in the POS
+    @param ingredientNames string of the new recipe ingredients
+    @param ingredientValues string of the new recipe amounts
+    @param drinkName string of the recipe name changing ingredients for
+    @return void
+    @throws when error updating the database using the SQL commands
+
+    */
     public void updateRecipeIngredient(String ingredientNames, String ingredientValues, String drinkName) {
         try {
 
@@ -91,6 +117,16 @@ public class ManagerFunctions {
         }
     }
 
+    /** 
+    @function Function to create a new recipe in the database when a manager enters it in the POS
+    @param drinkId string of the new unique drink id
+    @param drinkName string of the new recipe name
+    @param ingredientNames  string array of the new recipe ingredients
+    @param ingredientValues string array of the new recipe amounts
+    @return void
+    @throws when error updating the database using the SQL commands
+
+    */
     public void createNewRecipe(String drinkId, String drinkName, String[] ingredientNames, String[] ingredientValues,
             String price) {
         try {
@@ -153,6 +189,13 @@ public class ManagerFunctions {
         }
     }
 
+    /** 
+    @function Function to delete recipe in the database when a manager removes it in the POS
+    @param drinkName string of the recipe name removing
+    @return void
+    @throws when error updating the database using the SQL commands
+
+    */
     public void removeRecipe(String drinkName) {
         try {
             // create a statement object
@@ -168,6 +211,17 @@ public class ManagerFunctions {
         }
     }
 
+    /** 
+    @function Function to create a new employee in the database when a manager enters it in the POS
+    @param id string of the new employee id
+    @param employeeName string of the new employee name
+    @param password string of employe password
+    @param pay string of the employee's pay
+    @param hours string of the employee's hours working
+    @return void
+    @throws when error updating the database using the SQL commands
+
+    */
     public void createNewEmployee(String id, String employeeName, String password, String pay, String hours,
             String manager) {
         Boolean ret = false;
@@ -194,6 +248,13 @@ public class ManagerFunctions {
         }
     }
 
+    /** 
+    @function Function to remove an employee in the database when a manager enters it in the POS
+    @param employeeName to know which employee removing
+    @return void
+    @throws when error updating the database using the SQL commands
+
+    */
     public void removeEmployeeSQL(String employeeName) {
         try {
             // create a statement object
@@ -207,6 +268,13 @@ public class ManagerFunctions {
         }
     }
 
+    /** 
+    @function Get function for number of employees in database
+    @param none
+    @return number of employees in database, or 0
+    @throws when error updating the database using the SQL commands
+
+    */
     public int getNumOfEmployees() {
         int employee = 0;
 
@@ -228,7 +296,13 @@ public class ManagerFunctions {
         return employee;
 
     }
+    /** 
+    @function Get function for number of managers in database
+    @param none
+    @return number of managers in database, or 0
+    @throws when error updating the database using the SQL commands
 
+    */
     public int getNumOfManagers() {
         int managers = 0;
 
@@ -250,6 +324,13 @@ public class ManagerFunctions {
         return managers;
     }
 
+    /** 
+    @function Get function for employee names and if manager
+    @param none
+    @return map of employees with string of name and boolean of if manager
+    @throws when error updating the database using the SQL commands
+
+    */
     public TreeMap<String, Boolean> getEmployeeNames() {
         TreeMap<String, Boolean> map = new TreeMap<>();
         try {
@@ -272,6 +353,14 @@ public class ManagerFunctions {
     // returns an arraylist consist of the id, name, password, pay, hours, and
     // manager status
     // ^ all as string
+
+    /** 
+    @function Get function for an employee's information
+    @param name string of the employee's name
+    @return list of strings of the employee's information consisting of id, name, password, pay, hours, and manager status
+    @throws when error updating the database using the SQL commands
+
+    */
     public ArrayList<String> getEmployeeInfo(String name) {
         ArrayList<String> info = new ArrayList<>();
         try {
@@ -294,6 +383,16 @@ public class ManagerFunctions {
         return info;
     }
 
+    /** 
+    @function Function to update an employee in the database when a manager enters it in the POS
+    @param employeeName to know which employee editing
+    @param hours string of new hours
+    @param password string of new password
+    @param pay string of new pay
+    @return void
+    @throws when error updating the database using the SQL commands
+
+    */
     public void updateEmployeeSQL(String employeeName, String hours, String password, String pay) {
         try {
             // create a statement object
@@ -311,6 +410,16 @@ public class ManagerFunctions {
     }
 
     // add amount to ingredient in inventory
+    /** 
+    @function Function to update an ingredient in the inventory database when a manager enters it in the POS
+    @param ingredient string of name to access
+    @param amount string of new amount
+    @param capacity string of new capacity
+    @param unit string of new unit
+    @return void
+    @throws when error updating the database using the SQL commands
+
+    */
     public void updateInventory(String ingredient, String amount, String capacity, String unit) {
         try {
             String alert = "TRUE";
@@ -332,6 +441,16 @@ public class ManagerFunctions {
     }
 
     // add new ingredient to inventory
+    /** 
+    @function Function to create new ingredient in the database when a manager enters it in the POS
+    @param ingredient string of new ingredient name
+    @param amount string of new ingredient amount
+    @param capacity string of new capacity
+    @param unit string of new unit
+    @return void
+    @throws when error updating the database using the SQL commands
+
+    */
     public void createNewInventory(String ingredient, String amount, String capacity, String unit) {
         try {
             // create a statement object
@@ -348,6 +467,13 @@ public class ManagerFunctions {
     }
 
     // remove ingredient from inventory
+    /** 
+    @function Function to remove an ingredient from inventory in the database when a manager enters it in the POS
+    @param ingredient string of name to know what ingredient to remove
+    @return void
+    @throws when error updating the database using the SQL commands
+
+    */
     public void deleteInventory(String ingredient) {
         try {
             // create a statement object
@@ -362,6 +488,13 @@ public class ManagerFunctions {
         }
     }
 
+    /** 
+    @function Get function to get number of recipes in database
+    @param none
+    @return number of drinks
+    @throws when error updating the database using the SQL commands
+
+    */
     public int getNumberOfDrinks() {
         try {
             Statement stmt = conn.createStatement();
@@ -375,7 +508,13 @@ public class ManagerFunctions {
         }
         return -1;
     }
+    /** 
+    @function Get function to get the list of drink names in the recipe table
+    @param none
+    @return arraylist of strings of the drink names
+    @throws when error updating the database using the SQL commands
 
+    */
     public ArrayList<String> getAllDrinkNames() {
         ArrayList<String> drinks = new ArrayList<>();
         try {
@@ -392,6 +531,13 @@ public class ManagerFunctions {
         return drinks;
     }
 
+    /** 
+    @function Get function to get list of recipes in table sorted by id
+    @param none
+    @return arraylist of strings of drinknames
+    @throws when error updating the database using the SQL commands
+
+    */
     public ArrayList<String> getAllSortedDrinks() {
         ArrayList<String> drinks = new ArrayList<>();
         try {
@@ -408,6 +554,13 @@ public class ManagerFunctions {
         return drinks;
     }
 
+    /** 
+    @function Get function to get drink info of selected drink from database
+    @param name string of the drink name
+    @return arraylist of strings of the drink information by column
+    @throws when error updating the database using the SQL commands
+
+    */
     public ArrayList<String> getDrinkInfo(String name) {
         ArrayList<String> info = new ArrayList<>();
         try {
@@ -428,6 +581,13 @@ public class ManagerFunctions {
         return info;
     }
 
+    /** 
+    @function Get function to get list of supply history from database
+    @param none
+    @return arraylist of strings of supply information
+    @throws when error updating the database using the SQL commands
+
+    */
     public ArrayList<String> getAllSupplyHistory() {
         ArrayList<String> supplyHistory = new ArrayList<>();
         try {
@@ -447,7 +607,13 @@ public class ManagerFunctions {
         }
         return supplyHistory;
     }
+    /** 
+    @function Get function to get unit of ingredient from database
+    @param name string of the ingredient name
+    @return string of the unit
+    @throws when error updating the database using the SQL commands
 
+    */
     public String getUnitOfIngredient(String name) {
         String unit = "";
         try {
@@ -463,9 +629,13 @@ public class ManagerFunctions {
         }
         return unit;
     }
-
-    // @param : string beginningDate, string endDate
-    // @return : drinkname, numberOfOrders, totalPrice as an list for every drink
+    /** 
+    // @function Get function to get filtered sales history from a start to end date
+    // @param beginningDate string of start date
+    // @param endDate string of end date
+    // @return drinkname, numberOfOrders, totalPrice as a list for every drink
+    // @throws when error updating the database using the SQL commands
+    */
     // ordered within the time period
     public ArrayList<ArrayList<String>> getFilteredSalesHistory(String beginningDate, String endDate) {
         ArrayList<ArrayList<String>> sales = new ArrayList<>();
@@ -517,7 +687,14 @@ public class ManagerFunctions {
 
     }
 
-    // checks if arraylist item exists in targetlist
+    /** 
+    @function Checks if arraylist item exists in targetlist
+    @param targetlist list of lists 
+    @param item list of strings
+    @return arraylist of strings of the drink information by column
+    @throws when error updating the database using the SQL commands
+
+    */
     private int containsList(ArrayList<ArrayList<String>> targetlist, ArrayList<String> item) {
         ArrayList<String> item2 = new ArrayList<>();
         item2.add(item.get(1));
@@ -530,8 +707,15 @@ public class ManagerFunctions {
         return -1;
     }
 
-    // returns a treemap with key being an arraylist (of size 2) of the drinksIDs,
-    // with value being the number of its occurrence
+    /** 
+    @function Returns a treemap with key being an arraylist (of size 2) of the drinksIDs,
+    with value being the number of its occurrence from a start to end date
+    @param beginningDate string of start date
+    @param endDate string of end date
+    @return Treemap of arraylist string, integer for each time 2 drinks are ordered together
+    @throws when error updating the database using the SQL commands
+
+    */
     public TreeMap<ArrayList<String>, Integer> getWhatSalesTogether(String beginningDate, String endDate) {
         ArrayList<String[]> list = new ArrayList<>();
 
@@ -596,9 +780,17 @@ public class ManagerFunctions {
         return map;
     }
 
+    /** 
+    @function Get function to return arraylist of excess report for what items in inventory are in excess
+    @param beginningDate string of start date
+    @return ArrayList of ingredients that are in excess from the beginning date to present
+    @throws when error updating the database using the SQL commands
+
+    */
     public ArrayList<String> getExcessReport(String beginningDate) {
         // set endDate to be current date
         String endDate = java.time.LocalDate.now().toString();
+        double numDrinks = 0.0;
         TreeMap<String, Double> currItemAndAmount = new TreeMap<>();
         TreeMap<String, Double> salesItemAndAmount = new TreeMap<>();
         ArrayList<String> excessItems = new ArrayList<>();
@@ -631,7 +823,8 @@ public class ManagerFunctions {
 
                 // loop through each of the drinks/recipes
                 for (String s : drinkIDs) {
-                    // for each recipe get the ingredients and their amounts
+                    ++numDrinks;
+                    //for each recipe get the ingredients and their amounts
                     // reference the recipe database, get name and price
                     String sqlString = "SELECT ingredient_names, ingredient_values FROM recipes WHERE recipeid = "
                             + Integer.parseInt(s) + ";";
@@ -644,6 +837,9 @@ public class ManagerFunctions {
                     String[] ingredient_values = tmp.substring(1, tmp.length() - 1).split(",");
 
                     for (int i = 0; i < ingredient_names.length; ++i) {
+                        if(ingredient_names[i].contains("\"")) {
+                            ingredient_names[i] = ingredient_names[i].substring(1, ingredient_names[i].length() - 1);
+                        }
                         double currAmount = salesItemAndAmount.get(ingredient_names[i]);
                         double newAmount = currAmount + Double.parseDouble(ingredient_values[i]);
                         salesItemAndAmount.replace(ingredient_names[i], newAmount);
@@ -651,13 +847,19 @@ public class ManagerFunctions {
                 }
             }
 
+            //account for cups, napkins, straws, and plastic cover
+            List<String> items = Arrays.asList("cups", "straws", "plastic cover", "napkins");
+            for(String item: items) {
+                salesItemAndAmount.replace(item, numDrinks);
+            }
+
             // loop through the ingredients array
             for (String key : currItemAndAmount.keySet()) {
                 double salesAmount = salesItemAndAmount.get(key);
                 double totalAmount = currItemAndAmount.get(key) + salesAmount;
 
-                // compare to the current amount array and determine if it's 10%
-                if (totalAmount < (salesAmount * 0.1)) {
+                //compare to the current amount array and determine if it's 10%
+                if (salesAmount< (totalAmount * 0.1)) {
                     excessItems.add(key);
                 }
             }

@@ -3,12 +3,24 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/** 
+Manager app that sets up main starting page of GUI on manager side
+@author Kevin Tang
+@author Dicong Wang
+*/
 public class ManagerApp extends JFrame {
     private JPanel cardPanel;
     private CardLayout cardLayout;
     private ManagerFunctions managerFunctions;
     private Order order;
 
+    /** 
+    @function Constructor to set up the manager app page
+    @param m to include the managerFunctions usability
+    @param o to include the order usability
+    @throws none
+
+    */
     public ManagerApp(ManagerFunctions m, Order o) {
         setTitle("Manager Interface");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -155,12 +167,25 @@ public class ManagerApp extends JFrame {
 
     }
 
+    /** 
+    @function Function to open the menus app page from the existing page
+    @param none
+    @return void
+    @throws none
+
+    */
     private void openMenusApp() {
         MenusApp menusApp = new MenusApp(managerFunctions);
         menusApp.setVisible(true);
         // dispose();
     }
+    /** 
+    @function Function to open the employees app page from the existing page
+    @param none
+    @return void
+    @throws none
 
+    */
     private void openEmployeeApp() {
         EmployeeApp employeeApp = new EmployeeApp(managerFunctions);
         employeeApp.setVisible(true);
