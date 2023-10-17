@@ -58,7 +58,8 @@ public class MainController {
         // managerFunctions.getAllDrinkNames().toString());
         // System.out.println("drink info: " + managerFunctions.getDrinkInfo("Honey milk
         // tea").toString());
-        managerFunctions.getWhatSalesTogether("2023-12-30", "2023-12-30");
+        
+        //managerFunctions.getWhatSalesTogether("2023-12-30", "2023-12-30");
 
         // open GUI
         SwingUtilities.invokeLater(() -> {
