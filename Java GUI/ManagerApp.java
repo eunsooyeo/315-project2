@@ -3,12 +3,24 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/** 
+Manager app that sets up main starting page of GUI on manager side
+@author Kevin Tang
+@author Dicong Wang
+*/
 public class ManagerApp extends JFrame {
     private JPanel cardPanel;
     private CardLayout cardLayout;
     private ManagerFunctions managerFunctions;
     private Order order;
 
+    /** 
+    @function Constructor to set up the manager app page
+    @param m to include the managerFunctions usability
+    @param o to include the order usability
+    @throws none
+
+    */
     public ManagerApp(ManagerFunctions m, Order o) {
         setTitle("Manager Interface");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -22,12 +34,13 @@ public class ManagerApp extends JFrame {
 
         // Create the side bar on the left with options
         JPanel sideBar = new JPanel();
-        sideBar.setLayout(new GridLayout(6, 1));
+        sideBar.setLayout(new GridLayout(7, 1));
         JButton employeesButton = new JButton("Employees");
         JButton inventoryButton = new JButton("Inventory");
         JButton supplyHistoryButton = new JButton("Supply History");
         JButton orderHistoryButton = new JButton("Order History");
         JButton menusButton = new JButton("Menus");
+        JButton reportsButton = new JButton("Reports");
 
         employeesButton.setFocusPainted(false);
         employeesButton.setBorderPainted(false);
@@ -35,25 +48,30 @@ public class ManagerApp extends JFrame {
 
         inventoryButton.setFocusPainted(false);
         inventoryButton.setBorderPainted(false);
-        inventoryButton.setBackground(new Color(223, 227, 238)); // Light gray
+        inventoryButton.setBackground(new Color(223, 227, 238));
 
         menusButton.setFocusPainted(false);
         menusButton.setBorderPainted(false);
-        menusButton.setBackground(new Color(223, 227, 238)); // Light gray
+        menusButton.setBackground(new Color(223, 227, 238)); 
 
         supplyHistoryButton.setFocusPainted(false);
         supplyHistoryButton.setBorderPainted(false);
-        supplyHistoryButton.setBackground(new Color(223, 227, 238)); // Light gray
+        supplyHistoryButton.setBackground(new Color(223, 227, 238)); 
 
         orderHistoryButton.setFocusPainted(false);
         orderHistoryButton.setBorderPainted(false);
-        orderHistoryButton.setBackground(new Color(223, 227, 238)); // Light gray
+        orderHistoryButton.setBackground(new Color(223, 227, 238)); 
+
+        reportsButton.setFocusPainted(false);
+        reportsButton.setBorderPainted(false);
+        reportsButton.setBackground(new Color(223, 227, 238)); 
 
         sideBar.add(employeesButton);
         sideBar.add(inventoryButton);
         sideBar.add(menusButton);
         sideBar.add(supplyHistoryButton);
         sideBar.add(orderHistoryButton);
+        sideBar.add(reportsButton);
 
         JButton logoutButton = new JButton("Logout");
         logoutButton.addActionListener(new ActionListener() {
@@ -90,6 +108,9 @@ public class ManagerApp extends JFrame {
 
         JPanel orderHistoryPage = new OrderHistoryApp(managerFunctions);
         cardPanel.add(orderHistoryPage, "Order History");
+
+        JPanel reportsPage = new ReportsApp(managerFunctions);
+        cardPanel.add(reportsPage, "Reports");
 
         // Initially show the Employees page
         cardLayout.show(cardPanel, "Employees");
@@ -137,15 +158,34 @@ public class ManagerApp extends JFrame {
                 cardLayout.show(cardPanel, "Order History");
             }
         });
+        reportsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(cardPanel, "Reports");
+            }
+        });
 
     }
 
+    /** 
+    @function Function to open the menus app page from the existing page
+    @param none
+    @return void
+    @throws none
+
+    */
     private void openMenusApp() {
         MenusApp menusApp = new MenusApp(managerFunctions);
         menusApp.setVisible(true);
         // dispose();
     }
+    /** 
+    @function Function to open the employees app page from the existing page
+    @param none
+    @return void
+    @throws none
 
+    */
     private void openEmployeeApp() {
         EmployeeApp employeeApp = new EmployeeApp(managerFunctions);
         employeeApp.setVisible(true);

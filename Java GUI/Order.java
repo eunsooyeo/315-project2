@@ -3,20 +3,30 @@ import java.sql.*;
 import javax.naming.spi.DirStateFactory.Result;
 import java.util.*;
 
+/** 
+All functions that interact with database on the cashier side
+@author Yuqian Cao
+@author Eunsoo Yeo
+@author Sarah Brasseaux
+*/
 public class Order {
     public static Connection conn;
 
+    /**
+     * @function Constructor for the order class
+     * @param db_connection to include the underlying connection to database
+     */
     public Order(Connection db_connection) {
         conn = db_connection;
     }
 
-    /*
-     * @Return : boolean
+    /* *
+      * @Return : boolean
      * * false if the order fails to be created
      * * may be due to reasons: insufficient ingredient or errors
      */
     /*
-     * @Param
+     * @param
      * * drink names: {string}
      * * sugar level: {0 || 30 || 50 || 80 || 100 || 120}
      * * ice level: {0 || 50 || 100}
@@ -69,6 +79,16 @@ public class Order {
         return true;
     }
 
+    /** 
+    @function Function to update decrease inventory when drinks are added based on the ingredients, sugarlevel, icelevel, and toppings
+    @param drinkName to know what recipe to access
+    @param iceLevel string of amount of ice
+    @param sugarLevel string of the percentage of sugar
+    @param arraylist of string of the toppings selected
+    @return boolean if the inventory was successfuly updated or if the ingredients are too low already
+    @throws when error updating the database using the SQL commands
+
+    */
     public boolean updateInventory(String drinkName, String iceLevel, String sugarLevel, ArrayList<String> toppings) {
         // check the ingredients available
         // find recipe of drinkName from recipe database
@@ -210,6 +230,13 @@ public class Order {
         return true;
     }
 
+    /** 
+    @function Function to restore the inventory database incase a drink order was canceled
+    @param drinkInfo string with the information ingredients, toppings, icelevel, and sweetness
+    @return boolean if successful restoration return true
+    @throws when error updating the database using the SQL commands
+
+    */
     public boolean restoreInventory(String drinkInfo) {
         // parse drink info
         String[] tokens = drinkInfo.split("\n");

@@ -7,11 +7,25 @@ import java.sql.*;
 import javax.naming.spi.DirStateFactory.Result;
 import java.util.*;
 
+/** 
+Inventory app sets up GUI for the inventory page in manager side of POS
+@author Kevin Tang
+@author Dicong Wang
+*/
 public class InventoryApp extends JPanel {
     private JButton prevItembutton = null;
     private ManagerFunctions managerFunctions;
     private JTextArea detailsTextArea;
+    private JTextField nameField;
+    private JTextField amountsField;
+    private JTextField capacityAmountField;
+    private JTextField unitsField;
 
+    /** 
+    @function Constructor that sets up the inventory interface
+    @param m includes usage of managerfunctions class
+    @throws none
+    */
     public InventoryApp(ManagerFunctions m) {
         setLayout(new BorderLayout());
         managerFunctions = m;
@@ -31,10 +45,10 @@ public class InventoryApp extends JPanel {
 
 
             //add labels and fields for editing
-        JTextField nameField = new JTextField(20);
-        JTextField amountsField = new JTextField(20);
-        JTextField capacityAmountField = new JTextField(20);
-        JTextField unitsField  = new JTextField(20);
+        nameField = new JTextField(20);
+        amountsField = new JTextField(20);
+        capacityAmountField = new JTextField(20);
+        unitsField  = new JTextField(20);
 
         editPanel.add(new JLabel("Name:"));
         editPanel.add(nameField);
@@ -109,11 +123,6 @@ public class InventoryApp extends JPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
 
-                    /*
-                     * TODO
-                     ****************************************************************************************************************************/
-                    // Display item details in the right sidebar
-                    // Make its contents editable after retrieveing from Database
                     detailsTextArea.selectAll();
                     detailsTextArea.replaceSelection(item);
                     detailsTextArea.append("\n");
@@ -130,7 +139,19 @@ public class InventoryApp extends JPanel {
                     // prevItembutton.setBackground(Color.GRAY);
                     // prevItembutton.setOpaque(false);
                     // }
+                    nameField.setText(item);
 
+                    String lines[] = arr.get(0).split("/");
+                    String cap = lines[1];
+
+                    int i;
+                    for(i = 0; i < cap.length(); i ++) {
+                        if(!Character.isDigit(cap.charAt(i)) && cap.charAt(i) != '.') break;
+                    }
+
+                    amountsField.setText(lines[0]);
+                    capacityAmountField.setText(cap.substring(0, i));
+                    unitsField.setText(cap.substring(i));
                 }
             });
             centerPanel.add(itemButton);
@@ -140,6 +161,13 @@ public class InventoryApp extends JPanel {
         add(rightSidebar, BorderLayout.EAST);
     }
 
+    /** 
+    @function Get function that returns all inventory less than 10% of amount/capacity
+    @param none
+    @return arraylist of the names of low ingredients
+    @throws error from accessing database
+
+    */
     private ArrayList<String> getAllLowInventory() {
         ArrayList<String> drinksLow = new ArrayList<>();
 
@@ -180,6 +208,13 @@ public class InventoryApp extends JPanel {
         return drinksLow;
     }
 
+    /** 
+    @function Get function for a list of all ingredients in inventory, includes database connection
+    @param none
+    @return arraylist of the ingredient names
+    @throws error when accessing database
+
+    */
     public ArrayList<String> getAllInventoryNames() {
         ArrayList<String> drinks = new ArrayList<>();
         try {
@@ -202,7 +237,13 @@ public class InventoryApp extends JPanel {
         }
         return drinks;
     }
+    /** 
+    @function Get function for info about ingredient: name, amount, capacity, unit
+    @param name string of ingredient name
+    @return arraylist of ingredient info
+    @throws error when accessing database
 
+    */
     private ArrayList<String> getInfoForIngredient(String name) {
         ArrayList<String> arr = new ArrayList<>();
         String s = "";
@@ -237,7 +278,15 @@ public class InventoryApp extends JPanel {
         }
         return arr;
     }
+    /** 
+    @function Function that returns true if the ingredient's amount/capacity is < 10%
+    @param name string of ingredient name
+    @param amount string of amount of ingredient
+    @param cap string of capacity
+    @return boolean for if the item is low and to update database
+    @throws error when accessing database
 
+    */
     private boolean checkIfLow(String name, double amount, double cap) {
         try {
             if (amount / cap > 0.1) {
@@ -261,6 +310,14 @@ public class InventoryApp extends JPanel {
         }
         return false;
     }
+
+    /** 
+    @function Function that updates to display ingredient information when button is pressed
+    @param none
+    @return void
+    @throws none
+
+    */
     public void updateDisplay(){
         //TODO !!!!
         JPanel centerPanel = (JPanel) getComponent(0);  // Assuming the center panel is the first component
@@ -291,6 +348,20 @@ public class InventoryApp extends JPanel {
                     ArrayList<String> arr = getInfoForIngredient(item);
 
                     detailsTextArea.append(arr.get(0));
+
+                    nameField.setText(item);
+
+                    String lines[] = arr.get(0).split("/");
+                    String cap = lines[1];
+
+                    int i;
+                    for(i = 0; i < cap.length(); i ++) {
+                        if(!Character.isDigit(cap.charAt(i)) && cap.charAt(i) != '.') break;
+                    }
+
+                    amountsField.setText(lines[0]);
+                    capacityAmountField.setText(cap.substring(0, i));
+                    unitsField.setText(cap.substring(i));
                 }
             });
             centerPanel.add(itemButton);  // Add the new button to the center panel
