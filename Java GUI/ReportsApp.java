@@ -12,8 +12,11 @@ public class ReportsApp extends JPanel {
     private JTextField endDateField;
     private JLabel messageLabel;
     private JPanel centeredPanel;
+    private JLabel excessIngredients;
 
     public ReportsApp(ManagerFunctions m) {
+        excessIngredients = new JLabel();
+
         managerFunctions = m;
         setLayout(new BorderLayout());
 
@@ -119,6 +122,21 @@ public class ReportsApp extends JPanel {
             }
         });
 
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 0, 5, 0); // Add some vertical spacing between components
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        centeredPanel.add(startDateLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        centeredPanel.add(startDateField, gbc);
+
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        centeredPanel.add(generateButton, gbc);
+
         centeredPanel.add(startDateLabel);
         centeredPanel.add(startDateField);
         centeredPanel.add(endDateLabel);
@@ -131,27 +149,33 @@ public class ReportsApp extends JPanel {
     }
 
     private void generateExcessIngredientsReport() {
-        centeredPanel.removeAll();
+        //centeredPanel.removeAll();
 
         String startDate = startDateField.getText();
-        JLabel excessIngredients = new JLabel();
         String currentText = "<html>";
         if (invalidDate(startDate)) {
-            messageLabel.setText("ERROR: Please enter a valid start date (YYYY-MM-DD).");
-            messageLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center the label text
-            messageLabel.setVerticalAlignment(SwingConstants.CENTER);
+            excessIngredients.setText("ERROR: Please enter a valid start date (YYYY-MM-DD).");
+            excessIngredients.setHorizontalAlignment(SwingConstants.CENTER); // Center the label text
+            excessIngredients.setVerticalAlignment(SwingConstants.CENTER);
         } else {
-            messageLabel.setText("Excess Ingredients Report generated for start date: " + startDate);
+            //messageLabel.setText("Excess Ingredients Report generated for start date: " + startDate);
             ArrayList<String> ingredients = managerFunctions.getExcessReport(startDate);
             for (String ingredient : ingredients){
-                currentText = currentText + "<br>" + ingredient;
+                currentText += "<br>" + ingredient;
             }
-            currentText = currentText + "</html>";
+            currentText += "</html>";
             excessIngredients.setText(currentText);
         }
 
-        centeredPanel.add(messageLabel);
-        centeredPanel.add(excessIngredients);
+        //centeredPanel.add(messageLabel);
+        // Create GridBagConstraints for centeredPanel components
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 0, 5, 0); // Add some vertical spacing between components
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 3; // Span three columns
+        centeredPanel.add(excessIngredients, gbc);
         centeredPanel.revalidate();
         centeredPanel.repaint();
     }
