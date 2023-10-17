@@ -90,38 +90,6 @@ public class ReportsApp extends JPanel {
             }
         });
 
-        centeredPanel.add(startDateLabel);
-        centeredPanel.add(startDateField);
-        centeredPanel.add(generateButton);
-
-        mainPanel.add(centeredPanel, BorderLayout.NORTH);
-        mainPanel.revalidate();
-        mainPanel.repaint();
-    }
-
-    private void showPopularDrinkPairsForm() {
-        // Replace the main panel content with a form
-        mainPanel.removeAll();
-        mainPanel.revalidate(); // Add this line to revalidate the mainPanel
-        mainPanel.repaint(); 
-
-        centeredPanel.removeAll();
-        centeredPanel.revalidate();
-        centeredPanel.repaint(); 
-
-        JLabel startDateLabel = new JLabel("From (YYYY-MM-DD):");
-        startDateField = new JTextField(10);
-        JLabel endDateLabel = new JLabel("To (YYYY-MM-DD):");
-        endDateField = new JTextField(10);
-        JButton generateButton = new JButton("Generate Report");
-
-        generateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                generatePopularDrinkPairsReport();
-            }
-        });
-
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 0, 5, 0); // Add some vertical spacing between components
 
@@ -139,8 +107,6 @@ public class ReportsApp extends JPanel {
 
         centeredPanel.add(startDateLabel);
         centeredPanel.add(startDateField);
-        centeredPanel.add(endDateLabel);
-        centeredPanel.add(endDateField);
         centeredPanel.add(generateButton);
 
         mainPanel.add(centeredPanel, BorderLayout.NORTH);
@@ -180,21 +146,84 @@ public class ReportsApp extends JPanel {
         centeredPanel.repaint();
     }
 
-    private void generatePopularDrinkPairsReport() {
+    private void showPopularDrinkPairsForm() {
+        // Replace the main panel content with a form
+        mainPanel.removeAll();
+        mainPanel.revalidate(); // Add this line to revalidate the mainPanel
+        mainPanel.repaint(); 
+
         centeredPanel.removeAll();
+        centeredPanel.revalidate();
+        centeredPanel.repaint(); 
+
+        JLabel startDateLabel = new JLabel("From (YYYY-MM-DD):");
+        startDateField = new JTextField(10);
+        JLabel endDateLabel = new JLabel("To (YYYY-MM-DD):");
+        endDateField = new JTextField(10);
+        JButton generateButton = new JButton("Generate Report");
+
+        generateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generatePopularDrinkPairsReport();
+            }
+        });
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 0, 5, 0); // Add some vertical spacing between components
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        centeredPanel.add(startDateLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        centeredPanel.add(startDateField, gbc);
+
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        centeredPanel.add(endDateLabel, gbc);
+
+        gbc.gridx = 3;
+        gbc.gridy = 0;
+        centeredPanel.add(endDateField, gbc);
+
+        gbc.gridx = 4;
+        gbc.gridy = 0;
+        centeredPanel.add(generateButton, gbc); 
+
+        centeredPanel.add(startDateLabel);
+        centeredPanel.add(startDateField);
+        centeredPanel.add(endDateLabel);
+        centeredPanel.add(endDateField);
+        centeredPanel.add(generateButton);
+
+        mainPanel.add(centeredPanel, BorderLayout.NORTH);
+        mainPanel.revalidate();
+        mainPanel.repaint();
+    }
+
+    private void generatePopularDrinkPairsReport() {
+        //centeredPanel.removeAll();
 
         String startDate = startDateField.getText();
         String endDate = endDateField.getText();
         
         if (invalidDate(startDate) || invalidDate(endDate)) {
-            messageLabel.setText("ERROR: Please enter valid start and end dates (YYYY-MM-DD).");
-            messageLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center the label text
-            messageLabel.setVerticalAlignment(SwingConstants.CENTER);
+            excessIngredients.setText("ERROR: Please enter valid start and end dates (YYYY-MM-DD).");
+            excessIngredients.setHorizontalAlignment(SwingConstants.CENTER); // Center the label text
+            excessIngredients.setVerticalAlignment(SwingConstants.CENTER);
         } else {
-            messageLabel.setText("Popular Drink Pairs Report generated from " + startDate + " to " + endDate);
+            excessIngredients.setText("Popular Drink Pairs Report generated from " + startDate + " to " + endDate);
         }
 
-        centeredPanel.add(messageLabel);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 0, 5, 0); // Add some vertical spacing between components
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 5;
+        centeredPanel.add(excessIngredients, gbc);
         centeredPanel.revalidate();
         centeredPanel.repaint();
     }
