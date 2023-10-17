@@ -7,7 +7,7 @@ import java.awt.event.WindowEvent;    // Import WindowEvent
 import java.util.*;
 import java.sql.*;
 
-/*
+/** 
 Menus page on the manager side
 @author: Kevin Tang
 @author: Dicong Wang
@@ -33,10 +33,9 @@ public class MenusApp extends JPanel {
     private ManagerFunctions managerFunctions;
     private JPanel drinkListPanel;
 
-    /*
+    /** 
     @function Constructor to setup the menu page
     @param m to include usage of managerFunctions
-    @return none
     @throws none
 
     */
@@ -202,13 +201,13 @@ public class MenusApp extends JPanel {
 
     }
 
-    /*
+    /** 
     @function Function to add a new drink recipe to menu
     @param name string of new drink name
     @param price string of new price
     @param ingredients string of ingredients
     @param ingredientAmounts string of the amounts of each ingredient
-    @return none
+    @return void
     @throws none
 
     */
@@ -264,10 +263,10 @@ public class MenusApp extends JPanel {
         centerPanel.repaint();
     }
 
-    /*
+    /** 
     @function Function to remove a drink from the menu and calls a function that will update database
     @param none
-    @return none
+    @return void
     @throws none
 
     */
@@ -317,10 +316,10 @@ public class MenusApp extends JPanel {
         ingredientsValueField.setText("");
         drinkDetailsTextArea.setText("Select a drink");
     }
-    /*
+    /** 
     @function Function to update the drink buttons on menu when changes are made
     @param none
-    @return none
+    @return void
     @throws none
 
     */
@@ -369,10 +368,10 @@ public class MenusApp extends JPanel {
         updateDisplay();
     }
 
-    /*
+    /** 
     @function Function to update the display of drink info to current
     @param none
-    @return none
+    @return void
     @throws none
 
     */

@@ -3,7 +3,7 @@ import java.sql.*;
 import javax.naming.spi.DirStateFactory.Result;
 import java.util.*;
 
-/*
+/** 
 All functions that interact with database on the cashier side
 @author Yuqian Cao
 @author Eunsoo Yeo
@@ -12,17 +12,21 @@ All functions that interact with database on the cashier side
 public class Order {
     public static Connection conn;
 
+    /**
+     * @function Constructor for the order class
+     * @param db_connection to include the underlying connection to database
+     */
     public Order(Connection db_connection) {
         conn = db_connection;
     }
 
-    /*
-     * @Return : boolean
+    /* *
+      * @Return : boolean
      * * false if the order fails to be created
      * * may be due to reasons: insufficient ingredient or errors
      */
     /*
-     * @Param
+     * @param
      * * drink names: {string}
      * * sugar level: {0 || 30 || 50 || 80 || 100 || 120}
      * * ice level: {0 || 50 || 100}
@@ -75,7 +79,7 @@ public class Order {
         return true;
     }
 
-    /*
+    /** 
     @function Function to update decrease inventory when drinks are added based on the ingredients, sugarlevel, icelevel, and toppings
     @param drinkName to know what recipe to access
     @param iceLevel string of amount of ice
@@ -228,7 +232,7 @@ public class Order {
         return true;
     }
 
-    /*
+    /** 
     @function Function to restore the inventory database incase a drink order was canceled
     @param drinkInfo string with the information ingredients, toppings, icelevel, and sweetness
     @return boolean if successful restoration return true

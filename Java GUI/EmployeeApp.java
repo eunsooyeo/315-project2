@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-/*
+/** 
 This class is for the GUI of the employee tab on the manager side of the POS. It shows the managers and employees and their information.
 @author Kevin Tang
 @author Dicong Wang
@@ -25,7 +25,7 @@ public class EmployeeApp extends JPanel {
     private ManagerFunctions managerFunctions;
     private HashMap<String, ArrayList<String>> detailsMap;
 
-    /*
+    /** 
     @function Constructor for the employee app. Sets up the GUI framework for this page.
     @param msp to include usage of managerfunctions class
     */
@@ -203,10 +203,10 @@ public class EmployeeApp extends JPanel {
             }
         });
     }
-    /*
+    /** 
     @function Function to load details about manager from database that is clicked on on the GUI.
     @param managerName string of the name to find in the database
-    @return none
+    @return void
     @throws none
 
     */
@@ -222,10 +222,10 @@ public class EmployeeApp extends JPanel {
             detailsTextArea.setText("No manager selected.");
         }
     }
-    /*
+    /** 
     @function Function to load details about employee from database that is clicked on on the GUI.
     @param employeeName string of the name to find in the database
-    @return none
+    @return void
     @throws none
 
     */
@@ -241,10 +241,10 @@ public class EmployeeApp extends JPanel {
             detailsTextArea.setText("No employee selected.");
         }
     }
-    /*
+    /** 
     @function Function to update information about manager that user changed. Also includes a call to SQL function
     @param index  refers to the position in the listmodel to identify which manager.
-    @return none
+    @return void
     @throws none
 
     */
@@ -272,10 +272,10 @@ public class EmployeeApp extends JPanel {
         managerFunctions.updateEmployeeSQL(newName, newHours, newPassword, newPay);
     }
 
-    /*
+    /** 
     @function Function to update information about employee that user changed. Also includes a call to SQL function
     @param index  refers to the position in the listmodel to identify which employee.
-    @return none
+    @return void
     @throws none
 
     */
@@ -304,14 +304,14 @@ public class EmployeeApp extends JPanel {
         managerFunctions.updateEmployeeSQL(newName, newHours, newPassword, newPay);
     }
 
-    /*
+    /** 
     @function Function to create new employee on POS and calls a function that updates database
     @param id string of new employee id
     @param name string of new employee name
     @param hours string of new employee hours
     @param password string of new employee password
     @param pay string of new employee pay
-    @return none
+    @return void
     @throws none
 
     */
@@ -335,14 +335,14 @@ public class EmployeeApp extends JPanel {
         detailsMap.put(name, employeeInfo);
     }
 
-    /*
+    /** 
     @function Function to create new manager on POS and calls a function that updates database
     @param id string of new manager id
     @param name string of new manager name
     @param hours string of new manager hours
     @param password string of new manager password
     @param pay string of new manager pay
-    @return none
+    @return void
     @throws none
 
     */
@@ -366,10 +366,10 @@ public class EmployeeApp extends JPanel {
         detailsMap.put(name, managerInfo);
     }
 
-    /*
+    /** 
     @function Function to remove employee on POS and calls a function that updates database
     @param index  refers to the position in the listmodel to identify which employee is being removed
-    @return none
+    @return void
     @throws none
 
     */
@@ -385,10 +385,10 @@ public class EmployeeApp extends JPanel {
         }
     }
 
-    /*
+    /** 
     @function Function to remove manager on POS and calls a function that updates database
     @param index  refers to the position in the listmodel to identify which manager is being removed
-    @return none
+    @return void
     @throws none
 
     */

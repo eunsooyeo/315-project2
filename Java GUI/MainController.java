@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/*
+/** 
 This class is for the main control of the GUI and sets up the database connection. Has main where all other pages eventually connect to 
 @author Kevin Tang
 @author Dicong Wang

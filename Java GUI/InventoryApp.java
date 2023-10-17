@@ -7,7 +7,7 @@ import java.sql.*;
 import javax.naming.spi.DirStateFactory.Result;
 import java.util.*;
 
-/*
+/** 
 Inventory app sets up GUI for the inventory page in manager side of POS
 @author Kevin Tang
 @author Dicong Wang
@@ -21,10 +21,9 @@ public class InventoryApp extends JPanel {
     private JTextField capacityAmountField;
     private JTextField unitsField;
 
-    /*
+    /** 
     @function Constructor that sets up the inventory interface
     @param m includes usage of managerfunctions class
-    @return none
     @throws none
     */
     public InventoryApp(ManagerFunctions m) {
@@ -162,7 +161,7 @@ public class InventoryApp extends JPanel {
         add(rightSidebar, BorderLayout.EAST);
     }
 
-    /*
+    /** 
     @function Get function that returns all inventory less than 10% of amount/capacity
     @param none
     @return arraylist of the names of low ingredients
@@ -209,7 +208,7 @@ public class InventoryApp extends JPanel {
         return drinksLow;
     }
 
-    /*
+    /** 
     @function Get function for a list of all ingredients in inventory, includes database connection
     @param none
     @return arraylist of the ingredient names
@@ -238,7 +237,7 @@ public class InventoryApp extends JPanel {
         }
         return drinks;
     }
-    /*
+    /** 
     @function Get function for info about ingredient: name, amount, capacity, unit
     @param name string of ingredient name
     @return arraylist of ingredient info
@@ -279,7 +278,7 @@ public class InventoryApp extends JPanel {
         }
         return arr;
     }
-    /*
+    /** 
     @function Function that returns true if the ingredient's amount/capacity is < 10%
     @param name string of ingredient name
     @param amount string of amount of ingredient
@@ -312,10 +311,10 @@ public class InventoryApp extends JPanel {
         return false;
     }
 
-    /*
+    /** 
     @function Function that updates to display ingredient information when button is pressed
     @param none
-    @return none
+    @return void
     @throws none
 
     */

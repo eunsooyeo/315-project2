@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-/*
+/** 
 Charge Page GUI for when customer is being charged
 @author Kevin Tang
 @author Dicong Wang
@@ -12,11 +12,10 @@ public class ChargePage extends JDialog {
     private JButton cancelButton;
 
     private boolean chargeCanceled;
-    /*
+    /** 
     @function Constructor to set up the GUI page
     @param parentFrame  to include reference to original frame of GUI
     @param totalPrice  to show the price on the GUI
-    @return none
     @throws none
     */
     public ChargePage(JFrame parentFrame, double totalPrice) {
@@ -82,17 +81,17 @@ public class ChargePage extends JDialog {
         pack();
         setLocationRelativeTo(parentFrame); // Center the charge page on the CashierApp
     }
-    /*
+    /** 
     @function Function to open the completion page when finished
     @param parentFrame to include reference to original frame in GUI
-    @return none
+    @return void
     @throws none
     */
     private void openCompletionPopup(JFrame parentFrame) {
         CompletionPopup completionPopup = new CompletionPopup(parentFrame);
         completionPopup.setVisible(true);
     }
-    /*
+    /** 
     @function Get function to return the cancel button
     @param none
     @return cancelButton button to cancel an order
@@ -101,7 +100,7 @@ public class ChargePage extends JDialog {
     public JButton getCancelButton() {
         return cancelButton;
     }
-    /*
+    /** 
     @function Access function to return chargeCanceled variable
     @param none
     @return chargeCanceled boolean if order is canceled
@@ -110,10 +109,10 @@ public class ChargePage extends JDialog {
     public boolean isChargeCanceled() {
         return chargeCanceled;
     }
-    /*
+    /** 
     @function Access function to set the boolean for chargeCanceled
     @param val to update chargeCanceled boolean
-    @return none
+    @return void
     @throws none
     */
     public void setChargeCanceled(boolean val) {

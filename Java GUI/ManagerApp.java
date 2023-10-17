@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/*
+/** 
 Manager app that sets up main starting page of GUI on manager side
 @author Kevin Tang
 @author Dicong Wang
@@ -14,11 +14,10 @@ public class ManagerApp extends JFrame {
     private ManagerFunctions managerFunctions;
     private Order order;
 
-    /*
+    /** 
     @function Constructor to set up the manager app page
     @param m to include the managerFunctions usability
     @param o to include the order usability
-    @return none
     @throws none
 
     */
@@ -168,10 +167,10 @@ public class ManagerApp extends JFrame {
 
     }
 
-    /*
+    /** 
     @function Function to open the menus app page from the existing page
     @param none
-    @return none
+    @return void
     @throws none
 
     */
@@ -180,10 +179,10 @@ public class ManagerApp extends JFrame {
         menusApp.setVisible(true);
         // dispose();
     }
-    /*
+    /** 
     @function Function to open the employees app page from the existing page
     @param none
-    @return none
+    @return void
     @throws none
 
     */
