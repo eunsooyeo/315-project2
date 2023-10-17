@@ -72,9 +72,9 @@ public class ReportsApp extends JPanel {
         mainPanel.revalidate();
         mainPanel.repaint();
 
-        // Create the form for entering a start date
-        JPanel formPanel = new JPanel();
-        formPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        centeredPanel.removeAll();
+        centeredPanel.revalidate();
+        centeredPanel.repaint(); 
 
         JLabel startDateLabel = new JLabel("Enter Start Date (YYYY-MM-DD):");
         startDateField = new JTextField(10);
@@ -87,11 +87,11 @@ public class ReportsApp extends JPanel {
             }
         });
 
-        formPanel.add(startDateLabel);
-        formPanel.add(startDateField);
-        formPanel.add(generateButton);
+        centeredPanel.add(startDateLabel);
+        centeredPanel.add(startDateField);
+        centeredPanel.add(generateButton);
 
-        mainPanel.add(formPanel, BorderLayout.CENTER);
+        mainPanel.add(centeredPanel, BorderLayout.NORTH);
         mainPanel.revalidate();
         mainPanel.repaint();
     }
@@ -99,10 +99,12 @@ public class ReportsApp extends JPanel {
     private void showPopularDrinkPairsForm() {
         // Replace the main panel content with a form
         mainPanel.removeAll();
+        mainPanel.revalidate(); // Add this line to revalidate the mainPanel
+        mainPanel.repaint(); 
 
-        // Create the form for entering start and end dates
-        JPanel formPanel = new JPanel();
-        formPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        centeredPanel.removeAll();
+        centeredPanel.revalidate();
+        centeredPanel.repaint(); 
 
         JLabel startDateLabel = new JLabel("From (YYYY-MM-DD):");
         startDateField = new JTextField(10);
@@ -117,13 +119,13 @@ public class ReportsApp extends JPanel {
             }
         });
 
-        formPanel.add(startDateLabel);
-        formPanel.add(startDateField);
-        formPanel.add(endDateLabel);
-        formPanel.add(endDateField);
-        formPanel.add(generateButton);
+        centeredPanel.add(startDateLabel);
+        centeredPanel.add(startDateField);
+        centeredPanel.add(endDateLabel);
+        centeredPanel.add(endDateField);
+        centeredPanel.add(generateButton);
 
-        mainPanel.add(formPanel, BorderLayout.CENTER);
+        mainPanel.add(centeredPanel, BorderLayout.NORTH);
         mainPanel.revalidate();
         mainPanel.repaint();
     }
@@ -132,16 +134,24 @@ public class ReportsApp extends JPanel {
         centeredPanel.removeAll();
 
         String startDate = startDateField.getText();
-        
+        JLabel excessIngredients = new JLabel();
+        String currentText = "<html>";
         if (invalidDate(startDate)) {
             messageLabel.setText("ERROR: Please enter a valid start date (YYYY-MM-DD).");
             messageLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center the label text
             messageLabel.setVerticalAlignment(SwingConstants.CENTER);
         } else {
             messageLabel.setText("Excess Ingredients Report generated for start date: " + startDate);
+            ArrayList<String> ingredients = managerFunctions.getExcessReport(startDate);
+            for (String ingredient : ingredients){
+                currentText = currentText + "<br>" + ingredient;
+            }
+            currentText = currentText + "</html>";
+            excessIngredients.setText(currentText);
         }
 
         centeredPanel.add(messageLabel);
+        centeredPanel.add(excessIngredients);
         centeredPanel.revalidate();
         centeredPanel.repaint();
     }
