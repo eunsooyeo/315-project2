@@ -532,7 +532,7 @@ public class ManagerFunctions {
 
     // returns a treemap with key being an arraylist (of size 2) of the drinksIDs,
     // with value being the number of its occurrence
-    public TreeMap<ArrayList<String>, Integer> getWhatSalesTogether(String beginningDate, String endDate) {
+    public HashMap<ArrayList<String>, Integer> getWhatSalesTogether(String beginningDate, String endDate) {
         ArrayList<String[]> list = new ArrayList<>();
 
         try {
@@ -545,6 +545,25 @@ public class ManagerFunctions {
                 s = s.substring(1, s.length() - 1);
                 String[] sstr = s.split(",");
                 list.add(sstr);
+                // System.out.println(Arrays.toString(sstr));
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Error getting what sales together");
+        }
+
+        TreeMap<String, String> drinkIDToName = new TreeMap<>();
+
+        try {
+            Statement stmt = conn.createStatement();
+            String sqlString = "SELECT recipeid, drinkname FROM recipes;";
+            ResultSet result = stmt.executeQuery(sqlString);
+            while (result.next()) {
+                String s = result.getString(1);
+                String n = result.getString(2);
+
+                drinkIDToName.put(s, n);
                 // System.out.println(Arrays.toString(sstr));
             }
 
@@ -588,11 +607,22 @@ public class ManagerFunctions {
                 return -(int1[0] - int2[0]);
             }
         });
-        TreeMap<ArrayList<String>, Integer> map = new TreeMap<>();
+        HashMap<ArrayList<String>, Integer> map = new HashMap<>();
 
         for (Integer[] intarr : recordAmount) {
-            map.put(recordName.get(intarr[1]), intarr[0]);
+            ArrayList<String> tmp = recordName.get(intarr[1]);
+            ArrayList<String> names = new ArrayList<>();
+            names.add(drinkIDToName.get(tmp.get(0)));
+            names.add(drinkIDToName.get(tmp.get(1)));
+            // System.out.println(names.toString() + " : " + intarr[0]);
+            map.put(names, intarr[0]);
         }
+
+        // for (Map.Entry<ArrayList<String>, Integer> entry : map.entrySet()) {
+        // ArrayList<String> key = entry.getKey();
+        // Integer value = entry.getValue();
+        // System.out.println("Key: " + key.toString() + ", Value: " + value);
+        // }
         return map;
     }
 
