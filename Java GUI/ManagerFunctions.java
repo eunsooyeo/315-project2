@@ -554,7 +554,7 @@ public class ManagerFunctions {
                 for (String s : drinkIDs) {
                     ++numDrinks;
                     //for each recipe get the ingredients and their amounts
-                    //reference the recipe database, get name and price
+                    // reference the recipe database, get name and price
                     String sqlString = "SELECT ingredient_names, ingredient_values FROM recipes WHERE recipeid = " + Integer.parseInt(s) + ";";
                     Statement stmt2 = conn.createStatement();
                     ResultSet result2 = stmt2.executeQuery(sqlString);
