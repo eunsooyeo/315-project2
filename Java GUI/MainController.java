@@ -66,6 +66,13 @@ public class MainController {
         
         //managerFunctions.getWhatSalesTogether("2023-12-30", "2023-12-30");
 
+        // TEST Excess Report
+        // String date = "2023-10-16";
+        // ArrayList<String> excessReport = managerFunctions.getExcessReport(date);
+        // for(int i = 0; i < excessReport.size(); ++i) {
+        //     System.out.println(excessReport.get(i));
+        // }
+
         // open GUI
         SwingUtilities.invokeLater(() -> {
             LoginApp loginApp = new LoginApp(order, managerFunctions);
