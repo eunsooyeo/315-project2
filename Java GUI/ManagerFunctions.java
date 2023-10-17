@@ -2,6 +2,7 @@ import java.math.BigDecimal;
 import java.sql.*;
 import javax.naming.spi.DirStateFactory.Result;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ManagerFunctions {
     private ArrayList<String> drinkNames;
@@ -516,8 +517,87 @@ public class ManagerFunctions {
 
     }
 
+    // checks if arraylist item exists in targetlist
+    private int containsList(ArrayList<ArrayList<String>> targetlist, ArrayList<String> item) {
+        ArrayList<String> item2 = new ArrayList<>();
+        item2.add(item.get(1));
+        item2.add(item.get(0));
+        for (int i = 0; i < targetlist.size(); i++) {
+            if (targetlist.get(i).equals(item) || targetlist.get(i).equals(item2)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    // returns a treemap with key being an arraylist (of size 2) of the drinksIDs,
+    // with value being the number of its occurrence
+    public TreeMap<ArrayList<String>, Integer> getWhatSalesTogether(String beginningDate, String endDate) {
+        ArrayList<String[]> list = new ArrayList<>();
+
+        try {
+            Statement stmt = conn.createStatement();
+            String sqlString = "SELECT drink_id FROM orders WHERE date >= '" + beginningDate + "' AND date <= '"
+                    + endDate + "';";
+            ResultSet result = stmt.executeQuery(sqlString);
+            while (result.next()) {
+                String s = result.getString(1);
+                s = s.substring(1, s.length() - 1);
+                String[] sstr = s.split(",");
+                list.add(sstr);
+                // System.out.println(Arrays.toString(sstr));
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Error getting what sales together");
+        }
+
+        ArrayList<ArrayList<String>> recordName = new ArrayList<>();
+        ArrayList<Integer[]> recordAmount = new ArrayList<>();
+        for (String[] str : list) {
+            if (str.length < 2)
+                continue;
+            for (int i = 0; i < str.length; i++) {
+                for (int j = i + 1; j < str.length; j++) {
+                    if (str[i].equals(str[j]))
+                        continue;
+                    ArrayList<String> tmpName = new ArrayList<>();
+                    tmpName.add(str[i]);
+                    tmpName.add(str[j]);
+                    int index = containsList(recordName, tmpName);
+                    if (index > -1) {
+                        Integer[] integer = new Integer[2];
+                        integer[0] = recordAmount.get(index)[0] + 1;
+                        integer[1] = recordAmount.get(index)[1];
+                        recordAmount.set(index, integer);
+                    } else {
+                        recordName.add(tmpName);
+                        Integer[] integer = new Integer[2];
+                        integer[0] = 1;
+                        integer[1] = recordAmount.size();
+                        recordAmount.add(integer);
+                    }
+                }
+
+            }
+        }
+
+        Collections.sort(recordAmount, new Comparator<Integer[]>() {
+            public int compare(Integer[] int1, Integer[] int2) {
+                return -(int1[0] - int2[0]);
+            }
+        });
+        TreeMap<ArrayList<String>, Integer> map = new TreeMap<>();
+
+        for (Integer[] intarr : recordAmount) {
+            map.put(recordName.get(intarr[1]), intarr[0]);
+        }
+        return map;
+    }
+
     public ArrayList<String> getExcessReport(String beginningDate) {
-        //set endDate to be current date
+        // set endDate to be current date
         String endDate = java.time.LocalDate.now().toString();
         double numDrinks = 0.0;
         TreeMap<String, Double> currItemAndAmount = new TreeMap<>();
@@ -525,19 +605,19 @@ public class ManagerFunctions {
         ArrayList<String> excessItems = new ArrayList<>();
 
         try {
-            //call the inventory
+            // call the inventory
             Statement stmt = conn.createStatement();
             String callInventory = "SELECT name, amount FROM inventory";
             ResultSet result = stmt.executeQuery(callInventory);
 
-            //loop through each row in the inventory
+            // loop through each row in the inventory
             while (result.next()) {
                 String item = result.getString(1);
                 Double amount = result.getDouble(2);
-                
-                //populate map with all the ingredients and its current amount
+
+                // populate map with all the ingredients and its current amount
                 currItemAndAmount.put(item, amount);
-                //populate map with items and initialize to 0
+                // populate map with items and initialize to 0
                 salesItemAndAmount.put(item, 0.0);
             }
 
@@ -545,17 +625,18 @@ public class ManagerFunctions {
                     + endDate + "';";
             result = stmt.executeQuery(getOrders);
 
-            //loop through all the orders within the time frame
+            // loop through all the orders within the time frame
             while (result.next()) {
                 String tmp = result.getString(1);
                 String[] drinkIDs = tmp.substring(1, tmp.length() - 1).split(",");
 
-                //loop through each of the drinks/recipes
+                // loop through each of the drinks/recipes
                 for (String s : drinkIDs) {
                     ++numDrinks;
                     //for each recipe get the ingredients and their amounts
                     // reference the recipe database, get name and price
-                    String sqlString = "SELECT ingredient_names, ingredient_values FROM recipes WHERE recipeid = " + Integer.parseInt(s) + ";";
+                    String sqlString = "SELECT ingredient_names, ingredient_values FROM recipes WHERE recipeid = "
+                            + Integer.parseInt(s) + ";";
                     Statement stmt2 = conn.createStatement();
                     ResultSet result2 = stmt2.executeQuery(sqlString);
                     result2.next();
@@ -581,7 +662,13 @@ public class ManagerFunctions {
                 salesItemAndAmount.replace(item, numDrinks);
             }
 
-            //loop through the ingredients array
+            //account for cups, napkins, straws, and plastic cover
+            List<String> items = Arrays.asList("cups", "straws", "plastic cover", "napkins");
+            for(String item: items) {
+                salesItemAndAmount.replace(item, numDrinks);
+            }
+
+            // loop through the ingredients array
             for (String key : currItemAndAmount.keySet()) {
                 double salesAmount = salesItemAndAmount.get(key);
                 double totalAmount = currItemAndAmount.get(key) + salesAmount;
@@ -591,12 +678,11 @@ public class ManagerFunctions {
                     excessItems.add(key);
                 }
             }
-        } 
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println("Error getting excess report");
         }
-        
+
         return excessItems;
     }
 
