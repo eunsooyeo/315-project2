@@ -8,7 +8,10 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
-
+/*
+@author Kevin Tang
+@author Dicong Wang
+*/
 public class CashierApp extends JFrame {
     private JPanel leftPanel;
     private JPanel middlePanel;

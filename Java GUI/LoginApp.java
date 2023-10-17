@@ -4,7 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 //package jdbc_demo.dbSetup;
 
-//@Kevin Tang
+/*
+@author: Kevin Tang
+@author: Dicong Wang
+*/
 public class LoginApp extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;

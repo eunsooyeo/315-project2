@@ -2,9 +2,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+/*
+@author Kevin Tang
+@author Dicong Wang
+*/
 public class CompletionPopup extends JDialog {
-
+    /*
+    @param parentFrame  to reference original frame of GUI
+    @return none
+    @throws none
+    */
     public CompletionPopup(JFrame parentFrame) {
         super(parentFrame, "Order Completed", true);
 

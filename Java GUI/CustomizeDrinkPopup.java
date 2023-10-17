@@ -3,7 +3,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
-
+/*
+@author Kevin Tang
+@author Dicong Wang
+*/
 public class CustomizeDrinkPopup extends JDialog {
     private JLabel titleLabel;
     private JButton cancelButton;
@@ -17,7 +20,13 @@ public class CustomizeDrinkPopup extends JDialog {
     private ArrayList<String> selectedToppings;
 
     private Order order;
-
+    /*
+    @param parent  to reference original frame of GUI
+    @param drinkName  to include information about drink
+    @param o  order to include usage of functions
+    @return
+    @throws
+    */
     public CustomizeDrinkPopup(JFrame parent, String drinkName, Order o) {
 
         super(parent, "Customize Drink", true);
@@ -115,15 +124,27 @@ public class CustomizeDrinkPopup extends JDialog {
         setResizable(false);
         setVisible(true);
     }
-
+    /*
+    @param none
+    @return String of the user-selected ice amount
+    @throws none
+    */
     public String getSelectedIce() {
         return selectedIce;
     }
-
+    /*
+    @param none
+    @return String of the user-selected sweetness level
+    @throws none
+    */
     public String getSelectedSweetness() {
         return selectedSweetness;
     }
-
+    /*
+    @param none
+    @return array of strings of selected toppings
+    @throws none
+    */
     public ArrayList<String> getSelectedToppings() {
         return selectedToppings;
     }

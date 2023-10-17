@@ -7,6 +7,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/*
+@author: Kevin Tang
+@author: Dicong Wang
+*/
 public class MainController {
     public static Connection conn = null;
 

@@ -2,7 +2,11 @@ import java.math.BigDecimal;
 import java.sql.*;
 import javax.naming.spi.DirStateFactory.Result;
 import java.util.*;
-import java.util.stream.Collectors;
+/*
+@author Sarah Brasseaux
+@author Eunsoo
+@author Yuqian
+*/import java.util.stream.Collectors;
 
 public class ManagerFunctions {
     private ArrayList<String> drinkNames;
@@ -601,6 +605,7 @@ public class ManagerFunctions {
         String endDate = java.time.LocalDate.now().toString();
         TreeMap<String, Double> currItemAndAmount = new TreeMap<>();
         TreeMap<String, Double> salesItemAndAmount = new TreeMap<>();
+        ArrayList<String> excessItems = new ArrayList<>();
         ArrayList<String> excessItems = new ArrayList<>();
 
         try {

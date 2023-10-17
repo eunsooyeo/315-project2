@@ -7,6 +7,10 @@ import java.sql.*;
 import javax.naming.spi.DirStateFactory.Result;
 import java.util.*;
 
+/*
+@author: Kevin Tang
+@author: Dicong Wang
+*/
 public class InventoryApp extends JPanel {
     private JButton prevItembutton = null;
     private ManagerFunctions managerFunctions;

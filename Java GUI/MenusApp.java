@@ -7,7 +7,10 @@ import java.awt.event.WindowEvent;    // Import WindowEvent
 import java.util.*;
 import java.sql.*;
 
-
+/*
+@author: Kevin Tang
+@author: Dicong Wang
+*/
 public class MenusApp extends JPanel {
     private JTextArea drinkDetailsTextArea;
     //private JTextField idField;

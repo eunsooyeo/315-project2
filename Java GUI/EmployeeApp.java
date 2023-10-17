@@ -6,6 +6,12 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
+/*
+This class is for the GUI of the employee tab on the manager side of the POS. It shows the managers and employees and their information.
+
+@author Kevin Tang
+@author Dicong Wang
+*/
 public class EmployeeApp extends JPanel {
     private JTextArea detailsTextArea;
     private JTextField idField;
@@ -20,6 +26,10 @@ public class EmployeeApp extends JPanel {
     private ManagerFunctions managerFunctions;
     private HashMap<String, ArrayList<String>> detailsMap;
 
+    /*
+    Constructor for the employee app. Sets up the GUI framework for this page.
+    @param msp to include usage of managerfunctions class
+    */
     public EmployeeApp(ManagerFunctions msp) {
         setLayout(new BorderLayout());
         
@@ -194,7 +204,13 @@ public class EmployeeApp extends JPanel {
             }
         });
     }
+    /*
+    Function to load details about manager from database that is clicked on on the GUI.
+    @param managerName string of the name to find in the database
+    @return none
+    @throws none
 
+    */
     private void displayManagerDetails(String managerName) {
         if (managerName != null) {
             ArrayList<String> managerInfo = detailsMap.get(managerName);
@@ -207,7 +223,13 @@ public class EmployeeApp extends JPanel {
             detailsTextArea.setText("No manager selected.");
         }
     }
+    /*
+    Function to load details about employee from database that is clicked on on the GUI.
+    @param employeeName string of the name to find in the database
+    @return none
+    @throws none
 
+    */
     private void displayEmployeeDetails(String employeeName) {
         if (employeeName != null) {
             ArrayList<String> employeeInfo = detailsMap.get(employeeName);
@@ -220,7 +242,13 @@ public class EmployeeApp extends JPanel {
             detailsTextArea.setText("No employee selected.");
         }
     }
+    /*
+    Function to update information about manager that user changed. Also includes a call to SQL function
+    @param index  refers to the position in the listmodel to identify which manager.
+    @return none
+    @throws none
 
+    */
     private void updateManagerInformation(int index) {
         String oldManager = managerListModel.get(index);
         String newID = idField.getText();
@@ -245,7 +273,13 @@ public class EmployeeApp extends JPanel {
         managerFunctions.updateEmployeeSQL(newName, newHours, newPassword, newPay);
     }
 
+    /*
+    Function to update information about employee that user changed. Also includes a call to SQL function
+    @param index  refers to the position in the listmodel to identify which employee.
+    @return none
+    @throws none
 
+    */
     private void updateEmployeeInformation(int index) {
         String oldEmployee = employeeListModel.get(index);
         // Handle editing employee information
@@ -271,7 +305,17 @@ public class EmployeeApp extends JPanel {
         managerFunctions.updateEmployeeSQL(newName, newHours, newPassword, newPay);
     }
 
+    /*
+    Function to create new employee on POS and calls a function that updates database
+    @param id string of new employee id
+    @param name string of new employee name
+    @param hours string of new employee hours
+    @param password string of new employee password
+    @param pay string of new employee pay
+    @return none
+    @throws none
 
+    */
     private void addEmployee(String id, String name, String hours, String password, String pay) {
         if (name.isEmpty()) {
             return; // Don't add if the name is empty
@@ -292,6 +336,17 @@ public class EmployeeApp extends JPanel {
         detailsMap.put(name, employeeInfo);
     }
 
+    /*
+    Function to create new manager on POS and calls a function that updates database
+    @param id string of new manager id
+    @param name string of new manager name
+    @param hours string of new manager hours
+    @param password string of new manager password
+    @param pay string of new manager pay
+    @return none
+    @throws none
+
+    */
     private void addManager(String id, String name, String hours, String password, String pay) {
         if (name.isEmpty()) {
             return; // Don't add if the name is empty
@@ -312,6 +367,13 @@ public class EmployeeApp extends JPanel {
         detailsMap.put(name, managerInfo);
     }
 
+    /*
+    Function to remove employee on POS and calls a function that updates database
+    @param index  refers to the position in the listmodel to identify which employee is being removed
+    @return none
+    @throws none
+
+    */
     private void removeEmployee(int index) {
         if (index >= 0 && index < employeeListModel.getSize()) {
             // Update the database
@@ -324,6 +386,13 @@ public class EmployeeApp extends JPanel {
         }
     }
 
+    /*
+    Function to remove manager on POS and calls a function that updates database
+    @param index  refers to the position in the listmodel to identify which manager is being removed
+    @return none
+    @throws none
+
+    */
     private void removeManager(int index) {
         if (index >= 0 && index < managerListModel.getSize()) {
             // Update the database
