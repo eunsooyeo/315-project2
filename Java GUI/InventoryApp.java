@@ -15,6 +15,10 @@ public class InventoryApp extends JPanel {
     private JButton prevItembutton = null;
     private ManagerFunctions managerFunctions;
     private JTextArea detailsTextArea;
+    private JTextField nameField;
+    private JTextField amountsField;
+    private JTextField capacityAmountField;
+    private JTextField unitsField;
 
     public InventoryApp(ManagerFunctions m) {
         setLayout(new BorderLayout());
@@ -35,10 +39,10 @@ public class InventoryApp extends JPanel {
 
 
             //add labels and fields for editing
-        JTextField nameField = new JTextField(20);
-        JTextField amountsField = new JTextField(20);
-        JTextField capacityAmountField = new JTextField(20);
-        JTextField unitsField  = new JTextField(20);
+        nameField = new JTextField(20);
+        amountsField = new JTextField(20);
+        capacityAmountField = new JTextField(20);
+        unitsField  = new JTextField(20);
 
         editPanel.add(new JLabel("Name:"));
         editPanel.add(nameField);
@@ -113,11 +117,6 @@ public class InventoryApp extends JPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
 
-                    /*
-                     * TODO
-                     ****************************************************************************************************************************/
-                    // Display item details in the right sidebar
-                    // Make its contents editable after retrieveing from Database
                     detailsTextArea.selectAll();
                     detailsTextArea.replaceSelection(item);
                     detailsTextArea.append("\n");
@@ -134,7 +133,19 @@ public class InventoryApp extends JPanel {
                     // prevItembutton.setBackground(Color.GRAY);
                     // prevItembutton.setOpaque(false);
                     // }
+                    nameField.setText(item);
 
+                    String lines[] = arr.get(0).split("/");
+                    String cap = lines[1];
+
+                    int i;
+                    for(i = 0; i < cap.length(); i ++) {
+                        if(!Character.isDigit(cap.charAt(i)) && cap.charAt(i) != '.') break;
+                    }
+
+                    amountsField.setText(lines[0]);
+                    capacityAmountField.setText(cap.substring(0, i));
+                    unitsField.setText(cap.substring(i));
                 }
             });
             centerPanel.add(itemButton);
@@ -295,6 +306,20 @@ public class InventoryApp extends JPanel {
                     ArrayList<String> arr = getInfoForIngredient(item);
 
                     detailsTextArea.append(arr.get(0));
+
+                    nameField.setText(item);
+
+                    String lines[] = arr.get(0).split("/");
+                    String cap = lines[1];
+
+                    int i;
+                    for(i = 0; i < cap.length(); i ++) {
+                        if(!Character.isDigit(cap.charAt(i)) && cap.charAt(i) != '.') break;
+                    }
+
+                    amountsField.setText(lines[0]);
+                    capacityAmountField.setText(cap.substring(0, i));
+                    unitsField.setText(cap.substring(i));
                 }
             });
             centerPanel.add(itemButton);  // Add the new button to the center panel

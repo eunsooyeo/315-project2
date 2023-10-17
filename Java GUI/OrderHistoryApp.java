@@ -49,9 +49,14 @@ public class OrderHistoryApp extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String fromText = fromField.getText();
                 String toText = toField.getText();
-                // You can process and acquire the data from both fields here
+
                 if(fromText.equals("From") || toText.equals("To")){
                     JOptionPane.showMessageDialog(OrderHistoryApp.this, "ERROR\n\nPlease Input Dates");
+                    return;
+                }
+
+                if(invalidDate(fromText) || invalidDate(toText)){
+                    JOptionPane.showMessageDialog(OrderHistoryApp.this, "ERROR\n\nInvalid Dates");
                     return;
                 }
 
@@ -155,5 +160,19 @@ public class OrderHistoryApp extends JPanel {
 
         drinksPanel.revalidate();
         drinksPanel.repaint();
+    }
+
+    private boolean invalidDate(String date) {
+        if(date.length() != 10) return true;
+        for(int i = 0; i < date.length(); i++) {
+            if(i == 4 || i == 7) {
+                if(date.charAt(i) != '-' && date.charAt(i) != '/') return true;
+            }
+            else {
+                if(!Character.isDigit(date.charAt(i))) return true;
+            }
+        }
+
+        return false;
     }
 }
