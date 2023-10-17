@@ -93,14 +93,4 @@ public class SupplyHistoryApp extends JPanel {
 
         JOptionPane.showMessageDialog(this, details, row.substring(0, row.indexOf(" ")) + trackingNum, JOptionPane.INFORMATION_MESSAGE);
     }
-
-    /* public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Supply History Page");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(800, 400);
-            frame.add(new SupplyHistoryApp());
-            frame.setVisible(true);
-        });
-    } */
 }

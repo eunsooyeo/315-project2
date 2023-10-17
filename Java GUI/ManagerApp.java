@@ -190,13 +190,4 @@ public class ManagerApp extends JFrame {
         EmployeeApp employeeApp = new EmployeeApp(managerFunctions);
         employeeApp.setVisible(true);
     }
-
-    /*
-     * public static void main(String[] args) {
-     * SwingUtilities.invokeLater(() -> {
-     * ManagerApp managerApp = new ManagerApp(order);
-     * managerApp.setVisible(true);
-     * });
-     * }
-     */
 }

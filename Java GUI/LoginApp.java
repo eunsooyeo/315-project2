@@ -59,10 +59,8 @@ public class LoginApp extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String username = usernameField.getText();
                 char[] password = passwordField.getPassword();
-
-                /*
-                 * TODO
-                 ****************************************************************************************************************************/
+            
+                //****************************************************************************************************************************/
                 // Here, you can add code to validate the username and password.
                 // For simplicity, let's use "manager" and "cashier" as the valid usernames and
                 // "password" as the password.

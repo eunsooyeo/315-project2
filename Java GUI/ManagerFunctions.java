@@ -64,11 +64,6 @@ public class ManagerFunctions {
 
             String[] ingredientNamesAry = ingredientNames.split(",");
             String[] ingredientValuesAry = ingredientValues.split(",");
-            // System.out.println("names: " + ingredientNames);
-            // ArrayList<String> ingredient_names = new
-            // ArrayList<String>(Arrays.asList(ingredientNames));
-            // ArrayList<String> ingredient_values = new
-            // ArrayList<String>(Arrays.asList(ingredientValues));
             String ingredient_names_string = ingredientNames;
             ingredient_names_string = ingredient_names_string.substring(1, ingredient_names_string.length() - 1);
             String ingredient_values_string = ingredientValues;
@@ -76,7 +71,6 @@ public class ManagerFunctions {
 
             // create a statement object
             Statement stmt = conn.createStatement();
-            // System.out.println("ingredient_names_string: " + ingredient_names_string);
             // create an SQL statement
             String sqlStatement = "UPDATE recipes SET ingredient_names = '{" + ingredient_names_string.toLowerCase()
                     + "}', ingredient_values = '{" + ingredient_values_string + "}' WHERE lower(drinkname) ='"
@@ -98,7 +92,6 @@ public class ManagerFunctions {
                 } else if (i == ingredientNamesAry.length - 1) {
                     names = names.substring(0, names.length() - 1);
                 }
-                // System.out.println("names: " + names);
                 // also take care of spaces
                 if (names.startsWith(" ")) {
                     names = names.substring(1, names.length());
@@ -153,8 +146,6 @@ public class ManagerFunctions {
                     + ingredient_values_string + "'," + price
                     + " WHERE NOT EXISTS (SELECT drinkname FROM recipes WHERE lower(drinkname) = '"
                     + drinkName.toLowerCase() + "')";
-            // System.out.println("names: " + ingredient_names);
-            // System.out.println("names_string: " + ingredient_names_string);
             stmt.executeUpdate(sqlStatement);
             // determine which ingredients need to be created in inventory using Conflict
             String names;
@@ -180,7 +171,6 @@ public class ManagerFunctions {
                     names = names.substring(1, names.length() - 1);
                 }
                 createNewInventory(names, "0", "1000", "unit");
-                // System.out.println("names: " + names);
                 /*
                  * stmt.
                  * executeUpdate("INSERT INTO inventory (name, amount, capacity, unit, alert) SELECT '"
@@ -750,7 +740,6 @@ public class ManagerFunctions {
                 s = s.substring(1, s.length() - 1);
                 String[] sstr = s.split(",");
                 list.add(sstr);
-                // System.out.println(Arrays.toString(sstr));
             }
 
         } catch (Exception e) {
@@ -769,7 +758,6 @@ public class ManagerFunctions {
                 String n = result.getString(2);
 
                 drinkIDToName.put(s, n);
-                // System.out.println(Arrays.toString(sstr));
             }
 
         } catch (Exception e) {
@@ -819,15 +807,8 @@ public class ManagerFunctions {
             ArrayList<String> names = new ArrayList<>();
             names.add(drinkIDToName.get(tmp.get(0)));
             names.add(drinkIDToName.get(tmp.get(1)));
-            // System.out.println(names.toString() + " : " + intarr[0]);
             map.put(names, intarr[0]);
         }
-
-        // for (Map.Entry<ArrayList<String>, Integer> entry : map.entrySet()) {
-        // ArrayList<String> key = entry.getKey();
-        // Integer value = entry.getValue();
-        // System.out.println("Key: " + key.toString() + ", Value: " + value);
-        // }
         return map;
     }
 
@@ -923,5 +904,4 @@ public class ManagerFunctions {
 
         return excessItems;
     }
-
 }

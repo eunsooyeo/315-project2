@@ -61,7 +61,7 @@ public class EmployeeApp extends JPanel {
 
         int numManagers = managerFunctions.getNumOfManagers();
         for (int i = 0; i < numManagers; i++) {
-                //get all managers --------------------TODO
+            //get all managers
             managerListModel.addElement(allManagers.get(i));
         }
 
@@ -404,14 +404,4 @@ public class EmployeeApp extends JPanel {
 
         }
     }
-
-    /*public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Employee Page");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(800, 400);
-            frame.add(new EmployeeApp());
-            frame.setVisible(true);
-        });
-    }*/
 }

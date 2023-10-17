@@ -14,7 +14,6 @@ Menus page on the manager side
 */
 public class MenusApp extends JPanel {
     private JTextArea drinkDetailsTextArea;
-    //private JTextField idField;
     private JTextField nameField;
     private JTextField priceField;
     private JTextField ingredientsField;
@@ -119,7 +118,6 @@ public class MenusApp extends JPanel {
         add(rightPanel, BorderLayout.EAST);
 
         // Create the panel for drink information and editing
-        //JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BorderLayout());
 
         JScrollPane rscroll = new JScrollPane(rightPanel);
@@ -130,7 +128,6 @@ public class MenusApp extends JPanel {
 
         // Add labels and fields for editing
         nameField = new JTextField(20);
-        //idField = new JTextField(20);
         priceField = new JTextField(20);
         ingredientsField = new JTextField(20);
         ingredientsValueField = new JTextField(20);
@@ -138,8 +135,6 @@ public class MenusApp extends JPanel {
         addDrinkButton = new JButton("Add Drink");
         removeDrinkButton = new JButton("Remove Drink");
 
-        //editPanel.add(new JLabel("ID:"));
-        //editPanel.add(idField);
         editPanel.add(new JLabel("Name:"));
         editPanel.add(nameField);
         editPanel.add(new JLabel("Price:"));
@@ -326,9 +321,6 @@ public class MenusApp extends JPanel {
     private void updateDrinkButtons() {
         // Clear existing drink buttons
         drinkListPanel.removeAll();
-        /*for (int i = 0; i < drinkButtons.length; i++) {
-            drinkListPanel.remove(drinkButtons[i]);
-        } */
 
         // Create new drink buttons based on the updated data
         drinkButtons = new JButton[drinkNames.length];
@@ -388,15 +380,4 @@ public class MenusApp extends JPanel {
             drinkDetailsTextArea.setText("Select a drink");
         }
     }
-
-    /*public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Menus Page");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(800, 400);
-            MenusApp ma = new MenusApp(managerFunctions);
-            frame.add(ma);
-            frame.setVisible(true);
-        });
-    }*/
 }

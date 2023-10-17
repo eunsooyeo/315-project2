@@ -343,8 +343,6 @@ public class CashierApp extends JFrame {
 
     */
     private void updateTotalPrice() {
-        // TODO **************************************************************** connect
-        // to DB and match prices
         // Calculate the total price based on the number of selected drinks
         double drinksPrice = 0.0;
         List<String> tempList = new ArrayList<>();
@@ -504,7 +502,7 @@ public class CashierApp extends JFrame {
     @param none
     @return void
     @throws none
-
+    
     */
     private void clearSelectedDrinks() {
         selectedDrinks.clear(); // Clear the list of selected drinks
@@ -512,14 +510,4 @@ public class CashierApp extends JFrame {
         taxAmount = 0.0;
         updateDisplayPanel(); // Update the display panel to reflect the changes
     }
-
-    /*
-     * public static void main(String[] args) {
-     * 
-     * SwingUtilities.invokeLater(() -> {
-     * CashierApp cashierApp = new CashierApp(order);
-     * cashierApp.setVisible(true);
-     * });
-     * }
-     */
 }

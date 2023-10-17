@@ -23,18 +23,14 @@ public class Order {
     /* *
       * @Return : boolean
      * * false if the order fails to be created
-     * * may be due to reasons: insufficient ingredient or errors
      */
     /*
      * @param
      * * drink names: {string}
-     * * sugar level: {0 || 30 || 50 || 80 || 100 || 120}
-     * * ice level: {0 || 50 || 100}
-     * * toppings: {string}
+     * * price: double
      */
     /*
      * @Function
-     * * updates inventory
      * * updates orders
      * * returns true if everything functions properly, false otherwise
      */
@@ -189,7 +185,6 @@ public class Order {
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.err.println(e.getClass().getName() + ": " + e.getMessage());
-                    // return false;
                 }
             }
 
@@ -215,17 +210,12 @@ public class Order {
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.err.println(e.getClass().getName() + ": " + e.getMessage());
-                    // return false;
                 }
             }
-
-            // drinkNames.add(drinkName);
-            // prices.add(price);
-            // numToppings.add(numToppingForDrink);
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            // return false;
+            return false;
         }
         return true;
     }
@@ -368,10 +358,6 @@ public class Order {
                     return false;
                 }
             }
-
-            // drinkNames.remove(drinkName);
-            // prices.remove(price);
-            // numToppings.remove(numToppingForDrink);
 
         } catch (Exception e) {
             e.printStackTrace();

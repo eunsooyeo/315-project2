@@ -142,7 +142,6 @@ public class ReportsApp extends JPanel {
 
     */
     private void generateExcessIngredientsReport() {
-        //centeredPanel.removeAll();
 
         String startDate = startDateField.getText();
         String currentText = "<html>";
@@ -151,7 +150,6 @@ public class ReportsApp extends JPanel {
             excessIngredients.setHorizontalAlignment(SwingConstants.CENTER); // Center the label text
             excessIngredients.setVerticalAlignment(SwingConstants.CENTER);
         } else {
-            //messageLabel.setText("Excess Ingredients Report generated for start date: " + startDate);
             ArrayList<String> ingredients = managerFunctions.getExcessReport(startDate);
             for (String ingredient : ingredients){
                 currentText += "<br>" + ingredient;
@@ -160,7 +158,6 @@ public class ReportsApp extends JPanel {
             excessIngredients.setText(currentText);
         }
 
-        //centeredPanel.add(messageLabel);
         // Create GridBagConstraints for centeredPanel components
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 0, 5, 0); // Add some vertical spacing between components
@@ -243,7 +240,6 @@ public class ReportsApp extends JPanel {
     @throws none
     */
     private void generatePopularDrinkPairsReport() {
-        //centeredPanel.removeAll();
 
         String startDate = startDateField.getText();
         String endDate = endDateField.getText();
@@ -255,7 +251,6 @@ public class ReportsApp extends JPanel {
             excessIngredients.setHorizontalAlignment(SwingConstants.CENTER); // Center the label text
             excessIngredients.setVerticalAlignment(SwingConstants.CENTER);
         } else {
-            //excessIngredients.setText("Popular Drink Pairs Report generated from " + startDate + " to " + endDate);
             HashMap<ArrayList<String>, Integer> map = managerFunctions.getWhatSalesTogether(startDate, endDate);
             java.util.List<Map.Entry<ArrayList<String>, Integer>> list = new ArrayList<>(map.entrySet());
 

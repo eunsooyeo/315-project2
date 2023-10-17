@@ -371,13 +371,4 @@ public class InventoryApp extends JPanel {
         centerPanel.revalidate();
         centerPanel.repaint();
     }
-    // public static void main(String[] args) {
-    //     SwingUtilities.invokeLater(() -> {
-    //         JFrame frame = new JFrame("Inventory Page");
-    //         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    //         frame.setSize(800, 400);
-    //         frame.add(new InventoryApp());
-    //         frame.setVisible(true);
-    //     });
-    // }
 }
