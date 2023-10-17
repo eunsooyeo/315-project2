@@ -13,8 +13,11 @@ This class sets up the Reports page on the manager side
 public class ReportsApp extends JPanel {
     private ManagerFunctions managerFunctions;
     private JPanel mainPanel;
+    private JLabel startDateLabel;
     private JTextField startDateField;
+    private JLabel endDateLabel;
     private JTextField endDateField;
+    private JButton generateButton;
     private JLabel messageLabel;
     private JPanel centeredPanel;
     private JLabel excessIngredients;
@@ -186,11 +189,11 @@ public class ReportsApp extends JPanel {
         centeredPanel.revalidate();
         centeredPanel.repaint(); 
 
-        JLabel startDateLabel = new JLabel("From (YYYY-MM-DD):");
+        startDateLabel = new JLabel("From (YYYY-MM-DD):");
         startDateField = new JTextField(10);
-        JLabel endDateLabel = new JLabel("To (YYYY-MM-DD):");
+        endDateLabel = new JLabel("To (YYYY-MM-DD):");
         endDateField = new JTextField(10);
-        JButton generateButton = new JButton("Generate Report");
+        generateButton = new JButton("Generate Report");
 
         generateButton.addActionListener(new ActionListener() {
             @Override
@@ -244,24 +247,65 @@ public class ReportsApp extends JPanel {
 
         String startDate = startDateField.getText();
         String endDate = endDateField.getText();
+
+        String currentText = "<html>";
         
         if (invalidDate(startDate) || invalidDate(endDate)) {
             excessIngredients.setText("ERROR: Please enter valid start and end dates (YYYY-MM-DD).");
             excessIngredients.setHorizontalAlignment(SwingConstants.CENTER); // Center the label text
             excessIngredients.setVerticalAlignment(SwingConstants.CENTER);
         } else {
-            excessIngredients.setText("Popular Drink Pairs Report generated from " + startDate + " to " + endDate);
+            //excessIngredients.setText("Popular Drink Pairs Report generated from " + startDate + " to " + endDate);
+            HashMap<ArrayList<String>, Integer> map = managerFunctions.getWhatSalesTogether(startDate, endDate);
+            java.util.List<Map.Entry<ArrayList<String>, Integer>> list = new ArrayList<>(map.entrySet());
+
+            Collections.sort(list, new Comparator<Map.Entry<ArrayList<String>, Integer>>() {
+                @Override
+                public int compare(Map.Entry<ArrayList<String>, Integer> o1, Map.Entry<ArrayList<String>, Integer> o2) {
+                    // Compare in descending order
+                    return o2.getValue().compareTo(o1.getValue());
+                }
+            });
+
+            // Add headers for the two columns
+            currentText += "<table>";
+            currentText += "<tr><th>Drink Pair</th><th>Order Count</th></tr>";
+
+            for (Map.Entry<ArrayList<String>, Integer> entry : list) {
+                // Add a row with drink pair and order count
+                currentText += "<tr><td>" + entry.getKey().get(0) + ", " + entry.getKey().get(1) + "</td><td>" + entry.getValue() + "</td></tr>";
+            }
+
+            currentText += "</table>";
+
+            currentText += "</html>";
+            excessIngredients.setText(currentText);
         }
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 0, 5, 0); // Add some vertical spacing between components
+        // Create a JScrollPane and set the preferred size
+        JScrollPane scrollPane = new JScrollPane(excessIngredients);
+        scrollPane.setPreferredSize(new Dimension(400, 300)); // Adjust the dimensions as needed
 
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 5;
-        centeredPanel.add(excessIngredients, gbc);
-        centeredPanel.revalidate();
-        centeredPanel.repaint();
+        // Create a panel for the date form
+        JPanel dateFormPanel = new JPanel();
+        dateFormPanel.add(startDateLabel);
+        dateFormPanel.add(startDateField);
+        dateFormPanel.add(endDateLabel);
+        dateFormPanel.add(endDateField);
+        dateFormPanel.add(generateButton);
+
+        // Create a panel for the scroll pane
+        JPanel scrollPanel = new JPanel(new BorderLayout());
+        scrollPanel.add(dateFormPanel, BorderLayout.NORTH);
+        scrollPanel.add(scrollPane, BorderLayout.CENTER);
+
+        // Replace the centeredPanel content with the scrollPanel
+        mainPanel.removeAll();
+        mainPanel.revalidate();
+        mainPanel.repaint();
+        mainPanel.add(scrollPanel, BorderLayout.CENTER);
+        mainPanel.revalidate();
+        mainPanel.repaint();
     }
 
     /** 
