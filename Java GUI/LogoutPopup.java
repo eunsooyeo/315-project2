@@ -11,11 +11,11 @@ GUI Logout popup to confirm and allow logout
 public class LogoutPopup extends JDialog {
     private ManagerFunctions managerFunctions;
     private Order order;
-/** 
-    // @function Constructor to set up the popup page
-    // @param parent to use existing jframe for setup
-    // @param o include to allow usage of order functions
-    // @param m to allow usage of managerFunctions
+    /** 
+    Constructor to set up the popup page
+    @param parent to use existing jframe for setup
+    @param o include to allow usage of order functions
+    @param m to allow usage of managerFunctions
     */
     public LogoutPopup(JFrame parent, Order o, ManagerFunctions m) {
         super(parent, "Logout Confirmation", true);

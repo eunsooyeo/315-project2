@@ -26,7 +26,7 @@ public class EmployeeApp extends JPanel {
     private HashMap<String, ArrayList<String>> detailsMap;
 
     /** 
-    @function Constructor for the employee app. Sets up the GUI framework for this page.
+    Constructor for the employee app. Sets up the GUI framework for this page.
     @param msp to include usage of managerfunctions class
     */
     public EmployeeApp(ManagerFunctions msp) {
@@ -204,10 +204,8 @@ public class EmployeeApp extends JPanel {
         });
     }
     /** 
-    @function Function to load details about manager from database that is clicked on on the GUI.
+    Function to load details about manager from database that is clicked on on the GUI.
     @param managerName string of the name to find in the database
-    @return void
-    @throws none
 
     */
     private void displayManagerDetails(String managerName) {
@@ -223,7 +221,7 @@ public class EmployeeApp extends JPanel {
         }
     }
     /** 
-    @function Function to load details about employee from database that is clicked on on the GUI.
+    Function to load details about employee from database that is clicked on on the GUI.
     @param employeeName string of the name to find in the database
     @return void
     @throws none
@@ -242,10 +240,8 @@ public class EmployeeApp extends JPanel {
         }
     }
     /** 
-    @function Function to update information about manager that user changed. Also includes a call to SQL function
+    Function to update information about manager that user changed. Also includes a call to SQL function
     @param index  refers to the position in the listmodel to identify which manager.
-    @return void
-    @throws none
 
     */
     private void updateManagerInformation(int index) {
@@ -273,10 +269,8 @@ public class EmployeeApp extends JPanel {
     }
 
     /** 
-    @function Function to update information about employee that user changed. Also includes a call to SQL function
+    Function to update information about employee that user changed. Also includes a call to SQL function
     @param index  refers to the position in the listmodel to identify which employee.
-    @return void
-    @throws none
 
     */
     private void updateEmployeeInformation(int index) {
@@ -305,14 +299,12 @@ public class EmployeeApp extends JPanel {
     }
 
     /** 
-    @function Function to create new employee on POS and calls a function that updates database
+    Function to create new employee on POS and calls a function that updates database
     @param id string of new employee id
     @param name string of new employee name
     @param hours string of new employee hours
     @param password string of new employee password
     @param pay string of new employee pay
-    @return void
-    @throws none
 
     */
     private void addEmployee(String id, String name, String hours, String password, String pay) {
@@ -336,14 +328,12 @@ public class EmployeeApp extends JPanel {
     }
 
     /** 
-    @function Function to create new manager on POS and calls a function that updates database
+    Function to create new manager on POS and calls a function that updates database
     @param id string of new manager id
     @param name string of new manager name
     @param hours string of new manager hours
     @param password string of new manager password
     @param pay string of new manager pay
-    @return void
-    @throws none
 
     */
     private void addManager(String id, String name, String hours, String password, String pay) {
@@ -367,10 +357,8 @@ public class EmployeeApp extends JPanel {
     }
 
     /** 
-    @function Function to remove employee on POS and calls a function that updates database
+    Function to remove employee on POS and calls a function that updates database
     @param index  refers to the position in the listmodel to identify which employee is being removed
-    @return void
-    @throws none
 
     */
     private void removeEmployee(int index) {
@@ -386,7 +374,7 @@ public class EmployeeApp extends JPanel {
     }
 
     /** 
-    @function Function to remove manager on POS and calls a function that updates database
+    Function to remove manager on POS and calls a function that updates database
     @param index  refers to the position in the listmodel to identify which manager is being removed
     @return void
     @throws none

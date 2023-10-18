@@ -14,9 +14,8 @@ public class SupplyHistoryApp extends JPanel {
     private ManagerFunctions managerFunctions;
 
     /** 
-    @function Constructor to set up the supply history page
+    Constructor to set up the supply history page
     @param m to include managerFunctions usability
-    @throws none
 
     */
     public SupplyHistoryApp(ManagerFunctions m) {
@@ -64,11 +63,9 @@ public class SupplyHistoryApp extends JPanel {
         add(centerPanel, BorderLayout.CENTER);
     }
     /** 
-    @function Function to display the supply order details with a message joptionpane
+    Function to display the supply order details with a message joptionpane
     @param row string of the row of information
     @param supplyOrder string of the order items
-    @return void
-    @throws none
 
     */
     private void showSupplyDetails(String row, String supplyOrder) {

@@ -13,10 +13,9 @@ public class ChargePage extends JDialog {
 
     private boolean chargeCanceled;
     /** 
-    @function Constructor to set up the GUI page
+    Constructor to set up the GUI page
     @param parentFrame  to include reference to original frame of GUI
     @param totalPrice  to show the price on the GUI
-    @throws none
     */
     public ChargePage(JFrame parentFrame, double totalPrice) {
         super(parentFrame, "Charge Order", true); // Use modal dialog
@@ -82,38 +81,30 @@ public class ChargePage extends JDialog {
         setLocationRelativeTo(parentFrame); // Center the charge page on the CashierApp
     }
     /** 
-    @function Function to open the completion page when finished
+    Function to open the completion page when finished
     @param parentFrame to include reference to original frame in GUI
-    @return void
-    @throws none
     */
     private void openCompletionPopup(JFrame parentFrame) {
         CompletionPopup completionPopup = new CompletionPopup(parentFrame);
         completionPopup.setVisible(true);
     }
     /** 
-    @function Get function to return the cancel button
-    @param none
+    Get function to return the cancel button
     @return cancelButton button to cancel an order
-    @throws none
     */
     public JButton getCancelButton() {
         return cancelButton;
     }
     /** 
-    @function Access function to return chargeCanceled variable
-    @param none
+    Access function to return chargeCanceled variable
     @return chargeCanceled boolean if order is canceled
-    @throws none
     */
     public boolean isChargeCanceled() {
         return chargeCanceled;
     }
     /** 
-    @function Access function to set the boolean for chargeCanceled
+    Access function to set the boolean for chargeCanceled
     @param val to update chargeCanceled boolean
-    @return void
-    @throws none
     */
     public void setChargeCanceled(boolean val) {
         chargeCanceled = val;

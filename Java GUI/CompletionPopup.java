@@ -9,9 +9,8 @@ Completion Popup for GUI to show final screen after order placed
 */
 public class CompletionPopup extends JDialog {
     /** 
-    @function Constructor to set up GUI for page
+    Constructor to set up GUI for page
     @param parentFrame  to reference original frame of GUI
-    @throws none
     */
     public CompletionPopup(JFrame parentFrame) {
         super(parentFrame, "Order Completed", true);

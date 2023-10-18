@@ -22,11 +22,10 @@ public class CustomizeDrinkPopup extends JDialog {
 
     private Order order;
     /** 
-    @function constructor for the customization page
+    Constructor for the customization page
     @param parent to reference original frame of GUI
     @param drinkName to include information about drink
     @param o order to include usage of functions
-    @throws none
     */
     public CustomizeDrinkPopup(JFrame parent, String drinkName, Order o) {
 
@@ -126,28 +125,22 @@ public class CustomizeDrinkPopup extends JDialog {
         setVisible(true);
     }
     /** 
-    @function Get function to get the selected ice string
-    @param none
+    Get function to get the selected ice string
     @return String of the user-selected ice amount
-    @throws none
     */
     public String getSelectedIce() {
         return selectedIce;
     }
     /** 
-    @function Get function to get the selected sweetness
-    @param none
+    Get function to get the selected sweetness
     @return String of the user-selected sweetness level
-    @throws none
     */
     public String getSelectedSweetness() {
         return selectedSweetness;
     }
     /** 
-    @function Get function to return an arraylist of the toppings selected
-    @param none
-    @return array of strings of selected toppings
-    @throws none
+    Get function to return an arraylist of the toppings selected
+    @return Array of strings of selected toppings
     */
     public ArrayList<String> getSelectedToppings() {
         return selectedToppings;

@@ -22,9 +22,8 @@ public class InventoryApp extends JPanel {
     private JTextField unitsField;
 
     /** 
-    @function Constructor that sets up the inventory interface
+    Constructor that sets up the inventory interface
     @param m includes usage of managerfunctions class
-    @throws none
     */
     public InventoryApp(ManagerFunctions m) {
         setLayout(new BorderLayout());
@@ -162,8 +161,7 @@ public class InventoryApp extends JPanel {
     }
 
     /** 
-    @function Get function that returns all inventory less than 10% of amount/capacity
-    @param none
+    Get function that returns all inventory less than 10% of amount/capacity
     @return arraylist of the names of low ingredients
     @throws error from accessing database
 
@@ -209,8 +207,7 @@ public class InventoryApp extends JPanel {
     }
 
     /** 
-    @function Get function for a list of all ingredients in inventory, includes database connection
-    @param none
+    Get function for a list of all ingredients in inventory, includes database connection
     @return arraylist of the ingredient names
     @throws error when accessing database
 
@@ -238,7 +235,7 @@ public class InventoryApp extends JPanel {
         return drinks;
     }
     /** 
-    @function Get function for info about ingredient: name, amount, capacity, unit
+    Get function for info about ingredient: name, amount, capacity, unit
     @param name string of ingredient name
     @return arraylist of ingredient info
     @throws error when accessing database
@@ -279,7 +276,7 @@ public class InventoryApp extends JPanel {
         return arr;
     }
     /** 
-    @function Function that returns true if the ingredient's amount/capacity is < 10%
+    Function that returns true if the ingredient's amount/capacity is < 10%
     @param name string of ingredient name
     @param amount string of amount of ingredient
     @param cap string of capacity
@@ -312,10 +309,7 @@ public class InventoryApp extends JPanel {
     }
 
     /** 
-    @function Function that updates to display ingredient information when button is pressed
-    @param none
-    @return void
-    @throws none
+    Function that updates to display ingredient information when button is pressed
 
     */
     public void updateDisplay(){

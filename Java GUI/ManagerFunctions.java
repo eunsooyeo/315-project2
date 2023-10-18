@@ -2,13 +2,14 @@ import java.math.BigDecimal;
 import java.sql.*;
 import javax.naming.spi.DirStateFactory.Result;
 import java.util.*;
-/** 
-All functions that interact with database for the manager side of the POS system
-@author Sarah Brasseaux
-@author Eunsoo Yeo
-@author Yuqian Cao
-*/
 import java.util.stream.Collectors;
+
+/** 
+ * All functions that interact with database for the manager side of the POS system
+ * @author Sarah Brasseaux
+ * @author Eunsoo Yeo
+ * @author Yuqian Cao
+*/
 
 public class ManagerFunctions {
     private ArrayList<String> drinkNames;
@@ -16,8 +17,7 @@ public class ManagerFunctions {
     private Connection conn;
 
     /**
-     * @function ManagerFunctions constructor that initializes the database
-     *           connection
+     * ManagerFunctions constructor that initializes the database connection
      * @param db_connection to use the existing database connection
      * 
      */
@@ -26,11 +26,10 @@ public class ManagerFunctions {
     }
 
     /**
-     * @function Function to update the price for a recipe in the database when a
+     * Function to update the price for a recipe in the database when a
      *           manager edits it in the POS
      * @param drinkName to know what recipe to access
      * @param price     the new price to change the recipe
-     * @return void
      * @throws when error updating the database using the SQL commands
      * 
      */
@@ -50,12 +49,11 @@ public class ManagerFunctions {
     }
 
     /**
-     * @function Function to update the ingredients for a recipe in the database
+     * Function to update the ingredients for a recipe in the database
      *           when a manager edits it in the POS
      * @param ingredientNames  string of the new recipe ingredients
      * @param ingredientValues string of the new recipe amounts
      * @param drinkName        string of the recipe name changing ingredients for
-     * @return void
      * @throws when error updating the database using the SQL commands
      * 
      */
@@ -116,13 +114,13 @@ public class ManagerFunctions {
     }
 
     /**
-     * @function Function to create a new recipe in the database when a manager
+     * Function to create a new recipe in the database when a manager
      *           enters it in the POS
      * @param drinkId          string of the new unique drink id
      * @param drinkName        string of the new recipe name
      * @param ingredientNames  string array of the new recipe ingredients
      * @param ingredientValues string array of the new recipe amounts
-     * @return void
+     * @param price            string of the new recipe price
      * @throws when error updating the database using the SQL commands
      * 
      */
@@ -186,10 +184,9 @@ public class ManagerFunctions {
     }
 
     /**
-     * @function Function to delete recipe in the database when a manager removes it
+     * Function to delete recipe in the database when a manager removes it
      *           in the POS
      * @param drinkName string of the recipe name removing
-     * @return void
      * @throws when error updating the database using the SQL commands
      * 
      */
@@ -209,14 +206,14 @@ public class ManagerFunctions {
     }
 
     /**
-     * @function Function to create a new employee in the database when a manager
+     * Function to create a new employee in the database when a manager
      *           enters it in the POS
      * @param id           string of the new employee id
      * @param employeeName string of the new employee name
      * @param password     string of employe password
      * @param pay          string of the employee's pay
      * @param hours        string of the employee's hours working
-     * @return void
+     * @param manager      string of if employee is a manager
      * @throws when error updating the database using the SQL commands
      * 
      */
@@ -247,10 +244,9 @@ public class ManagerFunctions {
     }
 
     /**
-     * @function Function to remove an employee in the database when a manager
+     * Function to remove an employee in the database when a manager
      *           enters it in the POS
      * @param employeeName to know which employee removing
-     * @return void
      * @throws when error updating the database using the SQL commands
      * 
      */
@@ -268,8 +264,7 @@ public class ManagerFunctions {
     }
 
     /**
-     * @function Get function for number of employees in database
-     * @param none
+     * Get function for number of employees in database
      * @return number of employees in database, or 0
      * @throws when error updating the database using the SQL commands
      * 
@@ -297,8 +292,7 @@ public class ManagerFunctions {
     }
 
     /**
-     * @function Get function for number of managers in database
-     * @param none
+     * Get function for number of managers in database
      * @return number of managers in database, or 0
      * @throws when error updating the database using the SQL commands
      * 
@@ -325,8 +319,7 @@ public class ManagerFunctions {
     }
 
     /**
-     * @function Get function for employee names and if manager
-     * @param none
+     * Get function for employee names and if manager
      * @return map of employees with string of name and boolean of if manager
      * @throws when error updating the database using the SQL commands
      * 
@@ -355,7 +348,7 @@ public class ManagerFunctions {
     // ^ all as string
 
     /**
-     * @function Get function for an employee's information
+     * Get function for an employee's information
      * @param name string of the employee's name
      * @return list of strings of the employee's information consisting of id, name,
      *         password, pay, hours, and manager status
@@ -385,13 +378,12 @@ public class ManagerFunctions {
     }
 
     /**
-     * @function Function to update an employee in the database when a manager
+     * Function to update an employee in the database when a manager
      *           enters it in the POS
      * @param employeeName to know which employee editing
      * @param hours        string of new hours
      * @param password     string of new password
      * @param pay          string of new pay
-     * @return void
      * @throws when error updating the database using the SQL commands
      * 
      */
@@ -413,13 +405,12 @@ public class ManagerFunctions {
 
     // add amount to ingredient in inventory
     /**
-     * @function Function to update an ingredient in the inventory database when a
+     * Function to update an ingredient in the inventory database when a
      *           manager enters it in the POS
      * @param ingredient string of name to access
      * @param amount     string of new amount
      * @param capacity   string of new capacity
      * @param unit       string of new unit
-     * @return void
      * @throws when error updating the database using the SQL commands
      * 
      */
@@ -445,13 +436,12 @@ public class ManagerFunctions {
 
     // add new ingredient to inventory
     /**
-     * @function Function to create new ingredient in the database when a manager
+     * Function to create new ingredient in the database when a manager
      *           enters it in the POS
      * @param ingredient string of new ingredient name
      * @param amount     string of new ingredient amount
      * @param capacity   string of new capacity
      * @param unit       string of new unit
-     * @return void
      * @throws when error updating the database using the SQL commands
      * 
      */
@@ -472,10 +462,9 @@ public class ManagerFunctions {
 
     // remove ingredient from inventory
     /**
-     * @function Function to remove an ingredient from inventory in the database
+     * Function to remove an ingredient from inventory in the database
      *           when a manager enters it in the POS
      * @param ingredient string of name to know what ingredient to remove
-     * @return void
      * @throws when error updating the database using the SQL commands
      * 
      */
@@ -494,8 +483,7 @@ public class ManagerFunctions {
     }
 
     /**
-     * @function Get function to get number of recipes in database
-     * @param none
+     * Get function to get number of recipes in database
      * @return number of drinks
      * @throws when error updating the database using the SQL commands
      * 
@@ -515,8 +503,7 @@ public class ManagerFunctions {
     }
 
     /**
-     * @function Get function to get the list of drink names in the recipe table
-     * @param none
+     * Get function to get the list of drink names in the recipe table
      * @return arraylist of strings of the drink names
      * @throws when error updating the database using the SQL commands
      * 
@@ -538,8 +525,7 @@ public class ManagerFunctions {
     }
 
     /**
-     * @function Get function to get list of recipes in table sorted by id
-     * @param none
+     * Get function to get list of recipes in table sorted by id
      * @return arraylist of strings of drinknames
      * @throws when error updating the database using the SQL commands
      * 
@@ -561,7 +547,7 @@ public class ManagerFunctions {
     }
 
     /**
-     * @function Get function to get drink info of selected drink from database
+     * Get function to get drink info of selected drink from database
      * @param name string of the drink name
      * @return arraylist of strings of the drink information by column
      * @throws when error updating the database using the SQL commands
@@ -588,8 +574,7 @@ public class ManagerFunctions {
     }
 
     /**
-     * @function Get function to get list of supply history from database
-     * @param none
+     * Get function to get list of supply history from database
      * @return arraylist of strings of supply information
      * @throws when error updating the database using the SQL commands
      * 
@@ -615,7 +600,7 @@ public class ManagerFunctions {
     }
 
     /**
-     * @function Get function to get unit of ingredient from database
+     * Get function to get unit of ingredient from database
      * @param name string of the ingredient name
      * @return string of the unit
      * @throws when error updating the database using the SQL commands
@@ -638,12 +623,12 @@ public class ManagerFunctions {
     }
 
     /**
-     * // @function Get function to get filtered sales history from a start to end
+     * Get function to get filtered sales history from a start to end
      * date
-     * // @param beginningDate string of start date
-     * // @param endDate string of end date
-     * // @return drinkname, numberOfOrders, totalPrice as a list for every drink
-     * // @throws when error updating the database using the SQL commands
+     * @param beginningDate string of start date
+     * @param endDate string of end date
+     * @return drinkname, numberOfOrders, totalPrice as a list for every drink
+     * @throws when error updating the database using the SQL commands
      */
     // ordered within the time period
     public ArrayList<ArrayList<String>> getFilteredSalesHistory(String beginningDate, String endDate) {
@@ -697,7 +682,7 @@ public class ManagerFunctions {
     }
 
     /**
-     * @function Checks if arraylist item exists in targetlist
+     * Checks if arraylist item exists in targetlist
      * @param targetlist list of lists
      * @param item       list of strings
      * @return arraylist of strings of the drink information by column
@@ -717,7 +702,7 @@ public class ManagerFunctions {
     }
 
     /**
-     * @function Returns a hashmap with key being an arraylist (of size 2) of the
+     * Returns a hashmap with key being an arraylist (of size 2) of the
      *           drinknames,
      *           with value being the number of its occurrence from a start to end
      *           date
@@ -813,7 +798,7 @@ public class ManagerFunctions {
     }
 
     /**
-     * @function Get function to return arraylist of excess report for what items in
+     * Get function to return arraylist of excess report for what items in
      *           inventory are in excess
      * @param beginningDate string of start date
      * @return ArrayList of ingredients that are in excess from the beginning date

@@ -6,8 +6,8 @@ import java.awt.event.ActionListener;
 
 /** 
 Login app page in GUI for username and password entry
-@author: Kevin Tang
-@author: Dicong Wang
+@author Kevin Tang
+@author Dicong Wang
 */
 public class LoginApp extends JFrame {
     private JTextField usernameField;
@@ -16,10 +16,11 @@ public class LoginApp extends JFrame {
     private Order order;
     private ManagerFunctions managerFunctions;
 
-    /**  @function Constructor for the start-up login page
-    // @param o include to allow access to order functions
-    // @param m include to allow access to managerFunctions
-    // @throws none */
+    /**  
+     * Constructor for the start-up login page
+    @param o include to allow access to order functions
+    @param m include to allow access to managerFunctions
+    */
     public LoginApp(Order o, ManagerFunctions m) {
         setTitle("Login Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -30,10 +31,7 @@ public class LoginApp extends JFrame {
         managerFunctions = m;
     }
     /** 
-    // @function sets up components of login page
-    // @param none
-    // @return void
-    // @throws none
+    Sets up components of login page
     */
     private void initComponents() {
         JPanel centerPanel = new JPanel(new GridLayout(3, 2, 5, 10));
@@ -93,10 +91,7 @@ public class LoginApp extends JFrame {
         add(statusLabel, BorderLayout.SOUTH);
     }
     /** 
-    // @function opens manager app page
-    // @param none
-    // @return void
-    // @throws none
+    Opens manager app page
     */
     private void openManagerApp() {
         ManagerApp managerApp = new ManagerApp(managerFunctions, order);
@@ -104,10 +99,7 @@ public class LoginApp extends JFrame {
         dispose();
     }
     /** 
-    // @function opens cashier app page
-    // @param none
-    // @return void
-    // @throws none
+    Opens cashier app page
     */
     private void openCashierApp() {
         CashierApp cashierApp = new CashierApp(managerFunctions, order);

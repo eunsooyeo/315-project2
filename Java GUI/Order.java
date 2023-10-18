@@ -13,7 +13,7 @@ public class Order {
     public static Connection conn;
 
     /**
-     * @function Constructor for the order class
+     * Constructor for the order class
      * @param db_connection to include the underlying connection to database
      */
     public Order(Connection db_connection) {
@@ -76,11 +76,11 @@ public class Order {
     }
 
     /** 
-    @function Function to update decrease inventory when drinks are added based on the ingredients, sugarlevel, icelevel, and toppings
+    Function to update decrease inventory when drinks are added based on the ingredients, sugarlevel, icelevel, and toppings
     @param drinkName to know what recipe to access
     @param iceLevel string of amount of ice
     @param sugarLevel string of the percentage of sugar
-    @param arraylist of string of the toppings selected
+    @param toppings arraylist of string of the toppings selected
     @return boolean if the inventory was successfuly updated or if the ingredients are too low already
     @throws when error updating the database using the SQL commands
 
@@ -221,7 +221,7 @@ public class Order {
     }
 
     /** 
-    @function Function to restore the inventory database incase a drink order was canceled
+    Function to restore the inventory database incase a drink order was canceled
     @param drinkInfo string with the information ingredients, toppings, icelevel, and sweetness
     @return boolean if successful restoration return true
     @throws when error updating the database using the SQL commands

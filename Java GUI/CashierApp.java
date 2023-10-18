@@ -36,7 +36,7 @@ public class CashierApp extends JFrame {
     public static Connection conn = null;
 
     /** 
-    @function Constructor to layout cashier page
+    *Constructor to layout cashier page
     @param m to include managerfunctions
     @param o order to include the order functions
 
@@ -207,10 +207,8 @@ public class CashierApp extends JFrame {
     }
 
     /** 
-    @function Updates the middle panel for which category of drinks is selected
+    Updates the middle panel for which category of drinks is selected
     @param category string of the selected drink category
-    @return void
-    @throws none
 
     */
     private void updateMiddlePanel(String category) {
@@ -268,10 +266,8 @@ public class CashierApp extends JFrame {
     }
 
     /** 
-    @function Function to set up display popup of drink selection
+    Function to set up display popup of drink selection
     @param drinkName to show which drink was selected
-    @return void
-    @throws none
 
     */
     private void displaySpecificDrink(String drinkName) {
@@ -312,10 +308,8 @@ public class CashierApp extends JFrame {
     }
 
     /** 
-    @function Function that adds the selected drink information to the right side panel and updates the price
+    Function that adds the selected drink information to the right side panel and updates the price
     @param drinkName string of added drink
-    @return void
-    @throws none
 
     */
     private void addSelectedDrink(String drinkName) {
@@ -324,10 +318,8 @@ public class CashierApp extends JFrame {
         updateDisplayPanel();
     }
     /** 
-    @function Function that removes the selected drink information from the right side panel and updates the price
+    Function that removes the selected drink information from the right side panel and updates the price
     @param drinkName string of drink
-    @return void
-    @throws none
 
     */
     private void removeSelectedDrink(String drinkName) {
@@ -336,9 +328,7 @@ public class CashierApp extends JFrame {
         updateDisplayPanel();
     }
     /** 
-    @function Function that updates total price using information from database and toppings 
-    @param none
-    @return void
+    Function that updates total price using information from database and toppings 
     @throws Errors from accessing database
 
     */
@@ -394,10 +384,7 @@ public class CashierApp extends JFrame {
     }
 
     /** 
-    @function Function that updates the right panel to include tax and total prices and allow for edit and removal of drinks
-    @param none
-    @return void
-    @throws none
+    Function that updates the right panel to include tax and total prices and allow for edit and removal of drinks
 
     */
     private void updateDisplayPanel() {
@@ -482,11 +469,9 @@ public class CashierApp extends JFrame {
         displayPanel.repaint();
     }
     /** 
-    @function Function that updates the selected drink information to the right side panel and updates the price
+    Function that updates the selected drink information to the right side panel and updates the price
     @param oldDrink string of the original drink
     @param newDrink string of new drink selected
-    @return void
-    @throws none
 
     */
     private void updateSelectedDrink(String oldDrink, String newDrink) {
@@ -498,10 +483,7 @@ public class CashierApp extends JFrame {
         }
     }
     /** 
-    @function Function that clears the right panel and resets price to zero
-    @param none
-    @return void
-    @throws none
+    Function that clears the right panel and resets price to zero
     
     */
     private void clearSelectedDrinks() {

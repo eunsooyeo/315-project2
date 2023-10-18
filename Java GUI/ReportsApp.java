@@ -23,9 +23,8 @@ public class ReportsApp extends JPanel {
     private JLabel excessIngredients;
 
     /** 
-    @function Constructor to set up the reports page
+    Constructor to set up the reports page
     @param m to allow usage of managerFunctions
-    @throws none
 
     */
     public ReportsApp(ManagerFunctions m) {
@@ -84,10 +83,7 @@ public class ReportsApp extends JPanel {
     }
 
     /** 
-    @function sets up GUI to show the excess ingredients information page
-    @param none
-    @return void
-    @throws none
+    Sets up GUI to show the excess ingredients information page
     */
     private void showExcessIngredientsForm() {
         // Replace the main panel content with a form
@@ -135,10 +131,7 @@ public class ReportsApp extends JPanel {
     }
 
     /** 
-    @function information fill for the report of excess ingredients
-    @param none
-    @return void
-    @throws none
+    information fill for the report of excess ingredients
 
     */
     private void generateExcessIngredientsReport() {
@@ -171,10 +164,7 @@ public class ReportsApp extends JPanel {
     }
 
     /** 
-    @function sets up GUI to show the popular drink pairs page
-    @param none
-    @return void
-    @throws none
+    sets up GUI to show the popular drink pairs page
     */
     private void showPopularDrinkPairsForm() {
         // Replace the main panel content with a form
@@ -234,10 +224,7 @@ public class ReportsApp extends JPanel {
     }
 
     /** 
-    @function generates the report information for popular drink pairs
-    @param none
-    @return void
-    @throws none
+    generates the report information for popular drink pairs
     */
     private void generatePopularDrinkPairsReport() {
 
@@ -304,10 +291,9 @@ public class ReportsApp extends JPanel {
     }
 
     /** 
-    @function checks if date entered is valid
+    Checks if date entered is valid
     @param date string of the entered date
     @return boolean true if the date is invalid
-    @throws none
 
     */
     private boolean invalidDate(String date) {

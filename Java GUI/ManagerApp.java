@@ -15,10 +15,9 @@ public class ManagerApp extends JFrame {
     private Order order;
 
     /** 
-    @function Constructor to set up the manager app page
+    Constructor to set up the manager app page
     @param m to include the managerFunctions usability
     @param o to include the order usability
-    @throws none
 
     */
     public ManagerApp(ManagerFunctions m, Order o) {
@@ -168,10 +167,7 @@ public class ManagerApp extends JFrame {
     }
 
     /** 
-    @function Function to open the menus app page from the existing page
-    @param none
-    @return void
-    @throws none
+    Function to open the menus app page from the existing page
 
     */
     private void openMenusApp() {
@@ -180,10 +176,7 @@ public class ManagerApp extends JFrame {
         // dispose();
     }
     /** 
-    @function Function to open the employees app page from the existing page
-    @param none
-    @return void
-    @throws none
+    Function to open the employees app page from the existing page
 
     */
     private void openEmployeeApp() {

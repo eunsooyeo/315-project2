@@ -9,8 +9,8 @@ import java.sql.*;
 
 /** 
 Menus page on the manager side
-@author: Kevin Tang
-@author: Dicong Wang
+@author Kevin Tang
+@author Dicong Wang
 */
 public class MenusApp extends JPanel {
     private JTextArea drinkDetailsTextArea;
@@ -33,9 +33,8 @@ public class MenusApp extends JPanel {
     private JPanel drinkListPanel;
 
     /** 
-    @function Constructor to setup the menu page
+    Constructor to setup the menu page
     @param m to include usage of managerFunctions
-    @throws none
 
     */
     public MenusApp(ManagerFunctions m) {
@@ -197,13 +196,11 @@ public class MenusApp extends JPanel {
     }
 
     /** 
-    @function Function to add a new drink recipe to menu
+    Function to add a new drink recipe to menu
     @param name string of new drink name
     @param price string of new price
     @param ingredients string of ingredients
     @param ingredientAmounts string of the amounts of each ingredient
-    @return void
-    @throws none
 
     */
     private void addDrink(String name, String price, String ingredients, String ingredientAmounts) {
@@ -259,10 +256,7 @@ public class MenusApp extends JPanel {
     }
 
     /** 
-    @function Function to remove a drink from the menu and calls a function that will update database
-    @param none
-    @return void
-    @throws none
+    Function to remove a drink from the menu and calls a function that will update database
 
     */
     private void removeDrink() {
@@ -312,10 +306,7 @@ public class MenusApp extends JPanel {
         drinkDetailsTextArea.setText("Select a drink");
     }
     /** 
-    @function Function to update the drink buttons on menu when changes are made
-    @param none
-    @return void
-    @throws none
+    Function to update the drink buttons on menu when changes are made
 
     */
     private void updateDrinkButtons() {
@@ -361,10 +352,7 @@ public class MenusApp extends JPanel {
     }
 
     /** 
-    @function Function to update the display of drink info to current
-    @param none
-    @return void
-    @throws none
+    Function to update the display of drink info to current    
 
     */
     private void updateDisplay() {
